@@ -1,0 +1,39 @@
+using Protocol.Minecraft;
+
+namespace Protocol.Network.MinecraftPacket;
+
+public class McpeAvailableEntityIdentifiers : Packet
+{
+    public Nbt namedtag; 
+
+    public McpeAvailableEntityIdentifiers()
+    {
+        Id = 0x77;
+        IsMcpe = true;
+    }
+
+    protected override void EncodePacket()
+    {
+        base.EncodePacket();
+
+
+        Write(namedtag);
+    }
+
+
+    protected override void DecodePacket()
+    {
+        base.DecodePacket();
+
+
+        namedtag = ReadNbt();
+    }
+
+
+    protected override void ResetPacket()
+    {
+        base.ResetPacket();
+
+        namedtag = default;
+    }
+}

@@ -1,0 +1,78 @@
+using Protocol.Minecraft;
+namespace Protocol.Network.MinecraftPacket;
+
+public class McpeAddItemEntity : Packet
+{
+    public long entityIdSelf; 
+    public bool isFromFishing; 
+    public Item item; 
+    public MetadataDictionary metadata; 
+    public long runtimeEntityId; 
+    public float speedX; 
+    public float speedY; 
+    public float speedZ; 
+    public float x; 
+    public float y; 
+    public float z; 
+
+    public McpeAddItemEntity()
+    {
+        Id = 0x0f;
+        IsMcpe = true;
+    }
+
+    protected override void EncodePacket()
+    {
+        base.EncodePacket();
+
+
+        WriteSignedVarLong(entityIdSelf);
+        WriteUnsignedVarLong(runtimeEntityId);
+        Write(item);
+        Write(x);
+        Write(y);
+        Write(z);
+        Write(speedX);
+        Write(speedY);
+        Write(speedZ);
+        Write(metadata);
+        Write(isFromFishing);
+    }
+
+
+    protected override void DecodePacket()
+    {
+        base.DecodePacket();
+
+
+        entityIdSelf = ReadSignedVarLong();
+        runtimeEntityId = ReadUnsignedVarLong();
+        item = ReadItem();
+        x = ReadFloat();
+        y = ReadFloat();
+        z = ReadFloat();
+        speedX = ReadFloat();
+        speedY = ReadFloat();
+        speedZ = ReadFloat();
+        metadata = ReadMetadataDictionary();
+        isFromFishing = ReadBool();
+    }
+
+
+    protected override void ResetPacket()
+    {
+        base.ResetPacket();
+
+        entityIdSelf = default;
+        runtimeEntityId = default;
+        item = default;
+        x = default;
+        y = default;
+        z = default;
+        speedX = default;
+        speedY = default;
+        speedZ = default;
+        metadata = default;
+        isFromFishing = default;
+    }
+}

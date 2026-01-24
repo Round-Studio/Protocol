@@ -1,0 +1,90 @@
+using System.Numerics;
+
+
+
+
+namespace Protocol.Network.MinecraftPacket;
+
+
+
+
+public static class ClientInputLocks
+{
+    
+    
+    
+    
+    public const uint Camera = 1 << (0 + 1); 
+
+    
+    
+    
+    
+    
+    public const uint Movement = 1 << (1 + 1); 
+}
+
+
+
+
+public class McpeUpdateClientInputLocks : Packet
+{
+    
+    
+    
+    public McpeUpdateClientInputLocks()
+    {
+        Id = 196; 
+        IsMcpe = true;
+    }
+
+    
+    
+    
+    
+    
+    public uint Locks { get; set; } 
+
+    
+    
+    
+    public Vector3 Position { get; set; } 
+
+    
+    
+    
+    protected override void EncodePacket()
+    {
+        base.EncodePacket();
+
+        
+        WriteUnsignedVarInt(Locks);
+
+        
+        Write(Position);
+    }
+
+    
+    
+    
+    protected override void DecodePacket()
+    {
+        base.DecodePacket();
+
+        
+        Locks = ReadUnsignedVarInt();
+
+        
+        Position = ReadVector3();
+    }
+
+    
+    
+    
+    protected override void ResetPacket()
+    {
+        base.ResetPacket();
+        Locks = 0;
+        Position = Vector3.Zero;
+    }
+}

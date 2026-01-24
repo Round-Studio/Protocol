@@ -1,0 +1,37 @@
+namespace Protocol.Network.MinecraftPacket;
+
+public class McpeSetDefaultGameType : Packet
+{
+    public int gamemode; 
+
+    public McpeSetDefaultGameType()
+    {
+        Id = 0x69;
+        IsMcpe = true;
+    }
+
+    protected override void EncodePacket()
+    {
+        base.EncodePacket();
+
+
+        WriteVarInt(gamemode);
+    }
+
+
+    protected override void DecodePacket()
+    {
+        base.DecodePacket();
+
+
+        gamemode = ReadVarInt();
+    }
+
+
+    protected override void ResetPacket()
+    {
+        base.ResetPacket();
+
+        gamemode = default;
+    }
+}
