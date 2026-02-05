@@ -1,104 +1,78 @@
-
-
 namespace Protocol.Network.MinecraftPacket;
-
-
-
 
 public class McpePlayerToggleCrafterSlotRequest : Packet
 {
-    
-    
-    
-    public McpePlayerToggleCrafterSlotRequest()
-    {
-        Id = 306; 
-        IsMcpe = true;
-    }
+	public McpePlayerToggleCrafterSlotRequest()
+	{
+		Id = 306;
+		IsMcpe = true;
+	}
 
-    
-    
-    
-    public int PosX { get; set; } 
 
-    
-    
-    
-    public int PosY { get; set; } 
+	public int PosX { get; set; }
 
-    
-    
-    
-    public int PosZ { get; set; } 
 
-    
-    
-    
-    public byte Slot { get; set; } 
+	public int PosY { get; set; }
 
-    
-    
-    
-    public bool Disabled { get; set; } 
 
-    
-    
-    
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
+	public int PosZ { get; set; }
 
-        
-        
-        Write(PosX);
 
-        
-        Write(PosY);
+	public byte Slot { get; set; }
 
-        
-        Write(PosZ);
 
-        
-        Write(Slot);
+	public bool Disabled { get; set; }
 
-        
-        Write(Disabled);
-    }
 
-    
-    
-    
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
-        
-        
-        PosX = ReadInt();
 
-        
-        PosY = ReadInt();
+		Write(PosX);
 
-        
-        PosZ = ReadInt();
 
-        
-        Slot = ReadByte();
+		Write(PosY);
 
-        
-        Disabled = ReadBool();
-    }
 
-    
-    
-    
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
-        PosX = 0;
-        PosY = 0;
-        PosZ = 0;
-        Slot = 0;
-        Disabled = false;
-    }
+		Write(PosZ);
+
+
+		Write(Slot);
+
+
+		Write(Disabled);
+	}
+
+
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
+
+
+		PosX = ReadInt();
+
+
+		PosY = ReadInt();
+
+
+		PosZ = ReadInt();
+
+
+		Slot = ReadByte();
+
+
+		Disabled = ReadBool();
+	}
+
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+		PosX = 0;
+		PosY = 0;
+		PosZ = 0;
+		Slot = 0;
+		Disabled = false;
+	}
 }

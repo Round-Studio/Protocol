@@ -2,40 +2,40 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class ConnectedPong : Packet
 {
-    public long sendpingtime; 
-    public long sendpongtime; 
+	public long sendpingtime;
+	public long sendpongtime;
 
-    public ConnectedPong()
-    {
-        Id = 0x03;
-        IsMcpe = false;
-    }
+	public ConnectedPong()
+	{
+		Id = 0x03;
+		IsMcpe = false;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        Write(sendpingtime);
-        Write(sendpongtime);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		Write(sendpingtime);
+		Write(sendpongtime);
+	}
 
 
-        sendpingtime = ReadLong();
-        sendpongtime = ReadLong();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		sendpingtime = ReadLong();
+		sendpongtime = ReadLong();
+	}
 
-        sendpingtime = default;
-        sendpongtime = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		sendpingtime = default;
+		sendpongtime = default;
+	}
 }

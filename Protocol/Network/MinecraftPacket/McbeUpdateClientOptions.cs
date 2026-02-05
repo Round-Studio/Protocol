@@ -1,93 +1,60 @@
-
-
-
 namespace Protocol.Network.MinecraftPacket;
-
-
-
 
 public enum GraphicsModeType : byte
 {
-    
-    
-    
-    Simple = 0,
+	Simple = 0,
 
-    
-    
-    
-    Fancy = 1,
 
-    
-    
-    
-    Advanced = 2,
+	Fancy = 1,
 
-    
-    
-    
-    RayTraced = 3
+
+	Advanced = 2,
+
+
+	RayTraced = 3
 }
-
-
-
 
 public class McpeUpdateClientOptions : Packet
 {
-    
-    
-    
-    public McpeUpdateClientOptions()
-    {
-        Id = 323; 
-        IsMcpe = true;
-        
-    }
+	public McpeUpdateClientOptions()
+	{
+		Id = 323;
+		IsMcpe = true;
+	}
 
-    
-    
-    
-    public Optional<byte> GraphicsMode { get; set; } 
 
-    
-    
-    
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
+	public Optional<byte> GraphicsMode { get; set; }
 
-        
-        
-        Write(GraphicsMode.HasValue);
-        
-        if (GraphicsMode.HasValue) Write(GraphicsMode.Value);
-    }
 
-    
-    
-    
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
-        
-        
-        var hasGraphicsMode = ReadBool();
-        
-        if (hasGraphicsMode)
-        {
-            var graphicsModeValue = ReadByte();
-            GraphicsMode = new Optional<byte>(graphicsModeValue);
-        }
-        
-    }
 
-    
-    
-    
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
-        GraphicsMode = new Optional<byte>(); 
-    }
+		Write(GraphicsMode.HasValue);
+
+		if (GraphicsMode.HasValue) Write(GraphicsMode.Value);
+	}
+
+
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
+
+
+		var hasGraphicsMode = ReadBool();
+
+		if (hasGraphicsMode)
+		{
+			var graphicsModeValue = ReadByte();
+			GraphicsMode = new Optional<byte>(graphicsModeValue);
+		}
+	}
+
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+		GraphicsMode = new Optional<byte>();
+	}
 }

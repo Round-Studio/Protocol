@@ -2,26 +2,26 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class DetectLostConnections : Packet
 {
-    public DetectLostConnections()
-    {
-        Id = 0x04;
-        IsMcpe = false;
-    }
+	public DetectLostConnections()
+	{
+		Id = 0x04;
+		IsMcpe = false;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-    }
-
-
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
+	}
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
+	}
+
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+	}
 }

@@ -2,53 +2,53 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeLabTable : Packet
 {
-    public int labTableX; 
-    public int labTableY; 
-    public int labTableZ; 
-    public byte reactionType; 
+	public int labTableX;
+	public int labTableY;
+	public int labTableZ;
+	public byte reactionType;
 
-    public byte uselessByte; 
+	public byte uselessByte;
 
-    public McpeLabTable()
-    {
-        Id = 0x6d;
-        IsMcpe = true;
-    }
+	public McpeLabTable()
+	{
+		Id = 0x6d;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        Write(uselessByte);
-        WriteVarInt(labTableX);
-        WriteVarInt(labTableY);
-        WriteVarInt(labTableZ);
-        Write(reactionType);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		Write(uselessByte);
+		WriteVarInt(labTableX);
+		WriteVarInt(labTableY);
+		WriteVarInt(labTableZ);
+		Write(reactionType);
+	}
 
 
-        uselessByte = ReadByte();
-        labTableX = ReadVarInt();
-        labTableY = ReadVarInt();
-        labTableZ = ReadVarInt();
-        reactionType = ReadByte();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		uselessByte = ReadByte();
+		labTableX = ReadVarInt();
+		labTableY = ReadVarInt();
+		labTableZ = ReadVarInt();
+		reactionType = ReadByte();
+	}
 
-        uselessByte = default;
-        labTableX = default;
-        labTableY = default;
-        labTableZ = default;
-        reactionType = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		uselessByte = default;
+		labTableX = default;
+		labTableY = default;
+		labTableZ = default;
+		reactionType = default;
+	}
 }

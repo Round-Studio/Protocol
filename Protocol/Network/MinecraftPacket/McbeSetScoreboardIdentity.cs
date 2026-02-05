@@ -4,42 +4,42 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeSetScoreboardIdentity : Packet
 {
-    public enum Operations
-    {
-        RegisterIdentity = 0,
-        ClearIdentity = 1
-    }
+	public enum Operations
+	{
+		RegisterIdentity = 0,
+		ClearIdentity = 1
+	}
 
-    public ScoreboardIdentityEntries entries; 
+	public ScoreboardIdentityEntries entries;
 
-    public McpeSetScoreboardIdentity()
-    {
-        Id = 0x70;
-        IsMcpe = true;
-    }
+	public McpeSetScoreboardIdentity()
+	{
+		Id = 0x70;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        Write(entries);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		Write(entries);
+	}
 
 
-        entries = ReadScoreboardIdentityEntries();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		entries = ReadScoreboardIdentityEntries();
+	}
 
-        entries = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		entries = default;
+	}
 }

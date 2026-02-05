@@ -1,67 +1,48 @@
-
-
 namespace Protocol.Network.MinecraftPacket;
-
-
-
 
 public class McpeRemoveVolumeEntity : Packet
 {
-    
-    
-    
-    public McpeRemoveVolumeEntity()
-    {
-        Id = 167; 
-        IsMcpe = true;
-    }
+	public McpeRemoveVolumeEntity()
+	{
+		Id = 167;
+		IsMcpe = true;
+	}
 
-    
-    
-    
-    public ulong EntityRuntimeID { get; set; } 
 
-    
-    
-    
-    public int Dimension { get; set; } 
+	public ulong EntityRuntimeID { get; set; }
 
-    
-    
-    
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
 
-        
-        Write(EntityRuntimeID);
+	public int Dimension { get; set; }
 
-        
-        
-        WriteSignedVarInt(Dimension);
-    }
 
-    
-    
-    
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
-        
-        EntityRuntimeID = ReadUlong();
 
-        
-        Dimension = ReadSignedVarInt();
-    }
+		Write(EntityRuntimeID);
 
-    
-    
-    
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
-        EntityRuntimeID = 0;
-        Dimension = 0;
-    }
+
+		WriteSignedVarInt(Dimension);
+	}
+
+
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
+
+
+		EntityRuntimeID = ReadUlong();
+
+
+		Dimension = ReadSignedVarInt();
+	}
+
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+		EntityRuntimeID = 0;
+		Dimension = 0;
+	}
 }

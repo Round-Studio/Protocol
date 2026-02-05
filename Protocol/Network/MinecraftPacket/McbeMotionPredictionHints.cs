@@ -4,51 +4,38 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeMotionPredictionHints : Packet
 {
-    
-    
-    
-    public McpeMotionPredictionHints()
-    {
-        Id = 157; 
-        IsMcpe = true; 
-    }
+	public McpeMotionPredictionHints()
+	{
+		Id = 157;
+		IsMcpe = true;
+	}
 
-    
-    
-    
-    public long EntityRuntimeID { get; set; }
 
-    
-    
-    
-    public Vector3 Velocity { get; set; }
+	public long EntityRuntimeID { get; set; }
 
-    
-    
-    
-    public bool OnGround { get; set; }
 
-    
-    
-    
-    protected override void EncodePacket()
-    {
-        base.EncodePacket(); 
+	public Vector3 Velocity { get; set; }
 
-        WriteUnsignedVarLong(EntityRuntimeID);
-        Write(Velocity);
-        Write(OnGround);
-    }
 
-    
-    
-    
-    protected override void DecodePacket()
-    {
-        base.DecodePacket(); 
+	public bool OnGround { get; set; }
 
-        EntityRuntimeID = ReadUnsignedVarLong();
-        Velocity = ReadVector3();
-        OnGround = ReadBool();
-    }
+
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
+
+		WriteUnsignedVarLong(EntityRuntimeID);
+		Write(Velocity);
+		Write(OnGround);
+	}
+
+
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
+
+		EntityRuntimeID = ReadUnsignedVarLong();
+		Velocity = ReadVector3();
+		OnGround = ReadBool();
+	}
 }

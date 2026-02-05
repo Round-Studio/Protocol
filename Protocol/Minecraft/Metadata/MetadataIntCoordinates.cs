@@ -1,4 +1,4 @@
-using Protocol.Utils;
+using Protocol.Utils.IO;
 
 namespace Protocol.Minecraft
 {

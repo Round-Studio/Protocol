@@ -2,45 +2,45 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeTransfer : Packet
 {
-    public ushort port; 
-    public bool reload; 
+	public ushort port;
+	public bool reload;
 
-    public string serverAddress; 
+	public string serverAddress;
 
-    public McpeTransfer()
-    {
-        Id = 0x55;
-        IsMcpe = true;
-    }
+	public McpeTransfer()
+	{
+		Id = 0x55;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        Write(serverAddress);
-        Write(port);
-        Write(reload);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		Write(serverAddress);
+		Write(port);
+		Write(reload);
+	}
 
 
-        serverAddress = ReadString();
-        port = ReadUshort();
-        reload = ReadBool();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		serverAddress = ReadString();
+		port = ReadUshort();
+		reload = ReadBool();
+	}
 
-        serverAddress = default;
-        port = default;
-        reload = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		serverAddress = default;
+		port = default;
+		reload = default;
+	}
 }

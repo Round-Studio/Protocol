@@ -1,71 +1,46 @@
 using Protocol.Minecraft;
 
 
-
-
-
 namespace Protocol.Network.MinecraftPacket;
-
-
-
 
 public class McpeJigsawStructureData : Packet
 {
-    
-    
-    
-    public McpeJigsawStructureData()
-    {
-        Id = 313; 
-        IsMcpe = true;
-        
-        
-        
-        StructureData = null; 
-    }
+	public McpeJigsawStructureData()
+	{
+		Id = 313;
+		IsMcpe = true;
 
-    
-    
-    
-    public Nbt StructureData { get; set; } 
 
-    
-    
-    
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
+		StructureData = null;
+	}
 
-        
-        
-        
-        Write(StructureData); 
-    }
 
-    
-    
-    
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+	public Nbt StructureData { get; set; }
 
-        
-        
-        StructureData = ReadNbt(); 
-    }
 
-    
-    
-    
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
-        
-        
-        StructureData = null;
-        
-        
-        
-        
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
+
+
+		Write(StructureData);
+	}
+
+
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
+
+
+		StructureData = ReadNbt();
+	}
+
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+
+		StructureData = null;
+	}
 }

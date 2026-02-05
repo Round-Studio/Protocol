@@ -2,41 +2,41 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeScriptCustomEvent : Packet
 {
-    public string eventData; 
+	public string eventData;
 
-    public string eventName; 
+	public string eventName;
 
-    public McpeScriptCustomEvent()
-    {
-        Id = 0x75;
-        IsMcpe = true;
-    }
+	public McpeScriptCustomEvent()
+	{
+		Id = 0x75;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        Write(eventName);
-        Write(eventData);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		Write(eventName);
+		Write(eventData);
+	}
 
 
-        eventName = ReadString();
-        eventData = ReadString();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		eventName = ReadString();
+		eventData = ReadString();
+	}
 
-        eventName = default;
-        eventData = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		eventName = default;
+		eventData = default;
+	}
 }

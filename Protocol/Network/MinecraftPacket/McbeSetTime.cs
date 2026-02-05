@@ -2,36 +2,36 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeSetTime : Packet
 {
-    public int time; 
+	public int time;
 
-    public McpeSetTime()
-    {
-        Id = 0x0a;
-        IsMcpe = true;
-    }
+	public McpeSetTime()
+	{
+		Id = 0x0a;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        WriteSignedVarInt(time);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		WriteSignedVarInt(time);
+	}
 
 
-        time = ReadSignedVarInt();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		time = ReadSignedVarInt();
+	}
 
-        time = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		time = default;
+	}
 }

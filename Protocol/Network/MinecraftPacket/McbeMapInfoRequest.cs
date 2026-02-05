@@ -4,40 +4,40 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeMapInfoRequest : Packet
 {
-    public long mapId; 
-    public pixelList pixellist; 
+	public long mapId;
+	public pixelList pixellist;
 
-    public McpeMapInfoRequest()
-    {
-        Id = 0x44;
-        IsMcpe = true;
-    }
+	public McpeMapInfoRequest()
+	{
+		Id = 0x44;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        WriteSignedVarLong(mapId);
-        WriteUnsignedVarInt(0);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		WriteSignedVarLong(mapId);
+		WriteUnsignedVarInt(0);
+	}
 
 
-        mapId = ReadSignedVarLong();
-        pixellist = ReadPixelList();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		mapId = ReadSignedVarLong();
+		pixellist = ReadPixelList();
+	}
 
-        mapId = default;
-        pixellist = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		mapId = default;
+		pixellist = default;
+	}
 }

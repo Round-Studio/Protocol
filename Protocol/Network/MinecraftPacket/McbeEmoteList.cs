@@ -4,41 +4,41 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeEmoteList : Packet
 {
-    public EmoteIds emoteIds; 
+	public EmoteIds emoteIds;
 
-    public long runtimeEntityId; 
+	public long runtimeEntityId;
 
-    public McpeEmoteList()
-    {
-        Id = 0x8a;
-        IsMcpe = true;
-    }
+	public McpeEmoteList()
+	{
+		Id = 0x8a;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        WriteUnsignedVarLong(runtimeEntityId);
-        Write(emoteIds);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		WriteUnsignedVarLong(runtimeEntityId);
+		Write(emoteIds);
+	}
 
 
-        runtimeEntityId = ReadUnsignedVarLong();
-        emoteIds = ReadEmoteId();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		runtimeEntityId = ReadUnsignedVarLong();
+		emoteIds = ReadEmoteId();
+	}
 
-        runtimeEntityId = default;
-        emoteIds = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		runtimeEntityId = default;
+		emoteIds = default;
+	}
 }

@@ -1,6 +1,5 @@
 namespace Protocol.Minecraft
 {
-
 	[Flags]
 	public enum AuthInputFlags : long
 	{

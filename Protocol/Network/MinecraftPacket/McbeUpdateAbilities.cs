@@ -4,49 +4,49 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeUpdateAbilities : Packet
 {
-    public byte commandPermissions; 
+	public byte commandPermissions;
 
-    public long entityUniqueId; 
-    public AbilityLayers layers; 
-    public byte playerPermissions; 
+	public long entityUniqueId;
+	public AbilityLayers layers;
+	public byte playerPermissions;
 
-    public McpeUpdateAbilities()
-    {
-        Id = 0xbb;
-        IsMcpe = true;
-    }
+	public McpeUpdateAbilities()
+	{
+		Id = 0xbb;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        Write(entityUniqueId);
-        Write(playerPermissions);
-        Write(commandPermissions);
-        Write(layers);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		Write(entityUniqueId);
+		Write(playerPermissions);
+		Write(commandPermissions);
+		Write(layers);
+	}
 
 
-        entityUniqueId = ReadLong();
-        playerPermissions = ReadByte();
-        commandPermissions = ReadByte();
-        layers = ReadAbilityLayers();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		entityUniqueId = ReadLong();
+		playerPermissions = ReadByte();
+		commandPermissions = ReadByte();
+		layers = ReadAbilityLayers();
+	}
 
-        entityUniqueId = default;
-        playerPermissions = default;
-        commandPermissions = default;
-        layers = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		entityUniqueId = default;
+		playerPermissions = default;
+		commandPermissions = default;
+		layers = default;
+	}
 }

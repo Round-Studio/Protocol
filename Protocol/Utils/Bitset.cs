@@ -4,113 +4,82 @@ namespace Protocol.Utils;
 
 public class Bitset
 {
-    
-    
-    
-    
-    public Bitset(int size)
-    {
-        Size = size;
-        IntValue = BigInteger.Zero;
-    }
+	public Bitset(int size)
+	{
+		Size = size;
+		IntValue = BigInteger.Zero;
+	}
 
-    
-    
-    
-    
-    
-    public Bitset(int size, BigInteger intValue)
-    {
-        Size = size;
-        IntValue = intValue;
-    }
 
-    public int Size { get; }
-    public BigInteger IntValue { get; private set; }
+	public Bitset(int size, BigInteger intValue)
+	{
+		Size = size;
+		IntValue = intValue;
+	}
 
-    
-    
-    
-    public ulong Low
-    {
-        get
-        {
-            if (IntValue <= ulong.MaxValue)
-                return (ulong)IntValue;
+	public int Size { get; }
+	public BigInteger IntValue { get; private set; }
 
-            return (ulong)(IntValue & ulong.MaxValue);
-        }
-    }
 
-    
-    
-    
-    public ulong High
-    {
-        get
-        {
-            if (Size <= 64)
-                return 0;
+	public ulong Low
+	{
+		get
+		{
+			if (IntValue <= ulong.MaxValue)
+				return (ulong)IntValue;
 
-            return (ulong)(IntValue >> 64);
-        }
-    }
+			return (ulong)(IntValue & ulong.MaxValue);
+		}
+	}
 
-    
-    
-    
-    
-    
-    public void Set(int i)
-    {
-        if (i >= Size)
-            throw new IndexOutOfRangeException("index out of bounds");
 
-        IntValue |= BigInteger.One << i;
-    }
+	public ulong High
+	{
+		get
+		{
+			if (Size <= 64)
+				return 0;
 
-    
-    
-    
-    
-    
-    public void Unset(int i)
-    {
-        if (i >= Size)
-            throw new IndexOutOfRangeException("index out of bounds");
+			return (ulong)(IntValue >> 64);
+		}
+	}
 
-        IntValue &= ~(BigInteger.One << i);
-    }
 
-    
-    
-    
-    
-    
-    
-    public bool Load(int i)
-    {
-        if (i >= Size)
-            throw new IndexOutOfRangeException("index out of bounds");
+	public void Set(int i)
+	{
+		if (i >= Size)
+			throw new IndexOutOfRangeException("index out of bounds");
 
-        return (IntValue & (BigInteger.One << i)) != BigInteger.Zero;
-    }
+		IntValue |= BigInteger.One << i;
+	}
 
-    
-    
-    
-    public int Len()
-    {
-        return Size;
-    }
 
-    
-    
-    
-    
-    
-    public bool HasFlag(ulong flags)
-    {
-        return (IntValue & flags) != 0;
-    }
+	public void Unset(int i)
+	{
+		if (i >= Size)
+			throw new IndexOutOfRangeException("index out of bounds");
+
+		IntValue &= ~(BigInteger.One << i);
+	}
+
+
+	public bool Load(int i)
+	{
+		if (i >= Size)
+			throw new IndexOutOfRangeException("index out of bounds");
+
+		return (IntValue & (BigInteger.One << i)) != BigInteger.Zero;
+	}
+
+
+	public int Len()
+	{
+		return Size;
+	}
+
+
+	public bool HasFlag(ulong flags)
+	{
+		return (IntValue & flags) != 0;
+	}
 }

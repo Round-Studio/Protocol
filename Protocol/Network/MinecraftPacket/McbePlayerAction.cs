@@ -4,53 +4,53 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpePlayerAction : Packet
 {
-    public int actionId; 
-    public BlockCoordinates coordinates; 
-    public int face; 
-    public BlockCoordinates resultCoordinates; 
+	public int actionId;
+	public BlockCoordinates coordinates;
+	public int face;
+	public BlockCoordinates resultCoordinates;
 
-    public long runtimeEntityId; 
+	public long runtimeEntityId;
 
-    public McpePlayerAction()
-    {
-        Id = 0x24;
-        IsMcpe = true;
-    }
+	public McpePlayerAction()
+	{
+		Id = 0x24;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        WriteUnsignedVarLong(runtimeEntityId);
-        WriteSignedVarInt(actionId);
-        Write(coordinates);
-        Write(resultCoordinates);
-        WriteSignedVarInt(face);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		WriteUnsignedVarLong(runtimeEntityId);
+		WriteSignedVarInt(actionId);
+		Write(coordinates);
+		Write(resultCoordinates);
+		WriteSignedVarInt(face);
+	}
 
 
-        runtimeEntityId = ReadUnsignedVarLong();
-        actionId = ReadSignedVarInt();
-        coordinates = ReadBlockCoordinates();
-        resultCoordinates = ReadBlockCoordinates();
-        face = ReadSignedVarInt();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		runtimeEntityId = ReadUnsignedVarLong();
+		actionId = ReadSignedVarInt();
+		coordinates = ReadBlockCoordinates();
+		resultCoordinates = ReadBlockCoordinates();
+		face = ReadSignedVarInt();
+	}
 
-        runtimeEntityId = default;
-        actionId = default;
-        coordinates = default;
-        resultCoordinates = default;
-        face = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		runtimeEntityId = default;
+		actionId = default;
+		coordinates = default;
+		resultCoordinates = default;
+		face = default;
+	}
 }

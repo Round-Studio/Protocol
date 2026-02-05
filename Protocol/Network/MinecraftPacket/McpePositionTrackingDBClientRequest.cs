@@ -2,53 +2,39 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpePositionTrackingDBClientRequest : Packet
 {
-    
-    
-    
-    public enum Action
-    {
-        Query = 0 
-    }
+	public enum Action
+	{
+		Query = 0
+	}
 
-    
-    
-    
-    public McpePositionTrackingDBClientRequest()
-    {
-        Id = 154; 
-        IsMcpe = true; 
-    }
 
-    
-    
-    
-    public byte RequestAction { get; set; }
+	public McpePositionTrackingDBClientRequest()
+	{
+		Id = 154;
+		IsMcpe = true;
+	}
 
-    
-    
-    
-    
-    public int TrackingID { get; set; }
 
-    
-    
-    
-    protected override void EncodePacket()
-    {
-        base.EncodePacket(); 
+	public byte RequestAction { get; set; }
 
-        Write(RequestAction);
-        WriteSignedVarInt(TrackingID);
-    }
 
-    
-    
-    
-    protected override void DecodePacket()
-    {
-        base.DecodePacket(); 
+	public int TrackingID { get; set; }
 
-        RequestAction = ReadByte();
-        TrackingID = ReadSignedVarInt();
-    }
+
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
+
+		Write(RequestAction);
+		WriteSignedVarInt(TrackingID);
+	}
+
+
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
+
+		RequestAction = ReadByte();
+		TrackingID = ReadSignedVarInt();
+	}
 }

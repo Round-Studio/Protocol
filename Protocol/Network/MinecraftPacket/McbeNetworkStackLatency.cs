@@ -2,40 +2,40 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeNetworkStackLatency : Packet
 {
-    public ulong timestamp; 
-    public byte unknownFlag; 
+	public ulong timestamp;
+	public byte unknownFlag;
 
-    public McpeNetworkStackLatency()
-    {
-        Id = 0x73;
-        IsMcpe = true;
-    }
+	public McpeNetworkStackLatency()
+	{
+		Id = 0x73;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        Write(timestamp);
-        Write(unknownFlag);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		Write(timestamp);
+		Write(unknownFlag);
+	}
 
 
-        timestamp = ReadUlong();
-        unknownFlag = ReadByte();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		timestamp = ReadUlong();
+		unknownFlag = ReadByte();
+	}
 
-        timestamp = default;
-        unknownFlag = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		timestamp = default;
+		unknownFlag = default;
+	}
 }

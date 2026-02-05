@@ -2,45 +2,45 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeHurtArmor : Packet
 {
-    public long armorSlotFlags; 
+	public long armorSlotFlags;
 
-    public int cause; 
-    public int health; 
+	public int cause;
+	public int health;
 
-    public McpeHurtArmor()
-    {
-        Id = 0x26;
-        IsMcpe = true;
-    }
+	public McpeHurtArmor()
+	{
+		Id = 0x26;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        WriteVarInt(cause);
-        WriteSignedVarInt(health);
-        WriteUnsignedVarLong(armorSlotFlags);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		WriteVarInt(cause);
+		WriteSignedVarInt(health);
+		WriteUnsignedVarLong(armorSlotFlags);
+	}
 
 
-        cause = ReadVarInt();
-        health = ReadSignedVarInt();
-        armorSlotFlags = ReadUnsignedVarLong();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		cause = ReadVarInt();
+		health = ReadSignedVarInt();
+		armorSlotFlags = ReadUnsignedVarLong();
+	}
 
-        cause = default;
-        health = default;
-        armorSlotFlags = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		cause = default;
+		health = default;
+		armorSlotFlags = default;
+	}
 }

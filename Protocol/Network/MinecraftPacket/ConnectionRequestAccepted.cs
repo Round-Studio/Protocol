@@ -4,53 +4,53 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class ConnectionRequestAccepted : Packet
 {
-    public long incomingTimestamp; 
-    public long serverTimestamp; 
+	public long incomingTimestamp;
+	public long serverTimestamp;
 
-    public IPEndPoint systemAddress; 
-    public IPEndPoint[] systemAddresses; 
-    public short systemIndex; 
+	public IPEndPoint systemAddress;
+	public IPEndPoint[] systemAddresses;
+	public short systemIndex;
 
-    public ConnectionRequestAccepted()
-    {
-        Id = 0x10;
-        IsMcpe = false;
-    }
+	public ConnectionRequestAccepted()
+	{
+		Id = 0x10;
+		IsMcpe = false;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        Write(systemAddress);
-        WriteBe(systemIndex);
-        Write(systemAddresses);
-        Write(incomingTimestamp);
-        Write(serverTimestamp);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		Write(systemAddress);
+		WriteBe(systemIndex);
+		Write(systemAddresses);
+		Write(incomingTimestamp);
+		Write(serverTimestamp);
+	}
 
 
-        systemAddress = ReadIPEndPoint();
-        systemIndex = ReadShortBe();
-        systemAddresses = ReadIPEndPoints(20);
-        incomingTimestamp = ReadLong();
-        serverTimestamp = ReadLong();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		systemAddress = ReadIPEndPoint();
+		systemIndex = ReadShortBe();
+		systemAddresses = ReadIPEndPoints(20);
+		incomingTimestamp = ReadLong();
+		serverTimestamp = ReadLong();
+	}
 
-        systemAddress = default;
-        systemIndex = default;
-        systemAddresses = default;
-        incomingTimestamp = default;
-        serverTimestamp = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		systemAddress = default;
+		systemIndex = default;
+		systemAddresses = default;
+		incomingTimestamp = default;
+		serverTimestamp = default;
+	}
 }

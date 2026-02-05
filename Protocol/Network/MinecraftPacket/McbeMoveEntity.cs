@@ -4,45 +4,45 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeMoveEntity : Packet
 {
-    public byte flags; 
-    public PlayerLocation position; 
+	public byte flags;
+	public PlayerLocation position;
 
-    public long runtimeEntityId; 
+	public long runtimeEntityId;
 
-    public McpeMoveEntity()
-    {
-        Id = 0x12;
-        IsMcpe = true;
-    }
+	public McpeMoveEntity()
+	{
+		Id = 0x12;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        WriteUnsignedVarLong(runtimeEntityId);
-        Write(flags);
-        Write(position);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		WriteUnsignedVarLong(runtimeEntityId);
+		Write(flags);
+		Write(position);
+	}
 
 
-        runtimeEntityId = ReadUnsignedVarLong();
-        flags = ReadByte();
-        position = ReadPlayerLocation();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		runtimeEntityId = ReadUnsignedVarLong();
+		flags = ReadByte();
+		position = ReadPlayerLocation();
+	}
 
-        runtimeEntityId = default;
-        flags = default;
-        position = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		runtimeEntityId = default;
+		flags = default;
+		position = default;
+	}
 }

@@ -2,61 +2,61 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeMobEffect : Packet
 {
-    public int amplifier; 
-    public int duration; 
-    public int effectId; 
-    public byte eventId; 
-    public bool particles; 
+	public int amplifier;
+	public int duration;
+	public int effectId;
+	public byte eventId;
+	public bool particles;
 
-    public long runtimeEntityId; 
-    public long tick; 
+	public long runtimeEntityId;
+	public long tick;
 
-    public McpeMobEffect()
-    {
-        Id = 0x1c;
-        IsMcpe = true;
-    }
+	public McpeMobEffect()
+	{
+		Id = 0x1c;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        WriteUnsignedVarLong(runtimeEntityId);
-        Write(eventId);
-        WriteSignedVarInt(effectId);
-        WriteSignedVarInt(amplifier);
-        Write(particles);
-        WriteSignedVarInt(duration);
-        WriteUnsignedVarLong(tick);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		WriteUnsignedVarLong(runtimeEntityId);
+		Write(eventId);
+		WriteSignedVarInt(effectId);
+		WriteSignedVarInt(amplifier);
+		Write(particles);
+		WriteSignedVarInt(duration);
+		WriteUnsignedVarLong(tick);
+	}
 
 
-        runtimeEntityId = ReadUnsignedVarLong();
-        eventId = ReadByte();
-        effectId = ReadSignedVarInt();
-        amplifier = ReadSignedVarInt();
-        particles = ReadBool();
-        duration = ReadSignedVarInt();
-        tick = ReadUnsignedVarLong();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		runtimeEntityId = ReadUnsignedVarLong();
+		eventId = ReadByte();
+		effectId = ReadSignedVarInt();
+		amplifier = ReadSignedVarInt();
+		particles = ReadBool();
+		duration = ReadSignedVarInt();
+		tick = ReadUnsignedVarLong();
+	}
 
-        runtimeEntityId = default;
-        eventId = default;
-        effectId = default;
-        amplifier = default;
-        particles = default;
-        duration = default;
-        tick = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		runtimeEntityId = default;
+		eventId = default;
+		effectId = default;
+		amplifier = default;
+		particles = default;
+		duration = default;
+		tick = default;
+	}
 }

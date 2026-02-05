@@ -1,131 +1,96 @@
 using Protocol.Minecraft;
+
 namespace Protocol.Network.MinecraftPacket;
-
-
-
 
 public class McpeAddVolumeEntity : Packet
 {
-    
-    
-    
-    public McpeAddVolumeEntity()
-    {
-        Id = 166; 
-        IsMcpe = true;
-     
-    }
-
-    
-    
-    
-    
-    public ulong EntityRuntimeID { get; set; } 
-
-    
-    
-    
-    
-    
-    
-    public Nbt EntityMetadata { get; set; } 
-
-    
-    
-    
-    
-    public string EncodingIdentifier { get; set; } = string.Empty; 
-
-    
-    
-    
-    public string InstanceIdentifier { get; set; } = string.Empty; 
-
-    
-    
-    
-    
-    public BlockCoordinates[] Bounds { get; set; } = new BlockCoordinates[2]; 
-
-    
-    
-    
-    public int Dimension { get; set; } 
-
-    
-    
-    
-    public string EngineVersion { get; set; } = string.Empty; 
-
-    
-    
-    
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-        
-        Write(EntityRuntimeID);
-
-        
-        
-        
-        Write(EntityMetadata);
-
-        
-        Write(EncodingIdentifier);
-        Write(InstanceIdentifier);
+	public McpeAddVolumeEntity()
+	{
+		Id = 166;
+		IsMcpe = true;
+	}
 
 
-        Write(Bounds[0]); 
-        Write(Bounds[1]); 
+	public ulong EntityRuntimeID { get; set; }
 
 
-        
-        WriteSignedVarInt(Dimension);
+	public Nbt EntityMetadata { get; set; }
 
-        Write(EngineVersion);
-    }
 
-    
-    
-    
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+	public string EncodingIdentifier { get; set; } = string.Empty;
 
-        
-        EntityRuntimeID = ReadUlong();
 
-        EntityMetadata = ReadNbt();
+	public string InstanceIdentifier { get; set; } = string.Empty;
 
-        
-        EncodingIdentifier = ReadString();
-        InstanceIdentifier = ReadString();
 
-        Bounds = new BlockCoordinates[2]; 
+	public BlockCoordinates[] Bounds { get; set; } = new BlockCoordinates[2];
 
-        Bounds[0] = ReadBlockCoordinates(); 
-        Bounds[1] = ReadBlockCoordinates(); 
 
-        
-        Dimension = ReadSignedVarInt();
+	public int Dimension { get; set; }
 
-        
-        EngineVersion = ReadString();
-    }
 
-    
-    
-    
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
-        EntityRuntimeID = 0;
-        EntityMetadata = null; 
-        EncodingIdentifier = string.Empty;
-        InstanceIdentifier = string.Empty;
-        Dimension = 0;
-        EngineVersion = string.Empty;
-    }
+	public string EngineVersion { get; set; } = string.Empty;
+
+
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
+
+
+		Write(EntityRuntimeID);
+
+
+		Write(EntityMetadata);
+
+
+		Write(EncodingIdentifier);
+		Write(InstanceIdentifier);
+
+
+		Write(Bounds[0]);
+		Write(Bounds[1]);
+
+
+		WriteSignedVarInt(Dimension);
+
+		Write(EngineVersion);
+	}
+
+
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
+
+
+		EntityRuntimeID = ReadUlong();
+
+		EntityMetadata = ReadNbt();
+
+
+		EncodingIdentifier = ReadString();
+		InstanceIdentifier = ReadString();
+
+		Bounds = new BlockCoordinates[2];
+
+		Bounds[0] = ReadBlockCoordinates();
+		Bounds[1] = ReadBlockCoordinates();
+
+
+		Dimension = ReadSignedVarInt();
+
+
+		EngineVersion = ReadString();
+	}
+
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+		EntityRuntimeID = 0;
+		EntityMetadata = null;
+		EncodingIdentifier = string.Empty;
+		InstanceIdentifier = string.Empty;
+		Dimension = 0;
+		EngineVersion = string.Empty;
+	}
 }

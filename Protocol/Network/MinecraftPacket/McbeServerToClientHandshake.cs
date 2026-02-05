@@ -2,36 +2,36 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeServerToClientHandshake : Packet
 {
-    public string token; 
+	public string token;
 
-    public McpeServerToClientHandshake()
-    {
-        Id = 0x03;
-        IsMcpe = true;
-    }
+	public McpeServerToClientHandshake()
+	{
+		Id = 0x03;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        Write(token);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		Write(token);
+	}
 
 
-        token = ReadString();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		token = ReadString();
+	}
 
-        token = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		token = default;
+	}
 }

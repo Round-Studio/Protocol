@@ -1,26 +1,5 @@
 #region LICENSE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #endregion
 
 using System.Numerics;

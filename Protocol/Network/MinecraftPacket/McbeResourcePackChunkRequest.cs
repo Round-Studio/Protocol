@@ -2,41 +2,41 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeResourcePackChunkRequest : Packet
 {
-    public uint chunkIndex; 
+	public uint chunkIndex;
 
-    public string packageId; 
+	public string packageId;
 
-    public McpeResourcePackChunkRequest()
-    {
-        Id = 0x54;
-        IsMcpe = true;
-    }
+	public McpeResourcePackChunkRequest()
+	{
+		Id = 0x54;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        Write(packageId);
-        Write(chunkIndex);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		Write(packageId);
+		Write(chunkIndex);
+	}
 
 
-        packageId = ReadString();
-        chunkIndex = ReadUint();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		packageId = ReadString();
+		chunkIndex = ReadUint();
+	}
 
-        packageId = default;
-        chunkIndex = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		packageId = default;
+		chunkIndex = default;
+	}
 }

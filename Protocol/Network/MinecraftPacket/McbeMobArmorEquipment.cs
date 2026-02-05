@@ -4,57 +4,57 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeMobArmorEquipment : Packet
 {
-    public Item body; 
-    public Item boots; 
-    public Item chestplate; 
-    public Item helmet; 
-    public Item leggings; 
+	public Item body;
+	public Item boots;
+	public Item chestplate;
+	public Item helmet;
+	public Item leggings;
 
-    public long runtimeEntityId; 
+	public long runtimeEntityId;
 
-    public McpeMobArmorEquipment()
-    {
-        Id = 0x20;
-        IsMcpe = true;
-    }
+	public McpeMobArmorEquipment()
+	{
+		Id = 0x20;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        WriteUnsignedVarLong(runtimeEntityId);
-        Write(helmet);
-        Write(chestplate);
-        Write(leggings);
-        Write(boots);
-        Write(body);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		WriteUnsignedVarLong(runtimeEntityId);
+		Write(helmet);
+		Write(chestplate);
+		Write(leggings);
+		Write(boots);
+		Write(body);
+	}
 
 
-        runtimeEntityId = ReadUnsignedVarLong();
-        helmet = ReadItem();
-        chestplate = ReadItem();
-        leggings = ReadItem();
-        boots = ReadItem();
-        body = ReadItem();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		runtimeEntityId = ReadUnsignedVarLong();
+		helmet = ReadItem();
+		chestplate = ReadItem();
+		leggings = ReadItem();
+		boots = ReadItem();
+		body = ReadItem();
+	}
 
-        runtimeEntityId = default;
-        helmet = default;
-        chestplate = default;
-        leggings = default;
-        boots = default;
-        body = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		runtimeEntityId = default;
+		helmet = default;
+		chestplate = default;
+		leggings = default;
+		boots = default;
+		body = default;
+	}
 }

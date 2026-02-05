@@ -4,45 +4,45 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeBlockEvent : Packet
 {
-    public int case1; 
-    public int case2; 
+	public int case1;
+	public int case2;
 
-    public BlockCoordinates coordinates; 
+	public BlockCoordinates coordinates;
 
-    public McpeBlockEvent()
-    {
-        Id = 0x1a;
-        IsMcpe = true;
-    }
+	public McpeBlockEvent()
+	{
+		Id = 0x1a;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        Write(coordinates);
-        WriteSignedVarInt(case1);
-        WriteSignedVarInt(case2);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		Write(coordinates);
+		WriteSignedVarInt(case1);
+		WriteSignedVarInt(case2);
+	}
 
 
-        coordinates = ReadBlockCoordinates();
-        case1 = ReadSignedVarInt();
-        case2 = ReadSignedVarInt();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		coordinates = ReadBlockCoordinates();
+		case1 = ReadSignedVarInt();
+		case2 = ReadSignedVarInt();
+	}
 
-        coordinates = default;
-        case1 = default;
-        case2 = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		coordinates = default;
+		case1 = default;
+		case2 = default;
+	}
 }

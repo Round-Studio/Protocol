@@ -8,10 +8,11 @@ namespace Protocol.Network.MinecraftPacket
 {
 	public class McbeGraphicsOverrideParameter : Packet
 	{
-		 public	ParameterKeyframeValue[] parameterKeyframeValues;
-		 public string BiomeIdentifier;
-		 public byte ParameterType;
-		 public bool reset;
+		public ParameterKeyframeValue[] parameterKeyframeValues;
+		public string BiomeIdentifier;
+		public byte ParameterType;
+		public bool reset;
+
 		public McbeGraphicsOverrideParameter()
 		{
 			IsMcpe = true;
@@ -41,6 +42,7 @@ namespace Protocol.Network.MinecraftPacket
 			{
 				Write(parameterKeyframeValues[i]);
 			}
+
 			Write(BiomeIdentifier);
 			Write(ParameterType);
 			Write(reset);
@@ -49,7 +51,6 @@ namespace Protocol.Network.MinecraftPacket
 		protected override void ResetPacket()
 		{
 			base.ResetPacket();
-			
 		}
 	}
 }

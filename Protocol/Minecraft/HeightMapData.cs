@@ -1,6 +1,5 @@
 namespace Protocol.Minecraft
 {
-
 	public class HeightMapData
 	{
 		public short[] Heights { get; }

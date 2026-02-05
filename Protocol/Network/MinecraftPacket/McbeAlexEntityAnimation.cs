@@ -4,45 +4,45 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeAlexEntityAnimation : Packet
 {
-    public string boneId; 
-    public AnimationKey[] keys; 
+	public string boneId;
+	public AnimationKey[] keys;
 
-    public long runtimeEntityId; 
+	public long runtimeEntityId;
 
-    public McpeAlexEntityAnimation()
-    {
-        Id = 0xe0;
-        IsMcpe = true;
-    }
+	public McpeAlexEntityAnimation()
+	{
+		Id = 0xe0;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        WriteUnsignedVarLong(runtimeEntityId);
-        Write(boneId);
-        Write(keys);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		WriteUnsignedVarLong(runtimeEntityId);
+		Write(boneId);
+		Write(keys);
+	}
 
 
-        runtimeEntityId = ReadUnsignedVarLong();
-        boneId = ReadString();
-        keys = ReadAnimationKeys();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		runtimeEntityId = ReadUnsignedVarLong();
+		boneId = ReadString();
+		keys = ReadAnimationKeys();
+	}
 
-        runtimeEntityId = default;
-        boneId = default;
-        keys = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		runtimeEntityId = default;
+		boneId = default;
+		keys = default;
+	}
 }

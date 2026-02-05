@@ -4,53 +4,53 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeCorrectPlayerMovement : Packet
 {
-    public bool OnGround; 
-    public Vector3 Postition; 
-    public long Tick; 
+	public bool OnGround;
+	public Vector3 Postition;
+	public long Tick;
 
-    public byte Type; 
-    public Vector3 Velocity; 
+	public byte Type;
+	public Vector3 Velocity;
 
-    public McpeCorrectPlayerMovement()
-    {
-        Id = 0xA1;
-        IsMcpe = true;
-    }
+	public McpeCorrectPlayerMovement()
+	{
+		Id = 0xA1;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        Write(Type);
-        Write(Postition);
-        Write(Velocity);
-        Write(OnGround);
-        WriteUnsignedVarLong(Tick);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		Write(Type);
+		Write(Postition);
+		Write(Velocity);
+		Write(OnGround);
+		WriteUnsignedVarLong(Tick);
+	}
 
 
-        Type = ReadByte();
-        Postition = ReadVector3();
-        Velocity = ReadVector3();
-        OnGround = ReadBool();
-        Tick = ReadUnsignedVarLong();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		Type = ReadByte();
+		Postition = ReadVector3();
+		Velocity = ReadVector3();
+		OnGround = ReadBool();
+		Tick = ReadUnsignedVarLong();
+	}
 
-        Type = default;
-        Postition = default;
-        Velocity = default;
-        OnGround = default;
-        Tick = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		Type = default;
+		Postition = default;
+		Velocity = default;
+		OnGround = default;
+		Tick = default;
+	}
 }

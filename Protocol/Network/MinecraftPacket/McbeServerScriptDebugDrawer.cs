@@ -1,269 +1,215 @@
 using System.Numerics;
+
 namespace Protocol.Network.MinecraftPacket
 {
-        
-        
-        
-        public enum ScriptDebugShapeType :
-            byte 
-        {
-            
-            
-            
-            Line = 0,
+	public enum ScriptDebugShapeType :
+		byte
+	{
+		Line = 0,
 
-            
-            
-            
-            Box = 1,
 
-            
-            
-            
-            Sphere = 2,
+		Box = 1,
 
-            
-            
-            
-            Circle = 3,
 
-            
-            
-            
-            Text = 4,
+		Sphere = 2,
 
-            
-            
-            
-            Arrow = 5
-        }
 
-        
-        
-        
-        public class DebugDrawerShape
-        {
-            
-            
-            
-            public DebugDrawerShape()
-            {
-                
-                
-            }
+		Circle = 3,
 
-            
-            
-            
-            public ulong NetworkID { get; set; } 
 
-            
-            
-            
-            public Optional<byte> Type { get; set; } 
-            
-            
+		Text = 4,
 
-            
-            
-            
-            public Optional<Vector3> Location { get; set; } 
 
-            
-            
-            
-            public Optional<float> Scale { get; set; } 
+		Arrow = 5
+	}
 
-            
-            
-            
-            public Optional<Vector3> Rotation { get; set; } 
 
-            
-            
-            
-            public Optional<float> TotalTimeLeft { get; set; } 
+	public class DebugDrawerShape
+	{
+		public DebugDrawerShape()
+		{
+		}
 
-            
-            
-            
-            public Optional<int> Colour { get; set; } 
-            
-            
-            
 
-            
-            
-            
-            public Optional<string> Text { get; set; } 
+		public ulong NetworkID { get; set; }
 
-            
-            
-            
-            public Optional<Vector3> BoxBound { get; set; } 
 
-            
-            
-            
-            public Optional<Vector3> LineEndLocation { get; set; } 
+		public Optional<byte> Type { get; set; }
 
-            
-            
-            
-            public Optional<float> ArrowHeadLength { get; set; } 
 
-            
-            
-            
-            public Optional<float> ArrowHeadRadius { get; set; } 
+		public Optional<Vector3> Location { get; set; }
 
-            
-            
-            
-            public Optional<byte> Segments { get; set; } 
-        }
-    
 
-    public class McbeDebugDrawer : Packet
-    {
-        public McbeDebugDrawer()
-        {
-            Id = 328; 
-            IsMcpe = true; 
-        }
+		public Optional<float> Scale { get; set; }
 
-        public List<DebugDrawerShape> Shapes { get; set; } = new(); 
 
-        protected override void EncodePacket()
-        {
-            base.EncodePacket();
-            WriteUnsignedVarInt((uint)Shapes.Count); 
-            foreach (var shape in Shapes)
-            {
-                Write(shape.NetworkID);
-                
-                Write(shape.Type.HasValue);
-                if (shape.Type.HasValue) Write(shape.Type.Value); 
+		public Optional<Vector3> Rotation { get; set; }
 
-                
-                Write(shape.Location.HasValue);
-                if (shape.Location.HasValue) Write(shape.Location.Value); 
-                Write(shape.Scale.HasValue);
-                if (shape.Scale.HasValue) Write(shape.Scale.Value); 
 
-                
-                Write(shape.Rotation.HasValue);
-                if (shape.Rotation.HasValue) Write(shape.Rotation.Value); 
+		public Optional<float> TotalTimeLeft { get; set; }
 
-                
-                Write(shape.TotalTimeLeft.HasValue);
-                if (shape.TotalTimeLeft.HasValue) Write(shape.TotalTimeLeft.Value); 
 
-                
-                Write(shape.Colour.HasValue);
-                if (shape.Colour.HasValue)
-                    
-                    
-                    Write(shape.Colour.Value);
+		public Optional<int> Colour { get; set; }
 
-                
-                Write(shape.Text.HasValue); 
-                if (shape.Text.HasValue) Write(shape.Text.Value); 
 
-                
-                Write(shape.BoxBound.HasValue); 
-                if (shape.BoxBound.HasValue) Write(shape.BoxBound.Value); 
+		public Optional<string> Text { get; set; }
 
-                
-                Write(shape.LineEndLocation.HasValue); 
-                if (shape.LineEndLocation.HasValue) Write(shape.LineEndLocation.Value); 
 
-                
-                Write(shape.ArrowHeadLength.HasValue); 
-                if (shape.ArrowHeadLength.HasValue) Write(shape.ArrowHeadLength.Value); 
+		public Optional<Vector3> BoxBound { get; set; }
 
-                
-                Write(shape.ArrowHeadRadius.HasValue); 
-                if (shape.ArrowHeadRadius.HasValue) Write(shape.ArrowHeadRadius.Value); 
 
-                
-                Write(shape.Segments.HasValue);
-                if (shape.Segments.HasValue) Write(shape.Segments.Value); 
-            }
-        }
+		public Optional<Vector3> LineEndLocation { get; set; }
 
-        protected override void DecodePacket()
-        {
-            base.DecodePacket();
-            var count = ReadUnsignedVarLong();
-            Shapes = new List<DebugDrawerShape>();
-            Shapes.Clear(); 
-            for (var i = 0; i < count; i++)
-            {
-                var shape = new DebugDrawerShape();
 
-                
-                shape.NetworkID = ReadUlong(); 
+		public Optional<float> ArrowHeadLength { get; set; }
 
-                
-                var hasType = ReadBool(); 
-                if (hasType) shape.Type = new Optional<byte>(ReadByte()); 
 
-                
-                var hasLocation = ReadBool();
-                if (hasLocation)
-                    shape.Location = new Optional<Vector3>(ReadVector3()); 
+		public Optional<float> ArrowHeadRadius { get; set; }
 
-                
-                var hasScale = ReadBool();
-                if (hasScale) shape.Scale = new Optional<float>(ReadFloat()); 
 
-                
-                var hasRotation = ReadBool();
-                if (hasRotation)
-                    shape.Rotation = new Optional<Vector3>(ReadVector3()); 
+		public Optional<byte> Segments { get; set; }
+	}
 
-                
-                var hasTotalTimeLeft = ReadBool();
-                if (hasTotalTimeLeft)
-                    shape.TotalTimeLeft = new Optional<float>(ReadFloat()); 
 
-                
-                var hasColour = ReadBool();
-                if (hasColour)
-                    
-                    
-                    shape.Colour = new Optional<int>(ReadInt()); 
-                
-                
-                
-                var hasText = ReadBool();
-                if (hasText) shape.Text = new Optional<string>(ReadString()); 
+	public class McbeDebugDrawer : Packet
+	{
+		public McbeDebugDrawer()
+		{
+			Id = 328;
+			IsMcpe = true;
+		}
 
-                
-                var hasBoxBound = ReadBool();
-                if (hasBoxBound)
-                    shape.BoxBound = new Optional<Vector3>(ReadVector3()); 
+		public List<DebugDrawerShape> Shapes { get; set; } = new();
 
-                
-                var hasLineEndLocation = ReadBool();
-                if (hasLineEndLocation)
-                    shape.LineEndLocation = new Optional<Vector3>(ReadVector3()); 
+		protected override void EncodePacket()
+		{
+			base.EncodePacket();
+			WriteUnsignedVarInt((uint)Shapes.Count);
+			foreach (var shape in Shapes)
+			{
+				Write(shape.NetworkID);
 
-                
-                var hasArrowHeadLength = ReadBool();
-                if (hasArrowHeadLength)
-                    shape.ArrowHeadLength = new Optional<float>(ReadFloat()); 
+				Write(shape.Type.HasValue);
+				if (shape.Type.HasValue) Write(shape.Type.Value);
 
-                
-                var hasArrowHeadRadius = ReadBool();
-                if (hasArrowHeadRadius)
-                    shape.ArrowHeadRadius = new Optional<float>(ReadFloat()); 
 
-                
-                var hasSegments = ReadBool();
-                if (hasSegments) shape.Segments = new Optional<byte>(ReadByte()); 
-            }
-        }
-    }
+				Write(shape.Location.HasValue);
+				if (shape.Location.HasValue) Write(shape.Location.Value);
+				Write(shape.Scale.HasValue);
+				if (shape.Scale.HasValue) Write(shape.Scale.Value);
+
+
+				Write(shape.Rotation.HasValue);
+				if (shape.Rotation.HasValue) Write(shape.Rotation.Value);
+
+
+				Write(shape.TotalTimeLeft.HasValue);
+				if (shape.TotalTimeLeft.HasValue) Write(shape.TotalTimeLeft.Value);
+
+
+				Write(shape.Colour.HasValue);
+				if (shape.Colour.HasValue)
+
+
+					Write(shape.Colour.Value);
+
+
+				Write(shape.Text.HasValue);
+				if (shape.Text.HasValue) Write(shape.Text.Value);
+
+
+				Write(shape.BoxBound.HasValue);
+				if (shape.BoxBound.HasValue) Write(shape.BoxBound.Value);
+
+
+				Write(shape.LineEndLocation.HasValue);
+				if (shape.LineEndLocation.HasValue) Write(shape.LineEndLocation.Value);
+
+
+				Write(shape.ArrowHeadLength.HasValue);
+				if (shape.ArrowHeadLength.HasValue) Write(shape.ArrowHeadLength.Value);
+
+
+				Write(shape.ArrowHeadRadius.HasValue);
+				if (shape.ArrowHeadRadius.HasValue) Write(shape.ArrowHeadRadius.Value);
+
+
+				Write(shape.Segments.HasValue);
+				if (shape.Segments.HasValue) Write(shape.Segments.Value);
+			}
+		}
+
+		protected override void DecodePacket()
+		{
+			base.DecodePacket();
+			var count = ReadUnsignedVarLong();
+			Shapes = new List<DebugDrawerShape>();
+			Shapes.Clear();
+			for (var i = 0; i < count; i++)
+			{
+				var shape = new DebugDrawerShape();
+
+
+				shape.NetworkID = ReadUlong();
+
+
+				var hasType = ReadBool();
+				if (hasType) shape.Type = new Optional<byte>(ReadByte());
+
+
+				var hasLocation = ReadBool();
+				if (hasLocation)
+					shape.Location = new Optional<Vector3>(ReadVector3());
+
+
+				var hasScale = ReadBool();
+				if (hasScale) shape.Scale = new Optional<float>(ReadFloat());
+
+
+				var hasRotation = ReadBool();
+				if (hasRotation)
+					shape.Rotation = new Optional<Vector3>(ReadVector3());
+
+
+				var hasTotalTimeLeft = ReadBool();
+				if (hasTotalTimeLeft)
+					shape.TotalTimeLeft = new Optional<float>(ReadFloat());
+
+
+				var hasColour = ReadBool();
+				if (hasColour)
+
+
+					shape.Colour = new Optional<int>(ReadInt());
+
+
+				var hasText = ReadBool();
+				if (hasText) shape.Text = new Optional<string>(ReadString());
+
+
+				var hasBoxBound = ReadBool();
+				if (hasBoxBound)
+					shape.BoxBound = new Optional<Vector3>(ReadVector3());
+
+
+				var hasLineEndLocation = ReadBool();
+				if (hasLineEndLocation)
+					shape.LineEndLocation = new Optional<Vector3>(ReadVector3());
+
+
+				var hasArrowHeadLength = ReadBool();
+				if (hasArrowHeadLength)
+					shape.ArrowHeadLength = new Optional<float>(ReadFloat());
+
+
+				var hasArrowHeadRadius = ReadBool();
+				if (hasArrowHeadRadius)
+					shape.ArrowHeadRadius = new Optional<float>(ReadFloat());
+
+
+				var hasSegments = ReadBool();
+				if (hasSegments) shape.Segments = new Optional<byte>(ReadByte());
+			}
+		}
+	}
 }

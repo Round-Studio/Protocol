@@ -2,53 +2,53 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeBlockPickRequest : Packet
 {
-    public bool addUserData; 
-    public byte selectedSlot; 
+	public bool addUserData;
+	public byte selectedSlot;
 
-    public int x; 
-    public int y; 
-    public int z; 
+	public int x;
+	public int y;
+	public int z;
 
-    public McpeBlockPickRequest()
-    {
-        Id = 0x22;
-        IsMcpe = true;
-    }
+	public McpeBlockPickRequest()
+	{
+		Id = 0x22;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        WriteSignedVarInt(x);
-        WriteSignedVarInt(y);
-        WriteSignedVarInt(z);
-        Write(addUserData);
-        Write(selectedSlot);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		WriteSignedVarInt(x);
+		WriteSignedVarInt(y);
+		WriteSignedVarInt(z);
+		Write(addUserData);
+		Write(selectedSlot);
+	}
 
 
-        x = ReadSignedVarInt();
-        y = ReadSignedVarInt();
-        z = ReadSignedVarInt();
-        addUserData = ReadBool();
-        selectedSlot = ReadByte();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		x = ReadSignedVarInt();
+		y = ReadSignedVarInt();
+		z = ReadSignedVarInt();
+		addUserData = ReadBool();
+		selectedSlot = ReadByte();
+	}
 
-        x = default;
-        y = default;
-        z = default;
-        addUserData = default;
-        selectedSlot = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		x = default;
+		y = default;
+		z = default;
+		addUserData = default;
+		selectedSlot = default;
+	}
 }

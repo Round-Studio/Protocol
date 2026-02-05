@@ -4,36 +4,36 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeGameRulesChanged : Packet
 {
-    public GameRules rules; 
+	public GameRules rules;
 
-    public McpeGameRulesChanged()
-    {
-        Id = 0x48;
-        IsMcpe = true;
-    }
+	public McpeGameRulesChanged()
+	{
+		Id = 0x48;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        Write(rules);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		Write(rules);
+	}
 
 
-        rules = ReadGameRules();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		rules = ReadGameRules();
+	}
 
-        rules = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		rules = default;
+	}
 }

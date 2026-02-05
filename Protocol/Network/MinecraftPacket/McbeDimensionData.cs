@@ -4,36 +4,36 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeDimensionData : Packet
 {
-    public DimensionDefinitions definitions; 
+	public DimensionDefinitions definitions;
 
-    public McpeDimensionData()
-    {
-        Id = 0xb4;
-        IsMcpe = true;
-    }
+	public McpeDimensionData()
+	{
+		Id = 0xb4;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        Write(definitions);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		Write(definitions);
+	}
 
 
-        definitions = ReadDimensionDefinitions();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		definitions = ReadDimensionDefinitions();
+	}
 
-        definitions = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		definitions = default;
+	}
 }

@@ -2,48 +2,48 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class UnconnectedPing : Packet
 {
-    public readonly byte[] offlineMessageDataId = new byte[]
-    {
-        0x00, 0xff, 0xff, 0x00, 0xfe, 0xfe, 0xfe, 0xfe, 0xfd, 0xfd, 0xfd, 0xfd, 0x12, 0x34, 0x56, 0x78
-    }; 
+	public readonly byte[] offlineMessageDataId = new byte[]
+	{
+		0x00, 0xff, 0xff, 0x00, 0xfe, 0xfe, 0xfe, 0xfe, 0xfd, 0xfd, 0xfd, 0xfd, 0x12, 0x34, 0x56, 0x78
+	};
 
-    public long guid; 
+	public long guid;
 
-    public long pingId; 
+	public long pingId;
 
-    public UnconnectedPing()
-    {
-        Id = 0x01;
-        IsMcpe = false;
-    }
+	public UnconnectedPing()
+	{
+		Id = 0x01;
+		IsMcpe = false;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        Write(pingId);
-        Write(offlineMessageDataId);
-        Write(guid);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		Write(pingId);
+		Write(offlineMessageDataId);
+		Write(guid);
+	}
 
 
-        pingId = ReadLong();
-        ReadBytes(offlineMessageDataId.Length);
-        guid = ReadLong();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		pingId = ReadLong();
+		ReadBytes(offlineMessageDataId.Length);
+		guid = ReadLong();
+	}
 
-        pingId = default;
-        guid = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		pingId = default;
+		guid = default;
+	}
 }

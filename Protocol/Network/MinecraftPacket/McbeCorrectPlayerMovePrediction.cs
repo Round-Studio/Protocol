@@ -4,97 +4,73 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeCorrectPlayerMovePrediction : Packet
 {
-    
-    
-    
-    public enum PredictionType : byte
-    {
-        Player = 0, 
-        Vehicle = 1 
-    }
+	public enum PredictionType : byte
+	{
+		Player = 0,
+		Vehicle = 1
+	}
 
-    
-    
-    
-    public McpeCorrectPlayerMovePrediction()
-    {
-        Id = 161; 
-        IsMcpe = true; 
-    }
 
-    
-    
-    
-    public PredictionType Type { get; set; }
+	public McpeCorrectPlayerMovePrediction()
+	{
+		Id = 161;
+		IsMcpe = true;
+	}
 
-    
-    
-    
-    
-    public Vector3 Position { get; set; }
 
-    
-    
-    
-    public Vector3 Delta { get; set; }
+	public PredictionType Type { get; set; }
 
-    
-    
-    
-    public Vector2 Rotation { get; set; }
 
-    
-    
-    
-    public Optional<float> VehicleAngularVelocity { get; set; } = new();
+	public Vector3 Position { get; set; }
 
-    
-    
-    
-    public bool OnGround { get; set; }
 
-    
-    
-    
-    public long Tick { get; set; }
+	public Vector3 Delta { get; set; }
 
-    
-    
-    
-    protected override void EncodePacket()
-    {
-        base.EncodePacket(); 
 
-        Write((byte)Type);
-        Write(Position);
-        Write(Delta);
-        Write(Rotation);
+	public Vector2 Rotation { get; set; }
 
-        
-        Write(VehicleAngularVelocity.HasValue);
-        if (VehicleAngularVelocity.HasValue) Write(VehicleAngularVelocity.Value);
 
-        Write(OnGround);
-        WriteUnsignedVarLong(Tick);
-    }
+	public Optional<float> VehicleAngularVelocity { get; set; } = new();
 
-    
-    
-    
-    protected override void DecodePacket()
-    {
-        base.DecodePacket(); 
 
-        Type = (PredictionType)ReadByte();
-        Position = ReadVector3();
-        Delta = ReadVector3();
-        Rotation = ReadVector2();
+	public bool OnGround { get; set; }
 
-        
-        VehicleAngularVelocity.HasValue = ReadBool();
-        if (VehicleAngularVelocity.HasValue) VehicleAngularVelocity.Value = ReadFloat();
 
-        OnGround = ReadBool();
-        Tick = ReadUnsignedVarLong();
-    }
+	public long Tick { get; set; }
+
+
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
+
+		Write((byte)Type);
+		Write(Position);
+		Write(Delta);
+		Write(Rotation);
+
+
+		Write(VehicleAngularVelocity.HasValue);
+		if (VehicleAngularVelocity.HasValue) Write(VehicleAngularVelocity.Value);
+
+		Write(OnGround);
+		WriteUnsignedVarLong(Tick);
+	}
+
+
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
+
+		Type = (PredictionType)ReadByte();
+		Position = ReadVector3();
+		Delta = ReadVector3();
+		Rotation = ReadVector2();
+
+
+		VehicleAngularVelocity.HasValue = ReadBool();
+		if (VehicleAngularVelocity.HasValue) VehicleAngularVelocity.Value = ReadFloat();
+
+		OnGround = ReadBool();
+		Tick = ReadUnsignedVarLong();
+	}
 }

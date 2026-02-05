@@ -1,168 +1,107 @@
-
-
-
-
 namespace Protocol.Network.MinecraftPacket;
-
-
-
 
 public static class HudElement
 {
-    
-    
-    
-    public const int PaperDoll = 0;
+	public const int PaperDoll = 0;
 
-    
-    
-    
-    public const int Armour = 1;
 
-    
-    
-    
-    public const int ToolTips = 2;
+	public const int Armour = 1;
 
-    
-    
-    
-    public const int TouchControls = 3;
 
-    
-    
-    
-    public const int Crosshair = 4;
+	public const int ToolTips = 2;
 
-    
-    
-    
-    public const int HotBar = 5;
 
-    
-    
-    
-    public const int Health = 6;
+	public const int TouchControls = 3;
 
-    
-    
-    
-    public const int ProgressBar = 7;
 
-    
-    
-    
-    public const int Hunger = 8;
+	public const int Crosshair = 4;
 
-    
-    
-    
-    public const int AirBubbles = 9;
 
-    
-    
-    
-    public const int HorseHealth = 10;
+	public const int HotBar = 5;
 
-    
-    
-    
-    public const int StatusEffects = 11;
 
-    
-    
-    
-    public const int ItemText = 12;
+	public const int Health = 6;
+
+
+	public const int ProgressBar = 7;
+
+
+	public const int Hunger = 8;
+
+
+	public const int AirBubbles = 9;
+
+
+	public const int HorseHealth = 10;
+
+
+	public const int StatusEffects = 11;
+
+
+	public const int ItemText = 12;
 }
-
-
-
 
 public static class HudVisibility
 {
-    
-    
-    
-    public const int Hide = 0;
+	public const int Hide = 0;
 
-    
-    
-    
-    public const int Reset = 1;
+
+	public const int Reset = 1;
 }
-
-
-
 
 public class McpeSetHud : Packet
 {
-    
-    
-    
-    public McpeSetHud()
-    {
-        Id = 308; 
-        IsMcpe = true;
-        
-    }
+	public McpeSetHud()
+	{
+		Id = 308;
+		IsMcpe = true;
+	}
 
-    
-    
-    
-    public int[] Elements { get; set; } = new int[0]; 
 
-    
-    
-    
-    public int Visibility { get; set; } 
+	public int[] Elements { get; set; } = new int[0];
 
-    
-    
-    
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
 
-        
-        
-        WriteUnsignedVarInt((uint)(Elements?.Length ?? 0));
-        
-        if (Elements != null)
-            foreach (var element in Elements)
-                
-                WriteSignedVarInt(element);
+	public int Visibility { get; set; }
 
-        
-        WriteSignedVarInt(Visibility);
-    }
 
-    
-    
-    
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
-        
-        
-        var count = ReadUnsignedVarInt();
-        
-        Elements = new int[count];
-        for (var i = 0; i < count; i++)
-            
-            Elements[i] = ReadSignedVarInt();
 
-        
-        Visibility = ReadSignedVarInt();
-    }
+		WriteUnsignedVarInt((uint)(Elements?.Length ?? 0));
 
-    
-    
-    
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
-        Elements = new int[0];
-        Visibility = HudVisibility.Reset; 
-    }
+		if (Elements != null)
+			foreach (var element in Elements)
+
+				WriteSignedVarInt(element);
+
+
+		WriteSignedVarInt(Visibility);
+	}
+
+
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
+
+
+		var count = ReadUnsignedVarInt();
+
+		Elements = new int[count];
+		for (var i = 0; i < count; i++)
+
+			Elements[i] = ReadSignedVarInt();
+
+
+		Visibility = ReadSignedVarInt();
+	}
+
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+		Elements = new int[0];
+		Visibility = HudVisibility.Reset;
+	}
 }

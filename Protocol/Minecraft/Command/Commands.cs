@@ -1,4 +1,3 @@
-
 using System.Reflection;
 using System.Text.Json.Serialization;
 
@@ -17,8 +16,7 @@ namespace Protocol.Minecraft
 
 	public class Version
 	{
-		[JsonPropertyName("version")]
-		public int CommandVersion { get; set; }
+		[JsonPropertyName("version")] public int CommandVersion { get; set; }
 
 		public string[] Aliases { get; set; }
 		public string Description { get; set; }
@@ -29,14 +27,12 @@ namespace Protocol.Minecraft
 		public bool RequiresChatPerms { get; set; }
 		public bool OutputToSpeech { get; set; }
 
-		[JsonPropertyName("requires_edu")]
-		public bool RequiresEdu { get; set; }
+		[JsonPropertyName("requires_edu")] public bool RequiresEdu { get; set; }
 
 		[JsonPropertyName("allows_indirect_exec")]
 		public bool AllowsIndirectExec { get; set; }
 
-		[JsonPropertyName("is_hidden")]
-		public bool IsHidden { get; set; }
+		[JsonPropertyName("is_hidden")] public bool IsHidden { get; set; }
 
 		public Dictionary<string, Overload> Overloads { get; set; }
 	}
@@ -59,8 +55,7 @@ namespace Protocol.Minecraft
 
 	public class Output
 	{
-		[JsonPropertyName("format_strings")]
-		public FormatString[] FormatStrings { get; set; }
+		[JsonPropertyName("format_strings")] public FormatString[] FormatStrings { get; set; }
 
 		public Parameter[] Parameters { get; set; }
 	}
@@ -70,20 +65,16 @@ namespace Protocol.Minecraft
 		public string Color { get; set; }
 		public string Format { get; set; }
 
-		[JsonPropertyName("params_to_use")]
-		public string[] ParamsToUse { get; set; }
+		[JsonPropertyName("params_to_use")] public string[] ParamsToUse { get; set; }
 
-		[JsonPropertyName("should_show")]
-		public FormatRule ShouldShow { get; set; }
+		[JsonPropertyName("should_show")] public FormatRule ShouldShow { get; set; }
 	}
 
 	public class FormatRule
 	{
-		[JsonPropertyName("not_empty")]
-		public string[] NotEmpty { get; set; }
+		[JsonPropertyName("not_empty")] public string[] NotEmpty { get; set; }
 
-		[JsonPropertyName("is_true")]
-		public string[] IsTrue { get; set; }
+		[JsonPropertyName("is_true")] public string[] IsTrue { get; set; }
 	}
 
 	public class Parser
@@ -96,25 +87,20 @@ namespace Protocol.Minecraft
 		public string Name { get; set; }
 		public string Type { get; set; }
 
-		[JsonPropertyName("enum_type")]
-		public string EnumType { get; set; }
+		[JsonPropertyName("enum_type")] public string EnumType { get; set; }
 
-		[JsonPropertyName("enum_values")]
-		public string[] EnumValues { get; set; }
+		[JsonPropertyName("enum_values")] public string[] EnumValues { get; set; }
 
 		public bool Optional { get; set; }
 
-		[JsonPropertyName("target_data")]
-		public TargetData TargetData { get; set; }
+		[JsonPropertyName("target_data")] public TargetData TargetData { get; set; }
 	}
 
 	public class TargetData
 	{
-		[JsonPropertyName("players_only")]
-		public bool PlayersOnly { get; set; }
+		[JsonPropertyName("players_only")] public bool PlayersOnly { get; set; }
 
-		[JsonPropertyName("main_target")]
-		public bool MainTarget { get; set; }
+		[JsonPropertyName("main_target")] public bool MainTarget { get; set; }
 
 		[JsonPropertyName("allow_dead_players")]
 		public bool AllowDeadPlayers { get; set; }
@@ -134,7 +120,8 @@ namespace Protocol.Minecraft
 
 		public override string ToString()
 		{
-			return $"{nameof(X)}: {X}, {nameof(XRelative)}: {XRelative}, {nameof(Y)}: {Y}, {nameof(YRelative)}: {YRelative}, {nameof(Z)}: {Z}, {nameof(ZRelative)}: {ZRelative}";
+			return
+				$"{nameof(X)}: {X}, {nameof(XRelative)}: {XRelative}, {nameof(Y)}: {Y}, {nameof(YRelative)}: {YRelative}, {nameof(Z)}: {Z}, {nameof(ZRelative)}: {ZRelative}";
 		}
 	}
 
@@ -151,7 +138,8 @@ namespace Protocol.Minecraft
 
 		public override string ToString()
 		{
-			return $"{nameof(X)}: {X}, {nameof(XRelative)}: {XRelative}, {nameof(Y)}: {Y}, {nameof(YRelative)}: {YRelative}, {nameof(Z)}: {Z}, {nameof(ZRelative)}: {ZRelative}";
+			return
+				$"{nameof(X)}: {X}, {nameof(XRelative)}: {XRelative}, {nameof(Y)}: {Y}, {nameof(YRelative)}: {YRelative}, {nameof(Z)}: {Z}, {nameof(ZRelative)}: {ZRelative}";
 		}
 	}
 
@@ -192,6 +180,7 @@ namespace Protocol.Minecraft
 				{
 					names.Add(p.Username);
 				}
+
 				body = string.Join(", ", names);
 			}
 
@@ -205,7 +194,6 @@ namespace Protocol.Minecraft
 
 	public class TestSoftEnum : SoftEnumBase
 	{
-
 	}
 
 	public abstract class EnumBase
@@ -213,32 +201,32 @@ namespace Protocol.Minecraft
 		public string Value { get; set; }
 	}
 
-	
+
 	public class EnchantmentTypeEnum : EnumBase
 	{
 	}
 
-	
+
 	public class DimensionEnum : EnumBase
 	{
 	}
 
-	
+
 	public class ItemTypeEnum : EnumBase
 	{
 	}
 
-	
+
 	public class CommandNameEnum : EnumBase
 	{
 	}
 
-	
+
 	public class EntityTypeEnum : EnumBase
 	{
 	}
 
-	
+
 	public class BlockTypeEnum : EnumBase
 	{
 	}
@@ -254,15 +242,4 @@ namespace Protocol.Minecraft
 	public class FeatureEnum : EnumBase
 	{
 	}
-
-
-	
-	
-	
-	
-	
-	
-	
-	
 }
-

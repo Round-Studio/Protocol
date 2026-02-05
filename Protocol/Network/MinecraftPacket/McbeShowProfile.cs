@@ -2,36 +2,36 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeShowProfile : Packet
 {
-    public string xuid; 
+	public string xuid;
 
-    public McpeShowProfile()
-    {
-        Id = 0x68;
-        IsMcpe = true;
-    }
+	public McpeShowProfile()
+	{
+		Id = 0x68;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        Write(xuid);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		Write(xuid);
+	}
 
 
-        xuid = ReadString();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		xuid = ReadString();
+	}
 
-        xuid = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		xuid = default;
+	}
 }

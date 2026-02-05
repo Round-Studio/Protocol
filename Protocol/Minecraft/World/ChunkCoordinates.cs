@@ -1,5 +1,3 @@
-
-
 namespace Protocol.Minecraft
 {
 	public struct ChunkCoordinates : IEquatable<ChunkCoordinates>
@@ -35,10 +33,7 @@ namespace Protocol.Minecraft
 			Z = ((int)Math.Floor(location.Z)) >> 4;
 		}
 
-		
-		
-		
-		
+
 		public override string ToString()
 		{
 			return $"X={X}, Z={Z}";
@@ -46,26 +41,19 @@ namespace Protocol.Minecraft
 
 		#region Math
 
-		
-		
-		
 		public double DistanceTo(ChunkCoordinates other)
 		{
 			return Math.Sqrt(Square(other.X - X) +
-							Square(other.Z - Z));
+			                 Square(other.Z - Z));
 		}
 
-		
-		
-		
+
 		private int Square(int num)
 		{
 			return num * num;
 		}
 
-		
-		
-		
+
 		public double Distance
 		{
 			get { return DistanceTo(Zero); }

@@ -2,160 +2,116 @@ using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public enum GameTestRequestRotation : byte 
+public enum GameTestRequestRotation : byte
 {
-    
-    
-    
-    Rotation0 = 0,
+	Rotation0 = 0,
 
-    
-    
-    
-    Rotation90 = 1,
 
-    
-    
-    
-    Rotation180 = 2,
+	Rotation90 = 1,
 
-    
-    
-    
-    Rotation270 = 3,
 
-    
-    
-    
-    Rotation360 = 4
+	Rotation180 = 2,
+
+
+	Rotation270 = 3,
+
+
+	Rotation360 = 4
 }
-
-
-
 
 public class McpeGameTestRequest : Packet
 {
-    
-    
-    
-    public McpeGameTestRequest()
-    {
-        Id = 194; 
-        IsMcpe = true;
-    }
+	public McpeGameTestRequest()
+	{
+		Id = 194;
+		IsMcpe = true;
+	}
 
-    
-    
-    
-    public string Name { get; set; } = string.Empty; 
 
-    
-    
-    
-    public GameTestRequestRotation Rotation { get; set; } 
+	public string Name { get; set; } = string.Empty;
 
-    
-    
-    
-    public int Repetitions { get; set; } 
 
-    
-    
-    
-    public BlockCoordinates Position { get; set; } 
+	public GameTestRequestRotation Rotation { get; set; }
 
-    
-    
-    
-    public bool StopOnError { get; set; } 
 
-    
-    
-    
-    public int TestsPerRow { get; set; } 
+	public int Repetitions { get; set; }
 
-    
-    
-    
-    public int MaxTestsPerBatch { get; set; } 
 
-    
-    
-    
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
+	public BlockCoordinates Position { get; set; }
 
-        
-        WriteSignedVarInt(MaxTestsPerBatch);
 
-        
-        WriteSignedVarInt(Repetitions);
+	public bool StopOnError { get; set; }
 
-        
-        
-        Write((byte)Rotation);
 
-        
-        Write(StopOnError);
+	public int TestsPerRow { get; set; }
 
-        
-        Write(Position);
 
-        
-        WriteSignedVarInt(TestsPerRow);
+	public int MaxTestsPerBatch { get; set; }
 
-        
-        Write(Name);
-    }
 
-    
-    
-    
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
-        
-        MaxTestsPerBatch = ReadSignedVarInt();
 
-        
-        Repetitions = ReadSignedVarInt();
+		WriteSignedVarInt(MaxTestsPerBatch);
 
-        
-        
-        Rotation = (GameTestRequestRotation)ReadByte();
 
-        
-        StopOnError = ReadBool();
+		WriteSignedVarInt(Repetitions);
 
-        
-        Position = ReadBlockCoordinates();
 
-        
-        TestsPerRow = ReadSignedVarInt();
+		Write((byte)Rotation);
 
-        
-        Name = ReadString();
-    }
 
-    
-    
-    
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
-        Name = string.Empty;
-        Rotation = GameTestRequestRotation.Rotation0; 
-        Repetitions = 0;
-        Position = new BlockCoordinates(0, 0, 0); 
-        StopOnError = false;
-        TestsPerRow = 0;
-        MaxTestsPerBatch = 0;
-    }
+		Write(StopOnError);
+
+
+		Write(Position);
+
+
+		WriteSignedVarInt(TestsPerRow);
+
+
+		Write(Name);
+	}
+
+
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
+
+
+		MaxTestsPerBatch = ReadSignedVarInt();
+
+
+		Repetitions = ReadSignedVarInt();
+
+
+		Rotation = (GameTestRequestRotation)ReadByte();
+
+
+		StopOnError = ReadBool();
+
+
+		Position = ReadBlockCoordinates();
+
+
+		TestsPerRow = ReadSignedVarInt();
+
+
+		Name = ReadString();
+	}
+
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+		Name = string.Empty;
+		Rotation = GameTestRequestRotation.Rotation0;
+		Repetitions = 0;
+		Position = new BlockCoordinates(0, 0, 0);
+		StopOnError = false;
+		TestsPerRow = 0;
+		MaxTestsPerBatch = 0;
+	}
 }
-
-
-
-
-

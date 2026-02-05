@@ -2,48 +2,48 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpePlayStatus : Packet
 {
-    public enum PlayStatus
-    {
-        LoginSuccess = 0,
-        LoginFailedClient = 1,
-        LoginFailedServer = 2,
-        PlayerSpawn = 3,
-        LoginFailedInvalidTenant = 4,
-        LoginFailedVanillaEdu = 5,
-        LoginFailedEduVanilla = 6,
-        LoginFailedServerFull = 7
-    }
+	public enum PlayStatus
+	{
+		LoginSuccess = 0,
+		LoginFailedClient = 1,
+		LoginFailedServer = 2,
+		PlayerSpawn = 3,
+		LoginFailedInvalidTenant = 4,
+		LoginFailedVanillaEdu = 5,
+		LoginFailedEduVanilla = 6,
+		LoginFailedServerFull = 7
+	}
 
-    public int status; 
+	public int status;
 
-    public McpePlayStatus()
-    {
-        Id = 0x02;
-        IsMcpe = true;
-    }
+	public McpePlayStatus()
+	{
+		Id = 0x02;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        WriteBe(status);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		WriteBe(status);
+	}
 
 
-        status = ReadIntBe();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		status = ReadIntBe();
+	}
 
-        status = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		status = default;
+	}
 }

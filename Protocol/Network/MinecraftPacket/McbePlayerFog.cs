@@ -4,36 +4,36 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpePlayerFog : Packet
 {
-    public fogStack fogstack; 
+	public fogStack fogstack;
 
-    public McpePlayerFog()
-    {
-        Id = 0xa0;
-        IsMcpe = true;
-    }
+	public McpePlayerFog()
+	{
+		Id = 0xa0;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        Write(fogstack);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		Write(fogstack);
+	}
 
 
-        fogstack = Read();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		fogstack = Read();
+	}
 
-        fogstack = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		fogstack = default;
+	}
 }

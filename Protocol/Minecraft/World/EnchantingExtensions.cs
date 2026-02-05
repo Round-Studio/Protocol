@@ -105,10 +105,10 @@ namespace Protocol.Minecraft
 			foreach (var enchanting in enchantings)
 			{
 				nbtList.Add(new NbtCompound
-			{
-				new NbtShort("id", (short) enchanting.Id),
-				new NbtShort("lvl", enchanting.Level)
-			});
+				{
+					new NbtShort("id", (short)enchanting.Id),
+					new NbtShort("lvl", enchanting.Level)
+				});
 			}
 
 			tool.ExtraData.Add(nbtList);

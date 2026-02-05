@@ -4,65 +4,50 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpePositionTrackingDBServerBroadcast : Packet
 {
-    
-    
-    
-    public enum Action
-    {
-        Update = 0, 
-        Destroy = 1, 
-        NotFound = 2 
-    }
+	public enum Action
+	{
+		Update = 0,
+		Destroy = 1,
+		NotFound = 2
+	}
 
-    
-    
-    
-    public McpePositionTrackingDBServerBroadcast()
-    {
-        Id = 153; 
-        IsMcpe = true; 
-    }
 
-    
-    
-    
-    public byte BroadcastAction { get; set; }
+	public McpePositionTrackingDBServerBroadcast()
+	{
+		Id = 153;
+		IsMcpe = true;
+	}
 
-    
-    
-    
-    public int TrackingID { get; set; }
 
-    
-    
-    
-    public Nbt Payload { get; set; }
+	public byte BroadcastAction { get; set; }
 
-    
-    
-    
-    protected override void EncodePacket()
-    {
-        base.EncodePacket(); 
 
-        Write(BroadcastAction);
-        WriteSignedVarInt(TrackingID);
+	public int TrackingID { get; set; }
 
-        
-        Write(Payload ?? new Nbt()); 
-    }
 
-    
-    
-    
-    protected override void DecodePacket()
-    {
-        base.DecodePacket(); 
+	public Nbt Payload { get; set; }
 
-        BroadcastAction = ReadByte();
-        TrackingID = ReadSignedVarInt();
 
-        
-        Payload = ReadNbt();
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
+
+		Write(BroadcastAction);
+		WriteSignedVarInt(TrackingID);
+
+
+		Write(Payload ?? new Nbt());
+	}
+
+
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
+
+		BroadcastAction = ReadByte();
+		TrackingID = ReadSignedVarInt();
+
+
+		Payload = ReadNbt();
+	}
 }

@@ -2,49 +2,49 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeResourcePackChunkData : Packet
 {
-    public uint chunkIndex; 
+	public uint chunkIndex;
 
-    public string packageId; 
-    public byte[] payload; 
-    public ulong progress; 
+	public string packageId;
+	public byte[] payload;
+	public ulong progress;
 
-    public McpeResourcePackChunkData()
-    {
-        Id = 0x53;
-        IsMcpe = true;
-    }
+	public McpeResourcePackChunkData()
+	{
+		Id = 0x53;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        Write(packageId);
-        Write(chunkIndex);
-        Write(progress);
-        WriteByteArray(payload);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		Write(packageId);
+		Write(chunkIndex);
+		Write(progress);
+		WriteByteArray(payload);
+	}
 
 
-        packageId = ReadString();
-        chunkIndex = ReadUint();
-        progress = ReadUlong();
-        payload = ReadByteArray();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		packageId = ReadString();
+		chunkIndex = ReadUint();
+		progress = ReadUlong();
+		payload = ReadByteArray();
+	}
 
-        packageId = default;
-        chunkIndex = default;
-        progress = default;
-        payload = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		packageId = default;
+		chunkIndex = default;
+		progress = default;
+		payload = default;
+	}
 }

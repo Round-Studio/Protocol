@@ -4,45 +4,45 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeSubChunkRequestPacket : Packet
 {
-    public BlockCoordinates basePosition; 
+	public BlockCoordinates basePosition;
 
-    public int dimension; 
-    public SubChunkPositionOffset[] offsets; 
+	public int dimension;
+	public SubChunkPositionOffset[] offsets;
 
-    public McpeSubChunkRequestPacket()
-    {
-        Id = 0xaf;
-        IsMcpe = true;
-    }
+	public McpeSubChunkRequestPacket()
+	{
+		Id = 0xaf;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        WriteVarInt(dimension);
-        Write(basePosition);
-        Write(offsets);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		WriteVarInt(dimension);
+		Write(basePosition);
+		Write(offsets);
+	}
 
 
-        dimension = ReadVarInt();
-        basePosition = ReadBlockCoordinates();
-        offsets = ReadSubChunkPositionOffsets();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		dimension = ReadVarInt();
+		basePosition = ReadBlockCoordinates();
+		offsets = ReadSubChunkPositionOffsets();
+	}
 
-        dimension = default;
-        basePosition = default;
-        offsets = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		dimension = default;
+		basePosition = default;
+		offsets = default;
+	}
 }

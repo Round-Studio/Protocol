@@ -4,53 +4,53 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeAddPainting : Packet
 {
-    public BlockCoordinates coordinates; 
-    public int direction; 
+	public BlockCoordinates coordinates;
+	public int direction;
 
-    public long entityIdSelf; 
-    public long runtimeEntityId; 
-    public string title; 
+	public long entityIdSelf;
+	public long runtimeEntityId;
+	public string title;
 
-    public McpeAddPainting()
-    {
-        Id = 0x16;
-        IsMcpe = true;
-    }
+	public McpeAddPainting()
+	{
+		Id = 0x16;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        WriteSignedVarLong(entityIdSelf);
-        WriteUnsignedVarLong(runtimeEntityId);
-        WritePaintingCoordinates(coordinates);
-        WriteSignedVarInt(direction);
-        Write(title);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		WriteSignedVarLong(entityIdSelf);
+		WriteUnsignedVarLong(runtimeEntityId);
+		WritePaintingCoordinates(coordinates);
+		WriteSignedVarInt(direction);
+		Write(title);
+	}
 
 
-        entityIdSelf = ReadSignedVarLong();
-        runtimeEntityId = ReadUnsignedVarLong();
-        coordinates = ReadBlockCoordinates();
-        direction = ReadSignedVarInt();
-        title = ReadString();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		entityIdSelf = ReadSignedVarLong();
+		runtimeEntityId = ReadUnsignedVarLong();
+		coordinates = ReadBlockCoordinates();
+		direction = ReadSignedVarInt();
+		title = ReadString();
+	}
 
-        entityIdSelf = default;
-        runtimeEntityId = default;
-        coordinates = default;
-        direction = default;
-        title = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		entityIdSelf = default;
+		runtimeEntityId = default;
+		coordinates = default;
+		direction = default;
+		title = default;
+	}
 }

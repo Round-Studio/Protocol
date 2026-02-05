@@ -2,36 +2,36 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeRiderJump : Packet
 {
-    public int unknown; 
+	public int unknown;
 
-    public McpeRiderJump()
-    {
-        Id = 0x14;
-        IsMcpe = true;
-    }
+	public McpeRiderJump()
+	{
+		Id = 0x14;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        WriteSignedVarInt(unknown);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		WriteSignedVarInt(unknown);
+	}
 
 
-        unknown = ReadSignedVarInt();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		unknown = ReadSignedVarInt();
+	}
 
-        unknown = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		unknown = default;
+	}
 }

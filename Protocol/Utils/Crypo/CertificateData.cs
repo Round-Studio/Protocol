@@ -2,7 +2,6 @@ using Jose;
 
 namespace Protocol.Utils.Crypo
 {
-
 	public class HandshakeData
 	{
 		public string salt { get; set; }
@@ -12,7 +11,8 @@ namespace Protocol.Utils.Crypo
 
 	public class CertificateData
 	{
-		public const string MojangRootKey = "MHYwEAYHKoZIzj0CAQYFK4EEACIDYgAECRXueJeTDqNRRgJi/vlRufByu/2G0i2Ebt6YMar5QX/R0DIIyrJMcUpruK4QveTfJSTp3Shlq4Gk34cD/4GUWwkv0DVuzeuB+tXija7HBxii03NHDbPAD0AKnLr2wdAp";
+		public const string MojangRootKey =
+			"MHYwEAYHKoZIzj0CAQYFK4EEACIDYgAECRXueJeTDqNRRgJi/vlRufByu/2G0i2Ebt6YMar5QX/R0DIIyrJMcUpruK4QveTfJSTp3Shlq4Gk34cD/4GUWwkv0DVuzeuB+tXija7HBxii03NHDbPAD0AKnLr2wdAp";
 
 		public long Nbf { get; set; }
 

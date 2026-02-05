@@ -2,42 +2,42 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeModalFormRequest : Packet
 {
-    public string formData; 
+	public string formData;
 
-    public uint formId; 
+	public uint formId;
 
-    public McpeModalFormRequest()
-    {
-        Id = 0x64;
-        IsMcpe = true;
-    }
+	public McpeModalFormRequest()
+	{
+		Id = 0x64;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        WriteUnsignedVarInt(formId);
-        Write(formData);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		WriteUnsignedVarInt(formId);
+		Write(formData);
+	}
 
 
-        formId = ReadUnsignedVarInt();
-        formData = ReadString();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		formId = ReadUnsignedVarInt();
+		formData = ReadString();
+	}
 
 
-        formId = default;
-        formData = default;
-    }
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+
+		formId = default;
+		formData = default;
+	}
 }

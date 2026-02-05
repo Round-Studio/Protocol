@@ -1,5 +1,3 @@
-
-
 namespace Protocol.Minecraft
 {
 	public class Records : List<BlockCoordinates>

@@ -1,39 +1,39 @@
-using Protocol.Utils;
+using Protocol.Minecraft.Transaction;
 
 namespace Protocol.Network.MinecraftPacket;
 
 public class McpeItemStackResponse : Packet
 {
-    public ItemStackResponses responses; 
+	public ItemStackResponses responses;
 
-    public McpeItemStackResponse()
-    {
-        Id = 0x94;
-        IsMcpe = true;
-    }
+	public McpeItemStackResponse()
+	{
+		Id = 0x94;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        Write(responses);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		Write(responses);
+	}
 
 
-        responses = ReadItemStackResponses();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		responses = ReadItemStackResponses();
+	}
 
-        responses = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		responses = default;
+	}
 }

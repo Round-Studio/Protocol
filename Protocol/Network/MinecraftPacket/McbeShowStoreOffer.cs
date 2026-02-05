@@ -4,40 +4,40 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeShowStoreOffer : Packet
 {
-    public UUID OfferID; 
-    public byte type; 
+	public UUID OfferID;
+	public byte type;
 
-    public McpeShowStoreOffer()
-    {
-        Id = 0x5b;
-        IsMcpe = true;
-    }
+	public McpeShowStoreOffer()
+	{
+		Id = 0x5b;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        Write(OfferID);
-        Write(type);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		Write(OfferID);
+		Write(type);
+	}
 
 
-        OfferID = ReadUUID();
-        type = ReadByte();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		OfferID = ReadUUID();
+		type = ReadByte();
+	}
 
-        OfferID = default;
-        type = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		OfferID = default;
+		type = default;
+	}
 }

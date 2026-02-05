@@ -1,5 +1,6 @@
 using fNbt;
 using System.Collections.Concurrent;
+
 namespace Protocol.Minecraft
 {
 	public interface IInventory
@@ -8,7 +9,6 @@ namespace Protocol.Minecraft
 
 	public class Inventory : IInventory
 	{
-
 		public event Action<Player, Inventory, byte, Item> InventoryChange;
 
 		public int Id { get; set; }
@@ -36,7 +36,8 @@ namespace Protocol.Minecraft
 			{
 				var nbtItem = (NbtCompound)slots[i];
 
-				Item item = ItemFactory.GetItem(nbtItem["id"].ShortValue, nbtItem["Damage"].ShortValue, nbtItem["Count"].ByteValue);
+				Item item = ItemFactory.GetItem(nbtItem["id"].ShortValue, nbtItem["Damage"].ShortValue,
+					nbtItem["Count"].ByteValue);
 				byte slotIdx = nbtItem["Slot"].ByteValue;
 				Slots[slotIdx] = item;
 			}
@@ -121,10 +122,6 @@ namespace Protocol.Minecraft
 		}
 
 
-		
-		
-		
-
 		public ConcurrentBag<Player> Observers { get; } = new ConcurrentBag<Player>();
 
 		public void AddObserver(Player player)
@@ -134,8 +131,6 @@ namespace Protocol.Minecraft
 
 		public void RemoveObserver(Player player)
 		{
-			
-			
 			Observers.TryTake(out player);
 		}
 	}

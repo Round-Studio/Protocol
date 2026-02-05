@@ -1,5 +1,3 @@
-
-
 namespace Protocol.Minecraft
 {
 	public class EnchantOptions : List<EnchantOption>
@@ -33,6 +31,7 @@ namespace Protocol.Minecraft
 			Levels = GetEnchantmentLevels();
 			Weight = GetWeight();
 		}
+
 		public Enchant(EnchantingType enchanting, byte level = 1) : this((byte)enchanting, level)
 		{
 		}
@@ -215,6 +214,7 @@ namespace Protocol.Minecraft
 			return enchantmentLevels;
 		}
 	}
+
 	public class EnchantmentLevel
 	{
 		public int MinLevel { get; private set; }

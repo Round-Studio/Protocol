@@ -2,7 +2,6 @@ namespace Protocol.Minecraft
 {
 	public class Experiments : List<Experiments.Experiment>
 	{
-
 		public class Experiment
 		{
 			public string Name { get; }

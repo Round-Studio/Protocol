@@ -4,45 +4,45 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeLevelEvent : Packet
 {
-    public int data; 
+	public int data;
 
-    public int eventId; 
-    public Vector3 position; 
+	public int eventId;
+	public Vector3 position;
 
-    public McpeLevelEvent()
-    {
-        Id = 0x19;
-        IsMcpe = true;
-    }
+	public McpeLevelEvent()
+	{
+		Id = 0x19;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        WriteSignedVarInt(eventId);
-        Write(position);
-        WriteSignedVarInt(data);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		WriteSignedVarInt(eventId);
+		Write(position);
+		WriteSignedVarInt(data);
+	}
 
 
-        eventId = ReadSignedVarInt();
-        position = ReadVector3();
-        data = ReadSignedVarInt();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		eventId = ReadSignedVarInt();
+		position = ReadVector3();
+		data = ReadSignedVarInt();
+	}
 
-        eventId = default;
-        position = default;
-        data = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		eventId = default;
+		position = default;
+		data = default;
+	}
 }

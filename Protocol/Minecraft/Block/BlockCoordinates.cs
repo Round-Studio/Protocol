@@ -1,4 +1,3 @@
-
 using System.Numerics;
 
 namespace Protocol.Minecraft
@@ -41,19 +40,14 @@ namespace Protocol.Minecraft
 		}
 
 
-		
-		
-		
 		public double DistanceTo(BlockCoordinates other)
 		{
 			return Math.Sqrt(Square(other.X - X) +
-							Square(other.Y - Y) +
-							Square(other.Z - Z));
+			                 Square(other.Y - Y) +
+			                 Square(other.Z - Z));
 		}
 
-		
-		
-		
+
 		private int Square(int num)
 		{
 			return num * num;
@@ -68,9 +62,7 @@ namespace Protocol.Minecraft
 			);
 		}
 
-		
-		
-		
+
 		public double Distance
 		{
 			get { return DistanceTo(Zero); }
@@ -214,7 +206,7 @@ namespace Protocol.Minecraft
 		public static readonly BlockCoordinates North = new BlockCoordinates(0, 0, -1);
 		public static readonly BlockCoordinates South = new BlockCoordinates(0, 0, 1);
 
-		
+
 		public static readonly BlockCoordinates Left = new BlockCoordinates(-1, 0, 0);
 		public static readonly BlockCoordinates Right = new BlockCoordinates(1, 0, 0);
 		public static readonly BlockCoordinates Backwards = new BlockCoordinates(0, 0, -1);

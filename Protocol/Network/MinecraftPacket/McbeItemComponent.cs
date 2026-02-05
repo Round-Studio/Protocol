@@ -4,36 +4,36 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeItemComponent : Packet
 {
-    public Itemstates entries; 
+	public Itemstates entries;
 
-    public McpeItemComponent()
-    {
-        Id = 0xa2;
-        IsMcpe = true;
-    }
+	public McpeItemComponent()
+	{
+		Id = 0xa2;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        Write(entries);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		Write(entries);
+	}
 
 
-        entries = ReadItemstates();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		entries = ReadItemstates();
+	}
 
-        entries = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		entries = default;
+	}
 }

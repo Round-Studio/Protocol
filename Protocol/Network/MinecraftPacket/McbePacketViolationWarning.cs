@@ -2,49 +2,49 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpePacketViolationWarning : Packet
 {
-    public int packetId; 
-    public string reason; 
-    public int severity; 
+	public int packetId;
+	public string reason;
+	public int severity;
 
-    public int violationType; 
+	public int violationType;
 
-    public McpePacketViolationWarning()
-    {
-        Id = 0x9c;
-        IsMcpe = true;
-    }
+	public McpePacketViolationWarning()
+	{
+		Id = 0x9c;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        WriteSignedVarInt(violationType);
-        WriteSignedVarInt(severity);
-        WriteSignedVarInt(packetId);
-        Write(reason);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		WriteSignedVarInt(violationType);
+		WriteSignedVarInt(severity);
+		WriteSignedVarInt(packetId);
+		Write(reason);
+	}
 
 
-        violationType = ReadSignedVarInt();
-        severity = ReadSignedVarInt();
-        packetId = ReadSignedVarInt();
-        reason = ReadString();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		violationType = ReadSignedVarInt();
+		severity = ReadSignedVarInt();
+		packetId = ReadSignedVarInt();
+		reason = ReadString();
+	}
 
-        violationType = default;
-        severity = default;
-        packetId = default;
-        reason = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		violationType = default;
+		severity = default;
+		packetId = default;
+		reason = default;
+	}
 }

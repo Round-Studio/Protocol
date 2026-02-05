@@ -2,40 +2,40 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeRequestChunkRadius : Packet
 {
-    public int chunkRadius; 
-    public byte maxRadius; 
+	public int chunkRadius;
+	public byte maxRadius;
 
-    public McpeRequestChunkRadius()
-    {
-        Id = 0x45;
-        IsMcpe = true;
-    }
+	public McpeRequestChunkRadius()
+	{
+		Id = 0x45;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        WriteSignedVarInt(chunkRadius);
-        Write(maxRadius);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		WriteSignedVarInt(chunkRadius);
+		Write(maxRadius);
+	}
 
 
-        chunkRadius = ReadSignedVarInt();
-        maxRadius = ReadByte();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		chunkRadius = ReadSignedVarInt();
+		maxRadius = ReadByte();
+	}
 
-        chunkRadius = default;
-        maxRadius = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		chunkRadius = default;
+		maxRadius = default;
+	}
 }

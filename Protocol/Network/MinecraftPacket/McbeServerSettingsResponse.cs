@@ -2,41 +2,41 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeServerSettingsResponse : Packet
 {
-    public string data; 
+	public string data;
 
-    public long formId; 
+	public long formId;
 
-    public McpeServerSettingsResponse()
-    {
-        Id = 0x67;
-        IsMcpe = true;
-    }
+	public McpeServerSettingsResponse()
+	{
+		Id = 0x67;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        WriteUnsignedVarLong(formId);
-        Write(data);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		WriteUnsignedVarLong(formId);
+		Write(data);
+	}
 
 
-        formId = ReadUnsignedVarLong();
-        data = ReadString();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		formId = ReadUnsignedVarLong();
+		data = ReadString();
+	}
 
-        formId = default;
-        data = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		formId = default;
+		data = default;
+	}
 }

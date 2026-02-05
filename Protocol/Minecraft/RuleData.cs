@@ -6,12 +6,12 @@ public class Rules : List<RuleData>
 
 public class RuleData
 {
-    public string Name { get; set; }
-    public bool Unknown1 { get; set; }
-    public bool Unknown2 { get; set; }
+	public string Name { get; set; }
+	public bool Unknown1 { get; set; }
+	public bool Unknown2 { get; set; }
 
-    public override string ToString()
-    {
-        return $"Name: {Name}, Unknown1: {Unknown1}, Unknown2: {Unknown2}";
-    }
+	public override string ToString()
+	{
+		return $"Name: {Name}, Unknown1: {Unknown1}, Unknown2: {Unknown2}";
+	}
 }

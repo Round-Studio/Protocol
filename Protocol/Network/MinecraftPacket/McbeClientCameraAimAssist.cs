@@ -1,96 +1,66 @@
-
-
 namespace Protocol.Network.MinecraftPacket;
-
-
-
 
 public enum ClientCameraAimAssistAction : byte
 {
-    
-    
-    
-    Set = 0,
+	Set = 0,
 
-    
-    
-    
-    Clear = 1
+
+	Clear = 1
 }
-
-
-
 
 public class McpeClientCameraAimAssist : Packet
 {
-    
-    
-    
-    public McpeClientCameraAimAssist()
-    {
-        Id = 321; 
-        IsMcpe = true;
-    }
+	public McpeClientCameraAimAssist()
+	{
+		Id = 321;
+		IsMcpe = true;
+	}
 
-    
-    
-    
-    public string PresetID { get; set; } = string.Empty; 
 
-    
-    
-    
-    public ClientCameraAimAssistAction Action { get; set; } 
+	public string PresetID { get; set; } = string.Empty;
 
-    
-    
-    
-    public bool AllowAimAssist { get; set; } 
 
-    
-    
-    
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
+	public ClientCameraAimAssistAction Action { get; set; }
 
-        
-        Write(PresetID);
 
-        
-        
-        Write((byte)Action);
+	public bool AllowAimAssist { get; set; }
 
-        
-        Write(AllowAimAssist);
-    }
 
-    
-    
-    
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
-        
-        PresetID = ReadString();
 
-        
-        
-        Action = (ClientCameraAimAssistAction)ReadByte();
+		Write(PresetID);
 
-        
-        AllowAimAssist = ReadBool();
-    }
 
-    
-    
-    
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
-        PresetID = string.Empty;
-        Action = ClientCameraAimAssistAction.Set; 
-        AllowAimAssist = false;
-    }
+		Write((byte)Action);
+
+
+		Write(AllowAimAssist);
+	}
+
+
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
+
+
+		PresetID = ReadString();
+
+
+		Action = (ClientCameraAimAssistAction)ReadByte();
+
+
+		AllowAimAssist = ReadBool();
+	}
+
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+		PresetID = string.Empty;
+		Action = ClientCameraAimAssistAction.Set;
+		AllowAimAssist = false;
+	}
 }

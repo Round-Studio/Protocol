@@ -8,12 +8,10 @@ namespace Protocol.Network
 	{
 		public void WriteCameraInstructionSet()
 		{
-			
-		}
-		public void ReadCameraInstructionSet()
-		{
-			
 		}
 
+		public void ReadCameraInstructionSet()
+		{
+		}
 	}
 }

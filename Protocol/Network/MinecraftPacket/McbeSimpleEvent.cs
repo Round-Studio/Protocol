@@ -2,36 +2,36 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeSimpleEvent : Packet
 {
-    public ushort eventType; 
+	public ushort eventType;
 
-    public McpeSimpleEvent()
-    {
-        Id = 0x40;
-        IsMcpe = true;
-    }
+	public McpeSimpleEvent()
+	{
+		Id = 0x40;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        Write(eventType);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		Write(eventType);
+	}
 
 
-        eventType = ReadUshort();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		eventType = ReadUshort();
+	}
 
-        eventType = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		eventType = default;
+	}
 }

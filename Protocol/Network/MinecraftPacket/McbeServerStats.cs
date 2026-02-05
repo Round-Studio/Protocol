@@ -1,67 +1,48 @@
-
-
 namespace Protocol.Network.MinecraftPacket;
-
-
-
-
 
 public class McpeServerStats : Packet
 {
-    
-    
-    
-    public McpeServerStats()
-    {
-        Id = 192; 
-        IsMcpe = true;
-    }
+	public McpeServerStats()
+	{
+		Id = 192;
+		IsMcpe = true;
+	}
 
-    
-    
-    
-    public float ServerTime { get; set; } 
 
-    
-    
-    
-    public float NetworkTime { get; set; } 
+	public float ServerTime { get; set; }
 
-    
-    
-    
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
 
-        
-        Write(ServerTime);
+	public float NetworkTime { get; set; }
 
-        
-        Write(NetworkTime);
-    }
 
-    
-    
-    
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
-        
-        ServerTime = ReadFloat();
 
-        
-        NetworkTime = ReadFloat();
-    }
+		Write(ServerTime);
 
-    
-    
-    
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
-        ServerTime = 0.0f;
-        NetworkTime = 0.0f;
-    }
+
+		Write(NetworkTime);
+	}
+
+
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
+
+
+		ServerTime = ReadFloat();
+
+
+		NetworkTime = ReadFloat();
+	}
+
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+		ServerTime = 0.0f;
+		NetworkTime = 0.0f;
+	}
 }

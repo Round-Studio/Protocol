@@ -4,54 +4,53 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeNetworkChunkPublisherUpdate : Packet
 {
-    public BlockCoordinates coordinates; 
-    public uint radius; 
-    public int savedChunks; 
-    public uint x; 
-    public uint z; 
+	public BlockCoordinates coordinates;
+	public uint radius;
+	public int savedChunks;
+	public uint x;
+	public uint z;
 
-    public McpeNetworkChunkPublisherUpdate()
-    {
-        Id = 0x79;
-        IsMcpe = true;
-    }
+	public McpeNetworkChunkPublisherUpdate()
+	{
+		Id = 0x79;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        Write(coordinates);
-        WriteUnsignedVarInt(radius);
-        Write(savedChunks);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		Write(coordinates);
+		WriteUnsignedVarInt(radius);
+		Write(savedChunks);
+	}
 
 
-        coordinates = ReadBlockCoordinates();
-        radius = ReadUnsignedVarInt();
-        savedChunks = ReadInt();
-        for (var i = 0; i < savedChunks; i++)
-        {
-            x = ReadUnsignedVarInt();
-            z = ReadUnsignedVarInt();
-            
-        }
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		coordinates = ReadBlockCoordinates();
+		radius = ReadUnsignedVarInt();
+		savedChunks = ReadInt();
+		for (var i = 0; i < savedChunks; i++)
+		{
+			x = ReadUnsignedVarInt();
+			z = ReadUnsignedVarInt();
+		}
+	}
 
-        coordinates = default;
-        radius = default;
-        savedChunks = default;
-        x = default(int);
-        z = default(int);
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		coordinates = default;
+		radius = default;
+		savedChunks = default;
+		x = default(int);
+		z = default(int);
+	}
 }

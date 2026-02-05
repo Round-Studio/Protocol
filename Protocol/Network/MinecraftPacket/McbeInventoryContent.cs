@@ -1,53 +1,53 @@
 using Protocol.Minecraft;
-using Protocol.Utils;
+using Protocol.Minecraft.Transaction;
 
 namespace Protocol.Network.MinecraftPacket;
 
 public class McpeInventoryContent : Packet
 {
-    public FullContainerName ContainerName = new();
-    public ItemStacks input; 
+	public FullContainerName ContainerName = new();
+	public ItemStacks input;
 
-    public uint inventoryId; 
-    public Item storageItem; 
+	public uint inventoryId;
+	public Item storageItem;
 
-    public McpeInventoryContent()
-    {
-        Id = 0x31;
-        IsMcpe = true;
-    }
+	public McpeInventoryContent()
+	{
+		Id = 0x31;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        WriteUnsignedVarInt(inventoryId);
-        Write(input);
-        Write(ContainerName);
-        Write(storageItem);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		WriteUnsignedVarInt(inventoryId);
+		Write(input);
+		Write(ContainerName);
+		Write(storageItem);
+	}
 
 
-        inventoryId = ReadUnsignedVarInt();
-        input = ReadItemStacks();
-        ContainerName = readFullContainerName();
-        storageItem = ReadItem();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		inventoryId = ReadUnsignedVarInt();
+		input = ReadItemStacks();
+		ContainerName = readFullContainerName();
+		storageItem = ReadItem();
+	}
 
-        inventoryId = default;
-        input = default;
-        storageItem = default;
-        ContainerName = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		inventoryId = default;
+		input = default;
+		storageItem = default;
+		ContainerName = default;
+	}
 }

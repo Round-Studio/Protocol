@@ -4,36 +4,36 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeUpdateBlockProperties : Packet
 {
-    public Nbt namedtag; 
+	public Nbt namedtag;
 
-    public McpeUpdateBlockProperties()
-    {
-        Id = 0x86;
-        IsMcpe = true;
-    }
+	public McpeUpdateBlockProperties()
+	{
+		Id = 0x86;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        Write(namedtag);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		Write(namedtag);
+	}
 
 
-        namedtag = ReadNbt();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		namedtag = ReadNbt();
+	}
 
-        namedtag = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		namedtag = default;
+	}
 }

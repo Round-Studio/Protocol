@@ -27,11 +27,13 @@ namespace Protocol.Minecraft
 			Pitch = pitch;
 		}
 
-		public PlayerLocation(double x, double y, double z, float headYaw = 0f, float yaw = 0f, float pitch = 0f) : this((float)x, (float)y, (float)z, headYaw, yaw, pitch)
+		public PlayerLocation(double x, double y, double z, float headYaw = 0f, float yaw = 0f, float pitch = 0f) :
+			this((float)x, (float)y, (float)z, headYaw, yaw, pitch)
 		{
 		}
 
-		public PlayerLocation(Vector3 vector, float headYaw = 0f, float yaw = 0f, float pitch = 0f) : this(vector.X, vector.Y, vector.Z, headYaw, yaw, pitch)
+		public PlayerLocation(Vector3 vector, float headYaw = 0f, float yaw = 0f, float pitch = 0f) : this(vector.X,
+			vector.Y, vector.Z, headYaw, yaw, pitch)
 		{
 		}
 
@@ -43,8 +45,8 @@ namespace Protocol.Minecraft
 		public double DistanceTo(PlayerLocation other)
 		{
 			return Math.Sqrt(Square(other.X - X) +
-							Square(other.Y - Y) +
-							Square(other.Z - Z));
+			                 Square(other.Y - Y) +
+			                 Square(other.Z - Z));
 		}
 
 		private double Square(double num)
@@ -57,17 +59,6 @@ namespace Protocol.Minecraft
 			return new Vector3(X, Y, Z);
 		}
 
-		
-		
-		
-		
-		
-		
-		
-		
-
-		
-		
 
 		public Vector3 GetDirection()
 		{
@@ -132,11 +123,11 @@ namespace Protocol.Minecraft
 		public static bool Equal(PlayerLocation pos_1_62, PlayerLocation pos, float tolerance = 0.01f)
 		{
 			return Math.Abs(pos_1_62.X - pos.X) < tolerance &&
-				   Math.Abs((pos_1_62.Y + 1.62f) - pos.Y) < tolerance &&
-				   Math.Abs(pos_1_62.Z - pos.Z) < tolerance &&
-				   Math.Abs(pos_1_62.HeadYaw - pos.HeadYaw) < tolerance &&
-				   Math.Abs(pos_1_62.Yaw - pos.Yaw) < tolerance &&
-				   Math.Abs(pos_1_62.Pitch - pos.Pitch) < tolerance;
+			       Math.Abs((pos_1_62.Y + 1.62f) - pos.Y) < tolerance &&
+			       Math.Abs(pos_1_62.Z - pos.Z) < tolerance &&
+			       Math.Abs(pos_1_62.HeadYaw - pos.HeadYaw) < tolerance &&
+			       Math.Abs(pos_1_62.Yaw - pos.Yaw) < tolerance &&
+			       Math.Abs(pos_1_62.Pitch - pos.Pitch) < tolerance;
 		}
 	}
 }

@@ -1,5 +1,4 @@
-
-using Protocol.Utils;
+using Protocol.Utils.IO;
 using System.Text;
 
 
@@ -7,8 +6,6 @@ namespace Protocol.Minecraft
 {
 	public class MetadataString : MetadataEntry
 	{
-
-
 		public override byte Identifier
 		{
 			get { return 4; }
@@ -37,13 +34,11 @@ namespace Protocol.Minecraft
 
 		public override void FromStream(BinaryReader reader)
 		{
-
 			var len = VarInt.ReadInt32(reader.BaseStream);
 
 			byte[] bytes = new byte[len];
 			reader.BaseStream.ReadExactly(bytes, 0, len);
 			Value = Encoding.UTF8.GetString(bytes);
-
 		}
 
 		public override void WriteTo(BinaryWriter stream)

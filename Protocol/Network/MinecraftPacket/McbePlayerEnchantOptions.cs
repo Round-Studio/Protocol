@@ -4,36 +4,36 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpePlayerEnchantOptions : Packet
 {
-    public EnchantOptions enchantOptions; 
+	public EnchantOptions enchantOptions;
 
-    public McpePlayerEnchantOptions()
-    {
-        Id = 0x92;
-        IsMcpe = true;
-    }
+	public McpePlayerEnchantOptions()
+	{
+		Id = 0x92;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        Write(enchantOptions);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		Write(enchantOptions);
+	}
 
 
-        enchantOptions = ReadEnchantOptions();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		enchantOptions = ReadEnchantOptions();
+	}
 
-        enchantOptions = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		enchantOptions = default;
+	}
 }

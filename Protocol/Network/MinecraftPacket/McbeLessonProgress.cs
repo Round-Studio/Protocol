@@ -1,102 +1,69 @@
-
-
 namespace Protocol.Network.MinecraftPacket;
 
-
-
-
-public enum LessonAction : byte 
+public enum LessonAction : byte
 {
-    
-    
-    
-    Start = 0,
+	Start = 0,
 
-    
-    
-    
-    Complete = 1,
 
-    
-    
-    
-    Restart = 2
+	Complete = 1,
+
+
+	Restart = 2
 }
-
-
-
-
 
 public class McpeLessonProgress : Packet
 {
-    
-    
-    
-    public McpeLessonProgress()
-    {
-        Id = 183; 
-        IsMcpe = true;
-    }
+	public McpeLessonProgress()
+	{
+		Id = 183;
+		IsMcpe = true;
+	}
 
-    
-    
-    
-    public string Identifier { get; set; } = string.Empty; 
 
-    
-    
-    
-    public LessonAction Action { get; set; } 
+	public string Identifier { get; set; } = string.Empty;
 
-    
-    
-    
-    public int Score { get; set; } 
 
-    
-    
-    
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
+	public LessonAction Action { get; set; }
 
-        
-        
-        Write((byte)Action);
 
-        
-        WriteSignedVarInt(Score);
+	public int Score { get; set; }
 
-        
-        Write(Identifier);
-    }
 
-    
-    
-    
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
-        
-        
-        Action = (LessonAction)ReadByte();
 
-        
-        Score = ReadSignedVarInt();
+		Write((byte)Action);
 
-        
-        Identifier = ReadString();
-    }
 
-    
-    
-    
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
-        Identifier = string.Empty;
-        Action = LessonAction.Start; 
-        Score = 0;
-    }
+		WriteSignedVarInt(Score);
+
+
+		Write(Identifier);
+	}
+
+
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
+
+
+		Action = (LessonAction)ReadByte();
+
+
+		Score = ReadSignedVarInt();
+
+
+		Identifier = ReadString();
+	}
+
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+		Identifier = string.Empty;
+		Action = LessonAction.Start;
+		Score = 0;
+	}
 }

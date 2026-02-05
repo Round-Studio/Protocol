@@ -14,7 +14,6 @@ namespace Protocol.Minecraft
 
 	public class ItemFactory
 	{
-
 		public static ICustomItemFactory CustomItemFactory { get; set; }
 		public static ICustomBlockItemFactory CustomBlockItemFactory { get; set; }
 
@@ -27,8 +26,6 @@ namespace Protocol.Minecraft
 
 		private static Dictionary<string, short> BuildNameToId()
 		{
-			
-
 			var nameToId = new Dictionary<string, short>();
 
 			for (short idx = -600; idx < 800; idx++)
@@ -63,14 +60,13 @@ namespace Protocol.Minecraft
 
 				try
 				{
-					nameToId.Remove(name); 
+					nameToId.Remove(name);
 					nameToId.Add(name, idx);
 
 					if (!string.IsNullOrWhiteSpace(item?.Name))
 					{
 						if (!nameToId.TryAdd(item.Name, idx))
 						{
-
 						}
 					}
 				}

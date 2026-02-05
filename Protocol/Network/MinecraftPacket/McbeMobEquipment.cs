@@ -5,53 +5,53 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeMobEquipment : Packet
 {
-    public Item item; 
+	public Item item;
 
-    public long runtimeEntityId; 
-    public byte selectedSlot; 
-    public byte slot; 
-    public byte windowsId; 
+	public long runtimeEntityId;
+	public byte selectedSlot;
+	public byte slot;
+	public byte windowsId;
 
-    public McpeMobEquipment()
-    {
-        Id = 0x1f;
-        IsMcpe = true;
-    }
+	public McpeMobEquipment()
+	{
+		Id = 0x1f;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        WriteUnsignedVarLong(runtimeEntityId);
-        Write(item);
-        Write(slot);
-        Write(selectedSlot);
-        Write(windowsId);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		WriteUnsignedVarLong(runtimeEntityId);
+		Write(item);
+		Write(slot);
+		Write(selectedSlot);
+		Write(windowsId);
+	}
 
 
-        runtimeEntityId = ReadUnsignedVarLong();
-        item = ReadItem();
-        slot = ReadByte();
-        selectedSlot = ReadByte();
-        windowsId = ReadByte();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		runtimeEntityId = ReadUnsignedVarLong();
+		item = ReadItem();
+		slot = ReadByte();
+		selectedSlot = ReadByte();
+		windowsId = ReadByte();
+	}
 
-        runtimeEntityId = default;
-        item = default;
-        slot = default;
-        selectedSlot = default;
-        windowsId = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		runtimeEntityId = default;
+		item = default;
+		slot = default;
+		selectedSlot = default;
+		windowsId = default;
+	}
 }

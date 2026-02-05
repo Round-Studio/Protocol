@@ -2,36 +2,36 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class ConnectedPing : Packet
 {
-    public long sendpingtime; 
+	public long sendpingtime;
 
-    public ConnectedPing()
-    {
-        Id = 0x00;
-        IsMcpe = false;
-    }
+	public ConnectedPing()
+	{
+		Id = 0x00;
+		IsMcpe = false;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        Write(sendpingtime);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		Write(sendpingtime);
+	}
 
 
-        sendpingtime = ReadLong();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		sendpingtime = ReadLong();
+	}
 
-        sendpingtime = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		sendpingtime = default;
+	}
 }

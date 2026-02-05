@@ -2,41 +2,41 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeServerboundLoadingScreen : Packet
 {
-    public int? ScreenId; 
-    public int ScreenType; 
+	public int? ScreenId;
+	public int ScreenType;
 
-    public McpeServerboundLoadingScreen()
-    {
-        Id = 0x138;
-        IsMcpe = true;
-    }
+	public McpeServerboundLoadingScreen()
+	{
+		Id = 0x138;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        WriteSignedVarInt(ScreenType);
-        Write(ScreenId.HasValue);
-        if (ScreenId.HasValue) Write(ScreenId.Value);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		WriteSignedVarInt(ScreenType);
+		Write(ScreenId.HasValue);
+		if (ScreenId.HasValue) Write(ScreenId.Value);
+	}
 
 
-        ScreenType = ReadSignedVarInt();
-        if (ReadBool()) ScreenId = ReadInt();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		ScreenType = ReadSignedVarInt();
+		if (ReadBool()) ScreenId = ReadInt();
+	}
 
-        ScreenType = default;
-        ScreenId = default(int);
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		ScreenType = default;
+		ScreenId = default(int);
+	}
 }

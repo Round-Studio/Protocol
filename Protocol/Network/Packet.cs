@@ -12,12 +12,16 @@ using fNbt;
 using Microsoft.IO;
 using Protocol.Minecraft;
 using Protocol.Minecraft.Graphic;
+using Protocol.Minecraft.Skins;
+using Protocol.Minecraft.Transaction;
 using Protocol.Network.MinecraftPacket;
 using Protocol.Utils;
 using Protocol.Utils.Crypo;
+using Protocol.Utils.IO;
 using Protocol.Utils.UDP;
-using Transaction = Protocol.Utils.Transaction;
-
+using Protocol.Utils;
+using Transaction = Protocol.Minecraft.Transaction.Transaction;
+using Protocol.Minecraft.Map;
 
 
 namespace Protocol.Network
@@ -28,65 +32,60 @@ namespace Protocol.Network
 
 		[JsonIgnore] public ReliabilityHeader ReliabilityHeader = new ReliabilityHeader();
 
-		[JsonIgnore] public  int Id;
-		[JsonIgnore] public  bool IsMcpe;
+		[JsonIgnore] public int Id;
+		[JsonIgnore] public bool IsMcpe;
 
-		protected MemoryStreamReader _reader; 
+		protected MemoryStreamReader _reader;
 		protected private Stream _buffer;
 		private BinaryWriter _writer;
 
-        [JsonIgnore] public ReadOnlyMemory<byte> Bytes { get; private set; }
+		[JsonIgnore] public ReadOnlyMemory<byte> Bytes { get; private set; }
 
-        public Packet()
+		public Packet()
 		{
 		}
 
-		public  void WritePackSetting(PackSetting setting)
-        {
-            if (setting == null)
-            {
-                
-                
-                Write(string.Empty); 
-                uint defaultType = (int)PackSettingType.String; 
-                WriteUnsignedVarInt(defaultType); 
-                Write(string.Empty); 
-                return;
-            }
+		public void WritePackSetting(PackSetting setting)
+		{
+			if (setting == null)
+			{
+				Write(string.Empty);
+				uint defaultType = (int)PackSettingType.String;
+				WriteUnsignedVarInt(defaultType);
+				Write(string.Empty);
+				return;
+			}
 
-            
-            Write(setting.Name ?? string.Empty);
 
-            
-            
-            uint typeId;
-            if (setting.Value is float floatValue)
-            {
-                typeId = (int)PackSettingType.Float;
-                WriteUnsignedVarInt(typeId); 
-                Write(floatValue);          
-            }
-            else if (setting.Value is bool boolValue)
-            {
-                typeId = (int)PackSettingType.Bool;
-                WriteUnsignedVarInt(typeId); 
-                Write(boolValue);            
-            }
-            else if (setting.Value is string stringValue)
-            {
-                typeId = (int)PackSettingType.String;
-                WriteUnsignedVarInt(typeId); 
-                Write(stringValue);          
-            }
-            else
-            {
-                
-                
-                
-                
-                throw new ArgumentException($"Unknown type for PackSetting.Value: {setting.Value?.GetType().Name ?? "null"}. Expected float, bool, or string.");
-            }
-        }
+			Write(setting.Name ?? string.Empty);
+
+
+			uint typeId;
+			if (setting.Value is float floatValue)
+			{
+				typeId = (int)PackSettingType.Float;
+				WriteUnsignedVarInt(typeId);
+				Write(floatValue);
+			}
+			else if (setting.Value is bool boolValue)
+			{
+				typeId = (int)PackSettingType.Bool;
+				WriteUnsignedVarInt(typeId);
+				Write(boolValue);
+			}
+			else if (setting.Value is string stringValue)
+			{
+				typeId = (int)PackSettingType.String;
+				WriteUnsignedVarInt(typeId);
+				Write(stringValue);
+			}
+			else
+			{
+				throw new ArgumentException(
+					$"Unknown type for PackSetting.Value: {setting.Value?.GetType().Name ?? "null"}. Expected float, bool, or string.");
+			}
+		}
+
 		public void Write(sbyte value)
 		{
 			_writer.Write(value);
@@ -101,130 +100,98 @@ namespace Protocol.Network
 		{
 			Write((byte)(value ? 1 : 0));
 		}
-		
-		
-		
-		
-		
-		
-		public  PackSetting ReadPackSetting()
-        {
-            var setting = new PackSetting();
-
-            
-            setting.Name = ReadString(); 
-
-            
-            uint typeId =ReadUnsignedVarInt(); 
-
-            
-            
-            switch ((PackSettingType)typeId)
-            {
-                case PackSettingType.Float:
-                    float floatValue = ReadFloat(); 
-                    setting.Value = floatValue;
-                    break;
-                case PackSettingType.Bool:
-                    bool boolValue = ReadBool(); 
-                    setting.Value = boolValue;
-                    break;
-                case PackSettingType.String:
-                    string stringValue = ReadString(); 
-                    setting.Value = stringValue;
-                    break;
-                default:
-                    
-                    
-                    
-                    
-                    throw new InvalidOperationException($"Unknown PackSetting type ID: {typeId}. Expected {PackSettingType.Float}, {PackSettingType.Bool}, or {PackSettingType.String}.");
-            }
-
-            return setting;
-        }
-        
-        
-        
-        
-        
-        
-        public void WriteBitset(Bitset bitset, int size)
-        {
-            
-            if (BigInteger.Zero == bitset.IntValue)
-            {
-                
-                Write((byte)0x00); 
-                return;
-            }
-
-            
-            
-            BigInteger valueToWrite = BigInteger.Abs(bitset.IntValue);
-
-            
-            
-            while (valueToWrite >= 0x80)
-            {
-                
-                
-                byte b = (byte)((valueToWrite & 0x7F) | 0x80);
-
-                
-                Write(b); 
-
-                
-                valueToWrite >>= 7;
-            }
 
 
-            Write((byte)(valueToWrite & 0x7F)); 
-        }
-        
-        
-        
-        
-        
-        
-        public Bitset ReadBitset(int size)
-        {
-            
-            BigInteger value = BigInteger.Zero;
+		public PackSetting ReadPackSetting()
+		{
+			var setting = new PackSetting();
 
-            
-            int shift = 0;     
-            byte b;            
 
-            
-            
-            do
-            {
-                
-                b = ReadByte(); 
+			setting.Name = ReadString();
 
-                
-                
-                
-                
-                
-                BigInteger chunk = new BigInteger(b & 0x7F); 
-                value += (chunk << shift); 
 
-                
-                shift += 7;
+			uint typeId = ReadUnsignedVarInt();
 
-                
-                
-                
-            } while ((b & 0x80) != 0); 
 
-            
-            
-            
-            return new Bitset(size, value);
-        }
-        public sbyte ReadSByte()
+			switch ((PackSettingType)typeId)
+			{
+				case PackSettingType.Float:
+					float floatValue = ReadFloat();
+					setting.Value = floatValue;
+					break;
+				case PackSettingType.Bool:
+					bool boolValue = ReadBool();
+					setting.Value = boolValue;
+					break;
+				case PackSettingType.String:
+					string stringValue = ReadString();
+					setting.Value = stringValue;
+					break;
+				default:
+
+
+					throw new InvalidOperationException(
+						$"Unknown PackSetting type ID: {typeId}. Expected {PackSettingType.Float}, {PackSettingType.Bool}, or {PackSettingType.String}.");
+			}
+
+			return setting;
+		}
+
+
+		public void WriteBitset(Bitset bitset, int size)
+		{
+			if (BigInteger.Zero == bitset.IntValue)
+			{
+				Write((byte)0x00);
+				return;
+			}
+
+
+			BigInteger valueToWrite = BigInteger.Abs(bitset.IntValue);
+
+
+			while (valueToWrite >= 0x80)
+			{
+				byte b = (byte)((valueToWrite & 0x7F) | 0x80);
+
+
+				Write(b);
+
+
+				valueToWrite >>= 7;
+			}
+
+
+			Write((byte)(valueToWrite & 0x7F));
+		}
+
+
+		public Bitset ReadBitset(int size)
+		{
+			BigInteger value = BigInteger.Zero;
+
+
+			int shift = 0;
+			byte b;
+
+
+			do
+			{
+				b = ReadByte();
+
+
+				BigInteger chunk = new BigInteger(b & 0x7F);
+				value += (chunk << shift);
+
+
+				shift += 7;
+			} while ((b & 0x80) != 0);
+
+
+			return new Bitset(size, value);
+		}
+
+		public sbyte ReadSByte()
 		{
 			return (sbyte)_reader.ReadByte();
 		}
@@ -250,6 +217,7 @@ namespace Protocol.Network
 			{
 				return;
 			}
+
 			_writer.Write(value.Span);
 		}
 
@@ -278,7 +246,8 @@ namespace Protocol.Network
 			}
 
 			ReadOnlyMemory<byte> readBytes = _reader.Read(count);
-			if (readBytes.Length != count) throw new ArgumentOutOfRangeException($"Expected {count} bytes, only read {readBytes.Length}.");
+			if (readBytes.Length != count)
+				throw new ArgumentOutOfRangeException($"Expected {count} bytes, only read {readBytes.Length}.");
 			return readBytes;
 		}
 
@@ -292,8 +261,9 @@ namespace Protocol.Network
 			}
 
 			ReadOnlyMemory<byte> readBytes = _reader.Read(count);
-			if (readBytes.Length != count) throw new ArgumentOutOfRangeException($"Expected {count} bytes, only read {readBytes.Length}.");
-			return readBytes.ToArray(); 
+			if (readBytes.Length != count)
+				throw new ArgumentOutOfRangeException($"Expected {count} bytes, only read {readBytes.Length}.");
+			return readBytes.ToArray();
 		}
 
 		public void WriteByteArray(byte[] value)
@@ -344,6 +314,7 @@ namespace Protocol.Network
 			{
 				ulongs[i] = ReadUlong();
 			}
+
 			return ulongs;
 		}
 
@@ -411,10 +382,12 @@ namespace Protocol.Network
 
 			return _reader.ReadInt32();
 		}
- 		public void WriteBe(ushort value)
- 		{
-  			   Write(value,true);
- 		}
+
+		public void WriteBe(ushort value)
+		{
+			Write(value, true);
+		}
+
 		public void WriteBe(int value)
 		{
 			_writer.Write(BinaryPrimitives.ReverseEndianness(value));
@@ -508,13 +481,11 @@ namespace Protocol.Network
 
 		public void WriteUnsignedVarLong(long value)
 		{
-			
 			VarInt.WriteUInt64(_buffer, (ulong)value);
 		}
 
 		public long ReadUnsignedVarLong()
 		{
-			
 			return (long)VarInt.ReadUInt64(_reader);
 		}
 
@@ -541,18 +512,10 @@ namespace Protocol.Network
 		public void Write(float value)
 		{
 			_writer.Write(value);
-
-			
-			
-			
-			
-			
 		}
 
 		public float ReadFloat()
 		{
-			
-			
 			return _reader.ReadSingle();
 		}
 
@@ -658,10 +621,10 @@ namespace Protocol.Network
 					Write(record.PlayerInfo.PlatformChatId);
 					Write(record.PlayerInfo.DeviceOS);
 					Write(record.Skin);
-					Write(false); 
-					Write(false); 
-					Write(false); 
-					Write(0); 
+					Write(false);
+					Write(false);
+					Write(false);
+					Write(0);
 				}
 			}
 			else if (records is PlayerRemoveRecords)
@@ -678,15 +641,13 @@ namespace Protocol.Network
 			{
 				foreach (var record in records)
 				{
-					Write(record.Skin.IsVerified); 
+					Write(record.Skin.IsVerified);
 				}
 			}
 		}
 
 		public PlayerRecords ReadPlayerRecords()
 		{
-			
-			
 			byte recordType = ReadByte();
 			uint count = ReadUnsignedVarInt();
 			PlayerRecords records = null;
@@ -704,10 +665,10 @@ namespace Protocol.Network
 						var platformChatId = ReadString();
 						var deviceOS = ReadInt();
 						player.Skin = ReadSkin();
-						ReadBool(); 
-						ReadBool(); 
-						ReadBool(); 
-						ReadInt(); 
+						ReadBool();
+						ReadBool();
+						ReadBool();
+						ReadInt();
 
 						player.PlayerInfo = new PlayerInfo()
 						{
@@ -722,8 +683,8 @@ namespace Protocol.Network
 							}
 						};
 						records.Add(player);
-						
 					}
+
 					break;
 				case 1:
 					records = new PlayerRemoveRecords();
@@ -733,6 +694,7 @@ namespace Protocol.Network
 						player.ClientUuid = ReadUUID();
 						records.Add(player);
 					}
+
 					break;
 			}
 
@@ -746,8 +708,7 @@ namespace Protocol.Network
 						player.Skin.IsVerified = isVerified;
 				}
 			}
-			
-			
+
 
 			return records;
 		}
@@ -780,9 +741,9 @@ namespace Protocol.Network
 			Write(location.Y);
 			Write(location.Z);
 			var d = 256f / 360f;
-			Write((byte)Math.Round(location.Pitch * d)); 
-			Write((byte)Math.Round(location.HeadYaw * d)); 
-			Write((byte)Math.Round(location.Yaw * d)); 
+			Write((byte)Math.Round(location.Pitch * d));
+			Write((byte)Math.Round(location.HeadYaw * d));
+			Write((byte)Math.Round(location.Yaw * d));
 		}
 
 		public PlayerLocation ReadPlayerLocation()
@@ -808,23 +769,11 @@ namespace Protocol.Network
 				{
 					Write((byte)~byte.Parse(part));
 				}
+
 				Write((short)endpoint.Port, true);
 			}
 		}
 
-
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 
 		public IPEndPoint ReadIPEndPoint()
 		{
@@ -841,15 +790,14 @@ namespace Protocol.Network
 			}
 			else if (ipVersion == 6)
 			{
-				ReadShort(); 
-				port = (ushort)ReadShort(true); 
-				ReadLong(); 
+				ReadShort();
+				port = (ushort)ReadShort(true);
+				ReadLong();
 				var addressBytes = ReadBytes(16);
 				address = new IPAddress(addressBytes);
 			}
 			else
 			{
-				
 			}
 
 			return new IPEndPoint(address, port);
@@ -889,7 +837,8 @@ namespace Protocol.Network
 
 		public void Write(Nbt nbt)
 		{
-			Write(nbt, _writer.BaseStream, nbt.NbtFile.UseVarInt || this is McpeBlockEntityData || this is McpeUpdateEquipment);
+			Write(nbt, _writer.BaseStream,
+				nbt.NbtFile.UseVarInt || this is McpeBlockEntityData || this is McpeUpdateEquipment);
 		}
 
 		public static void Write(Nbt nbt, Stream stream, bool useVarInt)
@@ -1054,7 +1003,6 @@ namespace Protocol.Network
 				Item item = ReadItem(this is not McpeCreativeContent);
 				item.NetworkId = networkId;
 				metadata.Add(item);
-				
 			}
 
 			return metadata;
@@ -1098,7 +1046,7 @@ namespace Protocol.Network
 					WriteUnsignedVarInt((int)McpeInventoryTransaction.TransactionType.Normal);
 					break;
 			}
-			
+
 
 			WriteUnsignedVarInt((uint)transaction.TransactionRecords.Count);
 			foreach (var record in transaction.TransactionRecords)
@@ -1128,9 +1076,6 @@ namespace Protocol.Network
 				WriteVarInt(record.Slot);
 				Write(record.OldItem);
 				Write(record.NewItem);
-
-				
-				
 			}
 
 			switch (transaction)
@@ -1171,7 +1116,7 @@ namespace Protocol.Network
 
 		public Transaction ReadTransaction()
 		{
-			var requestId = ReadSignedVarInt(); 
+			var requestId = ReadSignedVarInt();
 			var requestRecords = new List<RequestRecord>();
 			if (requestId != 0)
 			{
@@ -1185,15 +1130,14 @@ namespace Protocol.Network
 					{
 						byte slot = ReadByte();
 						rr.Slots.Add(slot);
-						
 					}
+
 					requestRecords.Add(rr);
 				}
 			}
 
 			var transactionType = (McpeInventoryTransaction.TransactionType)ReadVarInt();
-			
-			
+
 
 			var transactions = new List<TransactionRecord>();
 			uint count = ReadUnsignedVarInt();
@@ -1217,7 +1161,8 @@ namespace Protocol.Network
 						break;
 					case McpeInventoryTransaction.InventorySourceType.Unspecified:
 					case McpeInventoryTransaction.InventorySourceType.Crafting:
-						record = new CraftTransactionRecord() { Action = (McpeInventoryTransaction.CraftingAction)ReadSignedVarInt() };
+						record = new CraftTransactionRecord()
+							{ Action = (McpeInventoryTransaction.CraftingAction)ReadSignedVarInt() };
 						break;
 					default:
 						Console.WriteLine($"Unknown inventory source type={sourceType}");
@@ -1227,8 +1172,7 @@ namespace Protocol.Network
 				record.Slot = ReadVarInt();
 				record.OldItem = ReadItem();
 				record.NewItem = ReadItem();
-				
-				
+
 
 				transactions.Add(record);
 			}
@@ -1291,8 +1235,8 @@ namespace Protocol.Network
 			var containerName = readFullContainerName();
 			var slot = (byte)ReadByte();
 			var stackNetworkId = ReadSignedVarInt();
-			
-			
+
+
 			return new StackRequestSlotInfo()
 			{
 				ContainerId = containerName.ContainerID,
@@ -1305,35 +1249,38 @@ namespace Protocol.Network
 		public FullContainerName readFullContainerName()
 		{
 			var name = new FullContainerName();
-            name.DynamicContainerID = new Optional<uint>();
+			name.DynamicContainerID = new Optional<uint>();
 			name.ContainerID = ReadByte();
-            var readBool = ReadBool();
-            if (readBool)
-            {
-                name.DynamicContainerID.HasValue = true;
-                name.DynamicContainerID.Value = ReadUint();
-            }
-            else
-            {
-                name.DynamicContainerID.HasValue = readBool;
-            }
+			var readBool = ReadBool();
+			if (readBool)
+			{
+				name.DynamicContainerID.HasValue = true;
+				name.DynamicContainerID.Value = ReadUint();
+			}
+			else
+			{
+				name.DynamicContainerID.HasValue = readBool;
+			}
+
 			return name;
 		}
 
 		public void Write(FullContainerName name)
 		{
 			Write(name.ContainerID);
-            Write(name.DynamicContainerID.HasValue);
-            if (name.DynamicContainerID.HasValue)
-            {
-                Write(name.DynamicContainerID.Value);
-            }
-			
+			Write(name.DynamicContainerID.HasValue);
+			if (name.DynamicContainerID.HasValue)
+			{
+				Write(name.DynamicContainerID.Value);
+			}
 		}
 
 		public void Write(StackRequestSlotInfo slotInfo)
 		{
-			Write(new FullContainerName() { ContainerID = slotInfo.ContainerId,DynamicContainerID = new Optional<uint>((uint)slotInfo.DynamicId)});
+			Write(new FullContainerName()
+			{
+				ContainerID = slotInfo.ContainerId, DynamicContainerID = new Optional<uint>((uint)slotInfo.DynamicId)
+			});
 			Write(slotInfo.Slot);
 			WriteSignedVarInt(slotInfo.StackNetworkId);
 		}
@@ -1352,166 +1299,167 @@ namespace Protocol.Network
 					switch (action)
 					{
 						case TakeAction ta:
-							{
-								Write((byte)McpeItemStackRequest.ActionType.Take);
-								Write(ta.Count);
-								Write(ta.Source);
-								Write(ta.Destination);
-								break;
-							}
+						{
+							Write((byte)McpeItemStackRequest.ActionType.Take);
+							Write(ta.Count);
+							Write(ta.Source);
+							Write(ta.Destination);
+							break;
+						}
 
 						case PlaceAction ta:
-							{
-								Write((byte)McpeItemStackRequest.ActionType.Place);
-								Write(ta.Count);
-								Write(ta.Source);
-								Write(ta.Destination);
-								break;
-							}
+						{
+							Write((byte)McpeItemStackRequest.ActionType.Place);
+							Write(ta.Count);
+							Write(ta.Source);
+							Write(ta.Destination);
+							break;
+						}
 
 						case SwapAction ta:
-							{
-								Write((byte)McpeItemStackRequest.ActionType.Swap);
-								Write(ta.Source);
-								Write(ta.Destination);
-								break;
-							}
+						{
+							Write((byte)McpeItemStackRequest.ActionType.Swap);
+							Write(ta.Source);
+							Write(ta.Destination);
+							break;
+						}
 
 						case DropAction ta:
-							{
-								Write((byte)McpeItemStackRequest.ActionType.Drop);
-								Write(ta.Count);
-								Write(ta.Source);
-								Write(ta.Randomly);
-								break;
-							}
+						{
+							Write((byte)McpeItemStackRequest.ActionType.Drop);
+							Write(ta.Count);
+							Write(ta.Source);
+							Write(ta.Randomly);
+							break;
+						}
 
 						case DestroyAction ta:
-							{
-								Write((byte)McpeItemStackRequest.ActionType.Destroy);
-								Write(ta.Count);
-								Write(ta.Source);
-								break;
-							}
+						{
+							Write((byte)McpeItemStackRequest.ActionType.Destroy);
+							Write(ta.Count);
+							Write(ta.Source);
+							break;
+						}
 
 						case ConsumeAction ta:
-							{
-								Write((byte)McpeItemStackRequest.ActionType.Consume);
-								Write(ta.Count);
-								Write(ta.Source);
-								break;
-							}
+						{
+							Write((byte)McpeItemStackRequest.ActionType.Consume);
+							Write(ta.Count);
+							Write(ta.Source);
+							break;
+						}
 
 						case CreateAction ta:
-							{
-								Write((byte)McpeItemStackRequest.ActionType.Create);
-								Write(ta.ResultSlot);
-								break;
-							}
+						{
+							Write((byte)McpeItemStackRequest.ActionType.Create);
+							Write(ta.ResultSlot);
+							break;
+						}
 
 						case PlaceIntoBundleAction ta:
-							{
-								Write((byte)McpeItemStackRequest.ActionType.PlaceIntoBundleDeprecated);
-								break;
-							}
+						{
+							Write((byte)McpeItemStackRequest.ActionType.PlaceIntoBundleDeprecated);
+							break;
+						}
 
 						case TakeFromBundleAction ta:
-							{
-								Write((byte)McpeItemStackRequest.ActionType.TakeFromBundleDeprecated);
-								break;
-							}
+						{
+							Write((byte)McpeItemStackRequest.ActionType.TakeFromBundleDeprecated);
+							break;
+						}
 
 						case LabTableCombineAction ta:
-							{
-								Write((byte)McpeItemStackRequest.ActionType.LabTableCombine);
-								break;
-							}
+						{
+							Write((byte)McpeItemStackRequest.ActionType.LabTableCombine);
+							break;
+						}
 
 						case BeaconPaymentAction ta:
-							{
-								Write((byte)McpeItemStackRequest.ActionType.BeaconPayment);
-								WriteSignedVarInt(ta.PrimaryEffect);
-								WriteSignedVarInt(ta.SecondaryEffect);
-								break;
-							}
+						{
+							Write((byte)McpeItemStackRequest.ActionType.BeaconPayment);
+							WriteSignedVarInt(ta.PrimaryEffect);
+							WriteSignedVarInt(ta.SecondaryEffect);
+							break;
+						}
 
 						case CraftAction ta:
-							{
-								Write((byte)McpeItemStackRequest.ActionType.CraftRecipe);
-								WriteUnsignedVarInt(ta.RecipeNetworkId);
-								Write(ta.TimesCrafted);
-								break;
-							}
+						{
+							Write((byte)McpeItemStackRequest.ActionType.CraftRecipe);
+							WriteUnsignedVarInt(ta.RecipeNetworkId);
+							Write(ta.TimesCrafted);
+							break;
+						}
 
 						case CraftAutoAction ta:
+						{
+							Write((byte)McpeItemStackRequest.ActionType.CraftRecipeAuto);
+							WriteUnsignedVarInt(ta.RecipeNetworkId);
+							Write(ta.TimesCrafted2);
+							Write(ta.TimesCrafted);
+							Write((byte)ta.Ingredients.Count);
+							foreach (Item item in ta.Ingredients)
 							{
-								Write((byte)McpeItemStackRequest.ActionType.CraftRecipeAuto);
-								WriteUnsignedVarInt(ta.RecipeNetworkId);
-								Write(ta.TimesCrafted2);
-								Write(ta.TimesCrafted);
-								Write((byte)ta.Ingredients.Count);
-								foreach (Item item in ta.Ingredients)
-								{
-									WriteRecipeIngredient(item);
-								}
-								break;
+								WriteRecipeIngredient(item);
 							}
+
+							break;
+						}
 
 						case CraftCreativeAction ta:
-							{
-								Write((byte)McpeItemStackRequest.ActionType.CraftCreative);
-								WriteUnsignedVarInt(ta.CreativeItemNetworkId);
-								Write(ta.ClientPredictedResult);
-								break;
-							}
+						{
+							Write((byte)McpeItemStackRequest.ActionType.CraftCreative);
+							WriteUnsignedVarInt(ta.CreativeItemNetworkId);
+							Write(ta.ClientPredictedResult);
+							break;
+						}
 
 						case CraftRecipeOptionalAction ta:
-							{
-								Write((byte)McpeItemStackRequest.ActionType.CraftRecipeOptional);
-								WriteUnsignedVarInt(ta.RecipeNetworkId);
-								Write(ta.FilteredStringIndex);
-								break;
-							}
+						{
+							Write((byte)McpeItemStackRequest.ActionType.CraftRecipeOptional);
+							WriteUnsignedVarInt(ta.RecipeNetworkId);
+							Write(ta.FilteredStringIndex);
+							break;
+						}
 
 						case GrindstoneStackRequestAction ta:
-							{
-								Write((byte)McpeItemStackRequest.ActionType.CraftGrindstone);
-								WriteUnsignedVarInt(ta.RecipeNetworkId);
-								WriteVarInt(ta.RepairCost);
-								Write(ta.TimesCrafted);
-								break;
-							}
+						{
+							Write((byte)McpeItemStackRequest.ActionType.CraftGrindstone);
+							WriteUnsignedVarInt(ta.RecipeNetworkId);
+							WriteVarInt(ta.RepairCost);
+							Write(ta.TimesCrafted);
+							break;
+						}
 
 						case LoomStackRequestAction ta:
-							{
-								Write((byte)McpeItemStackRequest.ActionType.CraftLoom);
-								Write(ta.PatternId);
-								Write(ta.TimesCrafted);
-								break;
-							}
+						{
+							Write((byte)McpeItemStackRequest.ActionType.CraftLoom);
+							Write(ta.PatternId);
+							Write(ta.TimesCrafted);
+							break;
+						}
 
 						case CraftNotImplementedDeprecatedAction ta:
-							{
-								Write((byte)McpeItemStackRequest.ActionType.CraftNotImplementedDeprecated);
-								break;
-							}
+						{
+							Write((byte)McpeItemStackRequest.ActionType.CraftNotImplementedDeprecated);
+							break;
+						}
 
 						case CraftResultDeprecatedAction ta:
-							{
-								Write((byte)McpeItemStackRequest.ActionType.CraftResultsDeprecated);
-								Write(ta.ResultItems);
-								Write(ta.TimesCrafted);
-								break;
-							}
+						{
+							Write((byte)McpeItemStackRequest.ActionType.CraftResultsDeprecated);
+							Write(ta.ResultItems);
+							Write(ta.TimesCrafted);
+							break;
+						}
 
 						case MineBlockAction ta:
-							{
-								Write((byte)McpeItemStackRequest.ActionType.MineBlock);
-								WriteVarInt(ta.Slot);
-								WriteVarInt(ta.Durability);
-								WriteSignedVarInt(ta.stackNetworkId);
-								break;
-							}
+						{
+							Write((byte)McpeItemStackRequest.ActionType.MineBlock);
+							WriteVarInt(ta.Slot);
+							WriteVarInt(ta.Durability);
+							WriteSignedVarInt(ta.stackNetworkId);
+							break;
+						}
 					}
 				}
 
@@ -1521,9 +1469,11 @@ namespace Protocol.Network
 				{
 					Write(request.filteredString[fi]);
 				}
+
 				Write(request.FilterCause);
 			}
 		}
+
 		public ItemStackRequests ReadItemStackRequests(bool single = false)
 		{
 			var requests = new ItemStackRequests();
@@ -1535,185 +1485,186 @@ namespace Protocol.Network
 				c = ReadUnsignedVarInt();
 			}
 
-			
+
 			for (int i = 0; i < c; i++)
 			{
 				var actions = new ItemStackActionList();
 				actions.RequestId = ReadSignedVarInt();
-				
+
 
 				uint count = ReadUnsignedVarInt();
-				
+
 				for (int j = 0; j < count; j++)
 				{
 					var actionType = (McpeItemStackRequest.ActionType)ReadByte();
-					
+
 					switch (actionType)
 					{
 						case McpeItemStackRequest.ActionType.Take:
-							{
-								var action = new TakeAction();
-								action.Count = ReadByte();
-								action.Source = ReadStackRequestSlotInfo();
-								action.Destination = ReadStackRequestSlotInfo();
-								actions.Add(action);
-								break;
-							}
+						{
+							var action = new TakeAction();
+							action.Count = ReadByte();
+							action.Source = ReadStackRequestSlotInfo();
+							action.Destination = ReadStackRequestSlotInfo();
+							actions.Add(action);
+							break;
+						}
 						case McpeItemStackRequest.ActionType.Place:
-							{
-								var action = new PlaceAction();
-								action.Count = ReadByte();
-								action.Source = ReadStackRequestSlotInfo();
-								action.Destination = ReadStackRequestSlotInfo();
-								actions.Add(action);
-								break;
-							}
+						{
+							var action = new PlaceAction();
+							action.Count = ReadByte();
+							action.Source = ReadStackRequestSlotInfo();
+							action.Destination = ReadStackRequestSlotInfo();
+							actions.Add(action);
+							break;
+						}
 						case McpeItemStackRequest.ActionType.Swap:
-							{
-								var action = new SwapAction();
-								action.Source = ReadStackRequestSlotInfo();
-								action.Destination = ReadStackRequestSlotInfo();
-								actions.Add(action);
-								break;
-							}
+						{
+							var action = new SwapAction();
+							action.Source = ReadStackRequestSlotInfo();
+							action.Destination = ReadStackRequestSlotInfo();
+							actions.Add(action);
+							break;
+						}
 						case McpeItemStackRequest.ActionType.Drop:
-							{
-								var action = new DropAction();
-								action.Count = ReadByte();
-								action.Source = ReadStackRequestSlotInfo();
-								action.Randomly = ReadBool();
-								actions.Add(action);
-								break;
-							}
+						{
+							var action = new DropAction();
+							action.Count = ReadByte();
+							action.Source = ReadStackRequestSlotInfo();
+							action.Randomly = ReadBool();
+							actions.Add(action);
+							break;
+						}
 						case McpeItemStackRequest.ActionType.Destroy:
-							{
-								var action = new DestroyAction();
-								action.Count = ReadByte();
-								action.Source = ReadStackRequestSlotInfo();
-								actions.Add(action);
-								break;
-							}
+						{
+							var action = new DestroyAction();
+							action.Count = ReadByte();
+							action.Source = ReadStackRequestSlotInfo();
+							actions.Add(action);
+							break;
+						}
 						case McpeItemStackRequest.ActionType.Consume:
-							{
-								var action = new ConsumeAction();
-								action.Count = ReadByte();
-								action.Source = ReadStackRequestSlotInfo();
-								actions.Add(action);
-								break;
-							}
+						{
+							var action = new ConsumeAction();
+							action.Count = ReadByte();
+							action.Source = ReadStackRequestSlotInfo();
+							actions.Add(action);
+							break;
+						}
 						case McpeItemStackRequest.ActionType.Create:
-							{
-								var action = new CreateAction();
-								action.ResultSlot = ReadByte();
-								actions.Add(action);
-								break;
-							}
+						{
+							var action = new CreateAction();
+							action.ResultSlot = ReadByte();
+							actions.Add(action);
+							break;
+						}
 
 						case McpeItemStackRequest.ActionType.PlaceIntoBundleDeprecated:
-							{
-								var action = new PlaceIntoBundleAction();
-								actions.Add(action);
-								break;
-							}
+						{
+							var action = new PlaceIntoBundleAction();
+							actions.Add(action);
+							break;
+						}
 
 						case McpeItemStackRequest.ActionType.TakeFromBundleDeprecated:
-							{
-								var action = new TakeFromBundleAction();
-								actions.Add(action);
-								break;
-							}
+						{
+							var action = new TakeFromBundleAction();
+							actions.Add(action);
+							break;
+						}
 						case McpeItemStackRequest.ActionType.LabTableCombine:
-							{
-								var action = new LabTableCombineAction();
-								actions.Add(action);
-								break;
-							}
+						{
+							var action = new LabTableCombineAction();
+							actions.Add(action);
+							break;
+						}
 						case McpeItemStackRequest.ActionType.BeaconPayment:
-							{
-								var action = new BeaconPaymentAction();
-								action.PrimaryEffect = ReadSignedVarInt();
-								action.SecondaryEffect = ReadSignedVarInt();
-								actions.Add(action);
-								break;
-							}
+						{
+							var action = new BeaconPaymentAction();
+							action.PrimaryEffect = ReadSignedVarInt();
+							action.SecondaryEffect = ReadSignedVarInt();
+							actions.Add(action);
+							break;
+						}
 						case McpeItemStackRequest.ActionType.CraftRecipe:
-							{
-								var action = new CraftAction();
-								action.RecipeNetworkId = ReadUnsignedVarInt();
-								action.TimesCrafted = ReadByte();
-								actions.Add(action);
-								break;
-							}
+						{
+							var action = new CraftAction();
+							action.RecipeNetworkId = ReadUnsignedVarInt();
+							action.TimesCrafted = ReadByte();
+							actions.Add(action);
+							break;
+						}
 						case McpeItemStackRequest.ActionType.CraftRecipeAuto:
+						{
+							var action = new CraftAutoAction();
+							action.RecipeNetworkId = ReadUnsignedVarInt();
+							action.TimesCrafted2 = ReadByte();
+							action.TimesCrafted = ReadByte();
+							var cou = ReadByte();
+							for (var a = 0; a < cou; a++)
 							{
-								var action = new CraftAutoAction();
-								action.RecipeNetworkId = ReadUnsignedVarInt();
-								action.TimesCrafted2 = ReadByte();
-								action.TimesCrafted = ReadByte();
-								var cou = ReadByte();
-								for (var a = 0; a < cou; a++)
-								{
-									action.Ingredients.Add(ReadRecipeData());
-								}
-								actions.Add(action);
-								break;
+								action.Ingredients.Add(ReadRecipeData());
 							}
+
+							actions.Add(action);
+							break;
+						}
 						case McpeItemStackRequest.ActionType.CraftCreative:
-							{
-								var action = new CraftCreativeAction();
-								action.CreativeItemNetworkId = ReadUnsignedVarInt();
-								action.ClientPredictedResult = ReadByte();
-								actions.Add(action);
-								break;
-							}
+						{
+							var action = new CraftCreativeAction();
+							action.CreativeItemNetworkId = ReadUnsignedVarInt();
+							action.ClientPredictedResult = ReadByte();
+							actions.Add(action);
+							break;
+						}
 						case McpeItemStackRequest.ActionType.CraftRecipeOptional:
-							{
-								var action = new CraftRecipeOptionalAction();
-								action.RecipeNetworkId = ReadUnsignedVarInt();
-								action.FilteredStringIndex = ReadInt();
-								actions.Add(action);
-								break;
-							}
+						{
+							var action = new CraftRecipeOptionalAction();
+							action.RecipeNetworkId = ReadUnsignedVarInt();
+							action.FilteredStringIndex = ReadInt();
+							actions.Add(action);
+							break;
+						}
 						case McpeItemStackRequest.ActionType.CraftGrindstone:
-							{
-								var action = new GrindstoneStackRequestAction();
-								action.RecipeNetworkId = ReadUnsignedVarInt();
-								action.RepairCost = ReadVarInt();
-								action.TimesCrafted = ReadByte();
-								actions.Add(action);
-								break;
-							}
+						{
+							var action = new GrindstoneStackRequestAction();
+							action.RecipeNetworkId = ReadUnsignedVarInt();
+							action.RepairCost = ReadVarInt();
+							action.TimesCrafted = ReadByte();
+							actions.Add(action);
+							break;
+						}
 						case McpeItemStackRequest.ActionType.CraftLoom:
-							{
-								var action = new LoomStackRequestAction();
-								action.PatternId = ReadString();
-								action.TimesCrafted = ReadByte();
-								actions.Add(action);
-								break;
-							}
+						{
+							var action = new LoomStackRequestAction();
+							action.PatternId = ReadString();
+							action.TimesCrafted = ReadByte();
+							actions.Add(action);
+							break;
+						}
 						case McpeItemStackRequest.ActionType.CraftNotImplementedDeprecated:
-							{
-								var action = new CraftNotImplementedDeprecatedAction();
-								actions.Add(action);
-								break;
-							}
+						{
+							var action = new CraftNotImplementedDeprecatedAction();
+							actions.Add(action);
+							break;
+						}
 						case McpeItemStackRequest.ActionType.CraftResultsDeprecated:
-							{
-								var action = new CraftResultDeprecatedAction();
-								action.ResultItems = ReadItems();
-								action.TimesCrafted = ReadByte();
-								actions.Add(action);
-								break;
-							}
+						{
+							var action = new CraftResultDeprecatedAction();
+							action.ResultItems = ReadItems();
+							action.TimesCrafted = ReadByte();
+							actions.Add(action);
+							break;
+						}
 						case McpeItemStackRequest.ActionType.MineBlock:
-							{
-								var action = new MineBlockAction();
-								action.Slot = ReadVarInt();
-								action.Durability = ReadVarInt();
-								action.stackNetworkId = ReadSignedVarInt();
-								actions.Add(action);
-								break;
-							}
+						{
+							var action = new MineBlockAction();
+							action.Slot = ReadVarInt();
+							action.Durability = ReadVarInt();
+							action.stackNetworkId = ReadSignedVarInt();
+							actions.Add(action);
+							break;
+						}
 						default:
 							throw new ArgumentOutOfRangeException();
 					}
@@ -1727,6 +1678,7 @@ namespace Protocol.Network
 				{
 					actions.filteredString.Add(ReadString());
 				}
+
 				var filterStringCause = ReadUint();
 			}
 
@@ -1745,7 +1697,11 @@ namespace Protocol.Network
 				WriteUnsignedVarInt((uint)stackResponse.ResponseContainerInfos.Count);
 				foreach (StackResponseContainerInfo containerInfo in stackResponse.ResponseContainerInfos)
 				{
-					Write(new FullContainerName() {ContainerID = containerInfo.ContainerId,DynamicContainerID = new Optional<uint>((uint)containerInfo.DynamicId)});
+					Write(new FullContainerName()
+					{
+						ContainerID = containerInfo.ContainerId,
+						DynamicContainerID = new Optional<uint>((uint)containerInfo.DynamicId)
+					});
 					WriteUnsignedVarInt((uint)containerInfo.Slots.Count);
 					foreach (StackResponseSlotInfo slot in containerInfo.Slots)
 					{
@@ -1920,6 +1876,7 @@ namespace Protocol.Network
 		}
 
 		private const int ShieldId = 355;
+
 		public void Write(Item stack, bool writeUniqueId = true)
 		{
 			stack = new ItemAir();
@@ -1947,7 +1904,7 @@ namespace Protocol.Network
 			WriteSignedVarInt(stack.RuntimeId);
 
 			byte[] extraData = null;
-			
+
 			using (var ms = new MemoryStream())
 			{
 				using (BinaryWriter binaryWriter = new BinaryWriter(ms, Encoding.UTF8, true))
@@ -1964,8 +1921,8 @@ namespace Protocol.Network
 						binaryWriter.Write((short)0);
 					}
 
-					binaryWriter.Write(0); 
-					binaryWriter.Write(0); 
+					binaryWriter.Write(0);
+					binaryWriter.Write(0);
 
 					if (stack.Id == 513)
 					{
@@ -1990,7 +1947,7 @@ namespace Protocol.Network
 
 			short count = (short)ReadShort();
 			var metadata = ReadUnsignedVarInt();
-		
+
 
 			Item stack = new ItemAir();
 
@@ -2034,6 +1991,7 @@ namespace Protocol.Network
 						var l = binaryReader.ReadInt16();
 						binaryReader.ReadBytes(l);
 					}
+
 					int canBreak = binaryReader.ReadInt32();
 					for (int i = 0; i < canBreak; i++)
 					{
@@ -2041,12 +1999,13 @@ namespace Protocol.Network
 						binaryReader.ReadBytes(l);
 					}
 
-					if (stack.RuntimeId == ShieldId) 
+					if (stack.RuntimeId == ShieldId)
 					{
-						binaryReader.ReadInt64(); 
+						binaryReader.ReadInt64();
 					}
 				}
 			}
+
 			return stack;
 		}
 
@@ -2071,10 +2030,9 @@ namespace Protocol.Network
 
 		public MetadataDictionary ReadMetadataDictionary()
 		{
-			
 			var reader = new BinaryReader(_reader);
 			var dictionary = MetadataDictionary.FromStream(reader);
-			
+
 			return dictionary;
 		}
 
@@ -2107,7 +2065,7 @@ namespace Protocol.Network
 				Write(modifier.Id);
 				Write(modifier.Name);
 				Write(modifier.Amount);
-				Write(modifier.Operations); 
+				Write(modifier.Operations);
 				Write(modifier.Operand);
 				Write(modifier.Serializable);
 			}
@@ -2144,9 +2102,9 @@ namespace Protocol.Network
 				Write(attribute.MinValue);
 				Write(attribute.MaxValue);
 				Write(attribute.Value);
-				Write(attribute.DefaultMinValue == 0.0f ? attribute.MinValue : attribute.DefaultMinValue); 
-				Write(attribute.DefaultMaxValue == 0.0f ? attribute.MaxValue : attribute.DefaultMaxValue); 
-				Write(attribute.Default); 
+				Write(attribute.DefaultMinValue == 0.0f ? attribute.MinValue : attribute.DefaultMinValue);
+				Write(attribute.DefaultMaxValue == 0.0f ? attribute.MaxValue : attribute.DefaultMaxValue);
+				Write(attribute.Default);
 				Write(attribute.Name);
 				Write(attribute.Modifiers);
 			}
@@ -2166,32 +2124,32 @@ namespace Protocol.Network
 				switch (type)
 				{
 					case 1:
+					{
+						GameRule<bool> rule = new GameRule<bool>(name, ReadBool())
 						{
-							GameRule<bool> rule = new GameRule<bool>(name, ReadBool())
-							{
-								IsPlayerModifiable = isPlayerModifiable
-							};
-							gameRules.Add(rule);
-							break;
-						}
+							IsPlayerModifiable = isPlayerModifiable
+						};
+						gameRules.Add(rule);
+						break;
+					}
 					case 2:
+					{
+						GameRule<int> rule = new GameRule<int>(name, ReadVarInt())
 						{
-							GameRule<int> rule = new GameRule<int>(name, ReadVarInt())
-							{
-								IsPlayerModifiable = isPlayerModifiable
-							};
-							gameRules.Add(rule);
-							break;
-						}
+							IsPlayerModifiable = isPlayerModifiable
+						};
+						gameRules.Add(rule);
+						break;
+					}
 					case 3:
+					{
+						GameRule<float> rule = new GameRule<float>(name, ReadFloat())
 						{
-							GameRule<float> rule = new GameRule<float>(name, ReadFloat())
-							{
-								IsPlayerModifiable = isPlayerModifiable
-							};
-							gameRules.Add(rule);
-							break;
-						}
+							IsPlayerModifiable = isPlayerModifiable
+						};
+						gameRules.Add(rule);
+						break;
+					}
 				}
 			}
 
@@ -2210,7 +2168,7 @@ namespace Protocol.Network
 			foreach (var rule in gameRules)
 			{
 				Write(rule.Name.ToLower());
-				Write(rule.IsPlayerModifiable); 
+				Write(rule.IsPlayerModifiable);
 
 				if (rule is GameRule<bool>)
 				{
@@ -2247,11 +2205,13 @@ namespace Protocol.Network
 				Write(attribute.MaxValue);
 			}
 		}
+
 		public void WriteCameraRotationOption(CameraRotationOption value)
 		{
 			Write(value.Value);
 			Write(value.time);
 		}
+
 		public CameraRotationOption ReadCameraRotationOption()
 		{
 			return new CameraRotationOption()
@@ -2260,16 +2220,16 @@ namespace Protocol.Network
 				time = ReadFloat()
 			};
 		}
+
 		public void WriteCameraSplineInstruction(CameraSplineInstruction value)
 		{
-			
 			Write(value.TotalTime);
 			Write(value.EaseType);
 			WriteUnsignedVarInt((uint)value.Curve.Length);
 			value.Curve = new Vector3[value.Curve.Length];
 			for (int i = 0; i < value.Curve.Length; i++)
 			{
-				 Write(value.Curve[i]);
+				Write(value.Curve[i]);
 			}
 
 			WriteUnsignedVarInt((uint)value.ProgressKeyFrames.Length);
@@ -2277,7 +2237,6 @@ namespace Protocol.Network
 			for (int i = 0; i < value.Curve.Length; i++)
 			{
 				Write(value.ProgressKeyFrames[i]);
-
 			}
 
 			WriteUnsignedVarInt((uint)value.RotationOptions.Length);
@@ -2287,6 +2246,7 @@ namespace Protocol.Network
 				WriteCameraRotationOption(value.RotationOptions[i]);
 			}
 		}
+
 		public CameraSplineInstruction ReadCameraSplineInstruction()
 		{
 			var value = new CameraSplineInstruction();
@@ -2304,7 +2264,6 @@ namespace Protocol.Network
 			for (int i = 0; i < count1; i++)
 			{
 				value.ProgressKeyFrames[i] = ReadVector2();
-
 			}
 
 			var count2 = ReadVarInt();
@@ -2316,6 +2275,7 @@ namespace Protocol.Network
 
 			return value;
 		}
+
 		public EntityAttributes ReadEntityAttributes()
 		{
 			var attributes = new EntityAttributes();
@@ -2372,11 +2332,13 @@ namespace Protocol.Network
 
 			return result;
 		}
+
 		public void Write(ParameterKeyframeValue value)
 		{
 			Write(value.Time);
 			Write(value.Value);
 		}
+
 		public ParameterKeyframeValue ReadParameterKeyframeValue()
 		{
 			return new ParameterKeyframeValue()
@@ -2385,6 +2347,7 @@ namespace Protocol.Network
 				Value = ReadVector3()
 			};
 		}
+
 		public void Write(Itemstates itemstates)
 		{
 			if (itemstates == null)
@@ -2392,6 +2355,7 @@ namespace Protocol.Network
 				WriteUnsignedVarInt(0);
 				return;
 			}
+
 			WriteUnsignedVarInt((uint)itemstates.Count);
 			foreach (var itemstate in itemstates)
 			{
@@ -2421,6 +2385,7 @@ namespace Protocol.Network
 						nbt.NbtFile.RootTag = componentNbt;
 					}
 				}
+
 				Write(nbt);
 			}
 		}
@@ -2454,24 +2419,24 @@ namespace Protocol.Network
 			switch (tag.TagType)
 			{
 				case NbtTagType.List:
-					{
-						foreach (var state in GetBlockStatesFromList((NbtList)tag))
-							yield return state;
-					}
+				{
+					foreach (var state in GetBlockStatesFromList((NbtList)tag))
+						yield return state;
+				}
 					break;
 
 				case NbtTagType.Compound:
-					{
-						foreach (var state in GetBlockStatesFromCompound((NbtCompound)tag))
-							yield return state;
-					}
+				{
+					foreach (var state in GetBlockStatesFromCompound((NbtCompound)tag))
+						yield return state;
+				}
 					break;
 
 				default:
-					{
-						if (TryGetStateFromTag(tag, out var state))
-							yield return state;
-					}
+				{
+					if (TryGetStateFromTag(tag, out var state))
+						yield return state;
+				}
 					break;
 			}
 		}
@@ -2547,6 +2512,7 @@ namespace Protocol.Network
 				WriteUnsignedVarInt(0);
 				return;
 			}
+
 			WriteUnsignedVarInt((uint)palette.Count);
 			foreach (BlockStateContainer record in palette.Values)
 			{
@@ -2597,6 +2563,7 @@ namespace Protocol.Network
 			{
 				layers.Add(ReadAbilityLayer());
 			}
+
 			return layers;
 		}
 
@@ -2626,10 +2593,11 @@ namespace Protocol.Network
 		{
 			if (links == null)
 			{
-				WriteUnsignedVarInt(0); 
+				WriteUnsignedVarInt(0);
 				return;
 			}
-			WriteUnsignedVarInt((uint)links.Count); 
+
+			WriteUnsignedVarInt((uint)links.Count);
 			foreach (var link in links)
 			{
 				Write(link);
@@ -2651,7 +2619,7 @@ namespace Protocol.Network
 
 		public void Write(Rules rules)
 		{
-			_writer.Write(rules.Count); 
+			_writer.Write(rules.Count);
 			foreach (var rule in rules)
 			{
 				Write(rule.Name);
@@ -2662,7 +2630,7 @@ namespace Protocol.Network
 
 		public Rules ReadRules()
 		{
-			int count = _reader.ReadInt32(); 
+			int count = _reader.ReadInt32();
 
 			var rules = new Rules();
 			for (int i = 0; i < count; i++)
@@ -2686,8 +2654,8 @@ namespace Protocol.Network
 				return;
 			}
 
-			_writer.Write((short)packInfos.Count); 
-												   
+			_writer.Write((short)packInfos.Count);
+
 			foreach (var info in packInfos)
 			{
 				Write(info.UUID);
@@ -2705,8 +2673,8 @@ namespace Protocol.Network
 
 		public TexturePackInfos ReadTexturePackInfos()
 		{
-			int count = _reader.ReadInt16(); 
-											 
+			int count = _reader.ReadInt16();
+
 
 			var packInfos = new TexturePackInfos();
 			for (int i = 0; i < count; i++)
@@ -2749,8 +2717,8 @@ namespace Protocol.Network
 				return;
 			}
 
-			_writer.Write((short)packInfos.Count); 
-												   
+			_writer.Write((short)packInfos.Count);
+
 			foreach (var info in packInfos)
 			{
 				Write(info.UUID);
@@ -2766,8 +2734,8 @@ namespace Protocol.Network
 
 		public ResourcePackInfos ReadResourcePackInfos()
 		{
-			int count = _reader.ReadInt16(); 
-											 
+			int count = _reader.ReadInt16();
+
 
 			var packInfos = new ResourcePackInfos();
 			for (int i = 0; i < count; i++)
@@ -2805,7 +2773,8 @@ namespace Protocol.Network
 				WriteUnsignedVarInt(0);
 				return;
 			}
-			WriteUnsignedVarInt((uint)packInfos.Count); 
+
+			WriteUnsignedVarInt((uint)packInfos.Count);
 			foreach (var info in packInfos)
 			{
 				Write(info.Id);
@@ -2843,6 +2812,7 @@ namespace Protocol.Network
 				Write((short)0);
 				return;
 			}
+
 			Write((short)ids.Count);
 
 			foreach (var id in ids)
@@ -2900,7 +2870,7 @@ namespace Protocol.Network
 			Write(skin.AnimationData);
 
 			Write(skin.Cape.Id);
-			Write(skin.SkinId + DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()); 
+			Write(skin.SkinId + DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());
 			Write(skin.ArmSize);
 			Write(skin.SkinColor);
 			Write(skin.PersonaPieces.Count);
@@ -2912,6 +2882,7 @@ namespace Protocol.Network
 				Write(piece.IsDefaultPiece);
 				Write(piece.ProductId);
 			}
+
 			Write(skin.SkinPieces.Count);
 			foreach (SkinPiece skinPiece in skin.SkinPieces)
 			{
@@ -2965,7 +2936,7 @@ namespace Protocol.Network
 			skin.AnimationData = ReadString();
 
 			skin.Cape.Id = ReadString();
-			ReadString(); 
+			ReadString();
 			skin.ArmSize = ReadString();
 			skin.SkinColor = ReadString();
 			int personaPieceCount = ReadInt();
@@ -2990,6 +2961,7 @@ namespace Protocol.Network
 				{
 					piece.Colors.Add(ReadString());
 				}
+
 				skin.SkinPieces.Add(piece);
 			}
 
@@ -2998,12 +2970,7 @@ namespace Protocol.Network
 			skin.Cape.OnClassicSkin = ReadBool();
 			skin.IsPrimaryUser = ReadBool();
 			skin.isOverride = ReadBool();
-			
-			
-			
-			
-			
-			
+
 
 			return skin;
 		}
@@ -3028,93 +2995,98 @@ namespace Protocol.Network
 				switch (recipe)
 				{
 					case ShapelessRecipe shapelessRecipe:
-						{
-							WriteSignedVarInt(Shapeless); 
+					{
+						WriteSignedVarInt(Shapeless);
 
-							var rec = shapelessRecipe;
-							var uuid = new UUID(Guid.NewGuid().ToString());
-							Write($"{uuid}");
-							WriteVarInt(rec.Input.Count);
-							foreach (Item stack in rec.Input)
-							{
-								WriteRecipeIngredient(stack);
-							}
-							WriteVarInt(rec.Result.Count);
-							foreach (Item item in rec.Result)
-							{
-								item.RuntimeId = 0;
-								Write(item, false);
-							}
-							Write(rec.Id);
-							Write(rec.Block);
-							WriteSignedVarInt(0); 
-							Write((byte)1); 
-							WriteVarInt(UniqueId); 
-												   
-							break;
+						var rec = shapelessRecipe;
+						var uuid = new UUID(Guid.NewGuid().ToString());
+						Write($"{uuid}");
+						WriteVarInt(rec.Input.Count);
+						foreach (Item stack in rec.Input)
+						{
+							WriteRecipeIngredient(stack);
 						}
+
+						WriteVarInt(rec.Result.Count);
+						foreach (Item item in rec.Result)
+						{
+							item.RuntimeId = 0;
+							Write(item, false);
+						}
+
+						Write(rec.Id);
+						Write(rec.Block);
+						WriteSignedVarInt(0);
+						Write((byte)1);
+						WriteVarInt(UniqueId);
+
+						break;
+					}
 					case ShapedRecipe shapedRecipe:
-						{
-							WriteSignedVarInt(Shaped); 
+					{
+						WriteSignedVarInt(Shaped);
 
-							var rec = shapedRecipe;
-							var uuid = new UUID(Guid.NewGuid().ToString());
-							Write($"{uuid}");
-							WriteSignedVarInt(rec.Width);
-							WriteSignedVarInt(rec.Height);
-							for (int w = 0; w < rec.Width; w++)
+						var rec = shapedRecipe;
+						var uuid = new UUID(Guid.NewGuid().ToString());
+						Write($"{uuid}");
+						WriteSignedVarInt(rec.Width);
+						WriteSignedVarInt(rec.Height);
+						for (int w = 0; w < rec.Width; w++)
+						{
+							for (int h = 0; h < rec.Height; h++)
 							{
-								for (int h = 0; h < rec.Height; h++)
-								{
-									WriteRecipeIngredient(rec.Input[(h * rec.Width) + w]);
-								}
+								WriteRecipeIngredient(rec.Input[(h * rec.Width) + w]);
 							}
-							WriteVarInt(rec.Result.Count);
-							foreach (Item item in rec.Result)
-							{
-								item.RuntimeId = 0;
-								Write(item, false);
-							}
-							Write(rec.Id);
-							Write(rec.Block);
-							WriteUnsignedVarInt(0); 
-							Write(true);  
-							Write((byte)1); 
-							WriteVarInt(UniqueId); 
-												   
-							break;
 						}
+
+						WriteVarInt(rec.Result.Count);
+						foreach (Item item in rec.Result)
+						{
+							item.RuntimeId = 0;
+							Write(item, false);
+						}
+
+						Write(rec.Id);
+						Write(rec.Block);
+						WriteUnsignedVarInt(0);
+						Write(true);
+						Write((byte)1);
+						WriteVarInt(UniqueId);
+
+						break;
+					}
 					case SmeltingRecipe smeltingRecipe:
+					{
+						var rec = smeltingRecipe;
+						if (rec.Input.Metadata == 0)
 						{
-							var rec = smeltingRecipe;
-							if (rec.Input.Metadata == 0)
-							{
-								WriteSignedVarInt(Furnace);
-								WriteSignedVarInt(rec.Input.Id);
-								Write(rec.Result, false);
-								Write(rec.Block);
-							}
-							else
-							{
-								WriteSignedVarInt(FurnaceData);
-								WriteSignedVarInt(rec.Input.Id);
-								WriteSignedVarInt(rec.Input.Metadata);
-								Write(rec.Result, false);
-								Write(rec.Block);
-							}
-							break;
+							WriteSignedVarInt(Furnace);
+							WriteSignedVarInt(rec.Input.Id);
+							Write(rec.Result, false);
+							Write(rec.Block);
 						}
+						else
+						{
+							WriteSignedVarInt(FurnaceData);
+							WriteSignedVarInt(rec.Input.Id);
+							WriteSignedVarInt(rec.Input.Metadata);
+							Write(rec.Result, false);
+							Write(rec.Block);
+						}
+
+						break;
+					}
 					case MultiRecipe multiRecipe:
-						{
-							WriteSignedVarInt(Multi); 
-							Write(recipe.Id);
-							WriteVarInt(UniqueId); 
-							break;
-						}
+					{
+						WriteSignedVarInt(Multi);
+						Write(recipe.Id);
+						WriteVarInt(UniqueId);
+						break;
+					}
 				}
+
 				UniqueId++;
 			}
-			
 		}
 
 		public Recipes ReadRecipes()
@@ -3127,9 +3099,8 @@ namespace Protocol.Network
 			{
 				int recipeType = ReadSignedVarInt();
 
-				
 
-				if (recipeType < 0 )
+				if (recipeType < 0)
 				{
 					Console.WriteLine("Read void recipe");
 					break;
@@ -3139,199 +3110,204 @@ namespace Protocol.Network
 				{
 					case Shapeless:
 					case ShulkerBox:
+					{
+						var recipe = new ShapelessRecipe();
+						ReadString();
+						int ingrediensCount = ReadVarInt();
+						for (int j = 0; j < ingrediensCount; j++)
 						{
-							var recipe = new ShapelessRecipe();
-							ReadString(); 
-							int ingrediensCount = ReadVarInt(); 
-							for (int j = 0; j < ingrediensCount; j++)
-							{
-								recipe.Input.Add(ReadRecipeData());
-							}
-							int resultCount = ReadVarInt(); 
-							for (int j = 0; j < resultCount; j++)
-							{
-								recipe.Result.Add(ReadItem(false));
-							}
-							recipe.Id = ReadUUID(); 
-							recipe.Block = ReadString(); 
-							ReadSignedVarInt(); 
-							var unlockReq = ReadByte(); 
-							if (unlockReq == 0)
-							{
-								var ingredientCount = ReadVarInt();
-								for (int a = 0; a < ingredientCount; a++)
-								{
-									ReadRecipeData();
-								}
-							}
-							recipe.UniqueId = ReadVarInt(); 
-															
-															
-
-							break;
+							recipe.Input.Add(ReadRecipeData());
 						}
+
+						int resultCount = ReadVarInt();
+						for (int j = 0; j < resultCount; j++)
+						{
+							recipe.Result.Add(ReadItem(false));
+						}
+
+						recipe.Id = ReadUUID();
+						recipe.Block = ReadString();
+						ReadSignedVarInt();
+						var unlockReq = ReadByte();
+						if (unlockReq == 0)
+						{
+							var ingredientCount = ReadVarInt();
+							for (int a = 0; a < ingredientCount; a++)
+							{
+								ReadRecipeData();
+							}
+						}
+
+						recipe.UniqueId = ReadVarInt();
+
+
+						break;
+					}
 					case Shaped:
-						{
-							var uniqueid = ReadString(); 
-														 
-							int width = ReadSignedVarInt(); 
-							int height = ReadSignedVarInt(); 
-															 
-							var recipe = new ShapedRecipe(width, height);
-							if (width > 3 || height > 3)
-								throw new Exception("Wrong number of ingredience. Width=" + width + ", height=" + height);
-							for (int w = 0; w < width; w++)
-							{
-								for (int h = 0; h < height; h++)
-								{
-									recipe.Input[(h * width) + w] = ReadRecipeData();
-								}
-							}
-							int resultCount = ReadVarInt(); 
-															
-							for (int j = 0; j < resultCount; j++)
-							{
-								recipe.Result.Add(ReadItem(false));
-							}
-							recipe.Id = ReadUUID(); 
-													
-							recipe.Block = ReadString(); 
-							ReadUnsignedVarInt(); 
-							var symetric = ReadBool(); 
-							var unlockReq = ReadByte(); 
-							if (unlockReq == 0)
-							{
-								var ingredientCount = ReadVarInt();
-								for (int a = 0; a < ingredientCount; a++)
-								{
-									ReadRecipeData();
-								}
-							}
-							recipe.UniqueId = ReadVarInt(); 
-							recipes.Add(recipe);
+					{
+						var uniqueid = ReadString();
 
-							break;
+						int width = ReadSignedVarInt();
+						int height = ReadSignedVarInt();
+
+						var recipe = new ShapedRecipe(width, height);
+						if (width > 3 || height > 3)
+							throw new Exception("Wrong number of ingredience. Width=" + width + ", height=" + height);
+						for (int w = 0; w < width; w++)
+						{
+							for (int h = 0; h < height; h++)
+							{
+								recipe.Input[(h * width) + w] = ReadRecipeData();
+							}
 						}
+
+						int resultCount = ReadVarInt();
+
+						for (int j = 0; j < resultCount; j++)
+						{
+							recipe.Result.Add(ReadItem(false));
+						}
+
+						recipe.Id = ReadUUID();
+
+						recipe.Block = ReadString();
+						ReadUnsignedVarInt();
+						var symetric = ReadBool();
+						var unlockReq = ReadByte();
+						if (unlockReq == 0)
+						{
+							var ingredientCount = ReadVarInt();
+							for (int a = 0; a < ingredientCount; a++)
+							{
+								ReadRecipeData();
+							}
+						}
+
+						recipe.UniqueId = ReadVarInt();
+						recipes.Add(recipe);
+
+						break;
+					}
 					case Furnace:
-						{
-							var recipe = new SmeltingRecipe();
-							short id = (short)ReadSignedVarInt(); 
-																  
-							Item result = ReadItem(false); 
-							recipe.Block = ReadString(); 
-							recipe.Input = ItemFactory.GetItem(id, 0);
-							recipe.Result = result;
-							
-							
-							break;
-						}
+					{
+						var recipe = new SmeltingRecipe();
+						short id = (short)ReadSignedVarInt();
+
+						Item result = ReadItem(false);
+						recipe.Block = ReadString();
+						recipe.Input = ItemFactory.GetItem(id, 0);
+						recipe.Result = result;
+
+
+						break;
+					}
 					case FurnaceData:
-						{
-							
-							var recipe = new SmeltingRecipe();
-							short id = (short)ReadSignedVarInt(); 
-							short meta = (short)ReadSignedVarInt(); 
-							Item result = ReadItem(false); 
-							recipe.Block = ReadString(); 
-							recipe.Input = ItemFactory.GetItem(id, meta);
-							recipe.Result = result;
-							
-							
+					{
+						var recipe = new SmeltingRecipe();
+						short id = (short)ReadSignedVarInt();
+						short meta = (short)ReadSignedVarInt();
+						Item result = ReadItem(false);
+						recipe.Block = ReadString();
+						recipe.Input = ItemFactory.GetItem(id, meta);
+						recipe.Result = result;
 
-							break;
-						}
+
+						break;
+					}
 					case Multi:
-						{
-							var recipe = new MultiRecipe();
-							recipe.Id = ReadUUID();
-							recipe.UniqueId = ReadVarInt(); 
-															
-							break;
-						}
+					{
+						var recipe = new MultiRecipe();
+						recipe.Id = ReadUUID();
+						recipe.UniqueId = ReadVarInt();
+
+						break;
+					}
 					case ShapelessChemistry:
+					{
+						var recipe = new ShapelessRecipe();
+						ReadString();
+						int ingrediensCount = ReadVarInt();
+						for (int j = 0; j < ingrediensCount; j++)
 						{
-							var recipe = new ShapelessRecipe();
-							ReadString(); 
-							int ingrediensCount = ReadVarInt(); 
-							for (int j = 0; j < ingrediensCount; j++)
-							{
-								recipe.Input.Add(ReadRecipeData());
-							}
-							int resultCount = ReadVarInt(); 
-							for (int j = 0; j < resultCount; j++)
-							{
-								recipe.Result.Add(ReadItem(false));
-							}
-							recipe.Id = ReadUUID(); 
-							recipe.Block = ReadString(); 
-							ReadSignedVarInt(); 
-							recipe.UniqueId = ReadVarInt(); 
-															
-															
-							break;
+							recipe.Input.Add(ReadRecipeData());
 						}
+
+						int resultCount = ReadVarInt();
+						for (int j = 0; j < resultCount; j++)
+						{
+							recipe.Result.Add(ReadItem(false));
+						}
+
+						recipe.Id = ReadUUID();
+						recipe.Block = ReadString();
+						ReadSignedVarInt();
+						recipe.UniqueId = ReadVarInt();
+
+
+						break;
+					}
 					case ShapedChemistry:
+					{
+						ReadString();
+						int width = ReadSignedVarInt();
+						int height = ReadSignedVarInt();
+						var recipe = new ShapedRecipe(width, height);
+						if (width > 3 || height > 3)
+							throw new Exception("Wrong number of ingredience. Width=" + width + ", height=" + height);
+						for (int w = 0; w < width; w++)
 						{
-							ReadString(); 
-							int width = ReadSignedVarInt(); 
-							int height = ReadSignedVarInt(); 
-							var recipe = new ShapedRecipe(width, height);
-							if (width > 3 || height > 3)
-								throw new Exception("Wrong number of ingredience. Width=" + width + ", height=" + height);
-							for (int w = 0; w < width; w++)
+							for (int h = 0; h < height; h++)
 							{
-								for (int h = 0; h < height; h++)
-								{
-									recipe.Input[(h * width) + w] = ReadRecipeData();
-								}
+								recipe.Input[(h * width) + w] = ReadRecipeData();
 							}
-
-							int resultCount = ReadVarInt(); 
-							for (int j = 0; j < resultCount; j++)
-							{
-								recipe.Result.Add(ReadItem(false));
-							}
-							recipe.Id = ReadUUID(); 
-							recipe.Block = ReadString(); 
-							ReadSignedVarInt(); 
-							recipe.UniqueId = ReadVarInt(); 
-															
-							break;
 						}
+
+						int resultCount = ReadVarInt();
+						for (int j = 0; j < resultCount; j++)
+						{
+							recipe.Result.Add(ReadItem(false));
+						}
+
+						recipe.Id = ReadUUID();
+						recipe.Block = ReadString();
+						ReadSignedVarInt();
+						recipe.UniqueId = ReadVarInt();
+
+						break;
+					}
 					case SmithingTrim:
-						{
-							var recipe = new SmithingTrimRecipe();
-							recipe.RecipeId = ReadString();
-							recipe.Template = ReadRecipeData();
-							recipe.Input = ReadRecipeData();
-							recipe.Addition = ReadRecipeData();
-							recipe.Block = ReadString();
-							recipe.UniqueId = ReadVarInt();
-							
+					{
+						var recipe = new SmithingTrimRecipe();
+						recipe.RecipeId = ReadString();
+						recipe.Template = ReadRecipeData();
+						recipe.Input = ReadRecipeData();
+						recipe.Addition = ReadRecipeData();
+						recipe.Block = ReadString();
+						recipe.UniqueId = ReadVarInt();
 
-							break;
-						}
+
+						break;
+					}
 					case SmithingTransform:
-						{
-							var recipe = new SmithingTransformRecipe();
-							recipe.RecipeId = ReadString(); 
-							recipe.Template = ReadRecipeData();
-							recipe.Input = ReadRecipeData();
-							recipe.Addition = ReadRecipeData();
-							recipe.Output = ReadItem(false);
-							recipe.Block = ReadString(); 
-							recipe.UniqueId = ReadVarInt(); 
-															
+					{
+						var recipe = new SmithingTransformRecipe();
+						recipe.RecipeId = ReadString();
+						recipe.Template = ReadRecipeData();
+						recipe.Input = ReadRecipeData();
+						recipe.Addition = ReadRecipeData();
+						recipe.Output = ReadItem(false);
+						recipe.Block = ReadString();
+						recipe.UniqueId = ReadVarInt();
 
-							break;
-						}
+
+						break;
+					}
 					default:
 						Console.WriteLine($"Read unknown recipe type: {recipeType}");
-						
+
 						break;
 				}
 			}
-
 
 
 			return recipes;
@@ -3345,31 +3321,33 @@ namespace Protocol.Network
 				WriteVarInt(0);
 				return;
 			}
+
 			Write(true);
-			var translated = new TranslatedItem(0,0);
+			var translated = new TranslatedItem(0, 0);
 			if (translated.Id != stack.Id)
 			{
-				Write((short)translated.Id);    
+				Write((short)translated.Id);
 				Write(translated.Meta);
 			}
 			else
 			{
-				Write(stack.Id);                 
+				Write(stack.Id);
 				Write(stack.Metadata);
 			}
+
 			WriteSignedVarInt(stack.Count);
 		}
 
 		public Item ReadRecipeData()
 		{
 			short type = ReadByte();
-			
+
 			if (type == 1)
 			{
 				short id = ReadShort();
 				short meta = ReadShort();
 				short count = (short)ReadSignedVarInt();
-				
+
 				return ItemFactory.GetItem(id, meta, count);
 			}
 			else if (type == 2)
@@ -3377,31 +3355,32 @@ namespace Protocol.Network
 				string expression = ReadString();
 				int version = ReadByte();
 				short count = (short)ReadSignedVarInt();
-				
+
 				return ItemFactory.GetItem(ItemFactory.GetItemIdByName(expression));
 			}
 			else if (type == 3)
 			{
 				string sId = ReadString();
 				short count = (short)ReadSignedVarInt();
-				
+
 				return ItemFactory.GetItem(sId, 0, count);
 			}
 			else if (type == 4)
 			{
 				string sId = ReadString();
 				short meta = ReadShort();
-				
+
 				return new ItemAir();
 			}
 			else if (type == 5)
 			{
 				string stri = ReadString();
-				
+
 				ItemFactory.GetItem(ItemFactory.GetItemIdByName(stri));
 			}
+
 			short coun = (short)ReadSignedVarInt();
-			
+
 			return new ItemAir();
 		}
 
@@ -3411,7 +3390,7 @@ namespace Protocol.Network
 			if (type == -1)
 			{
 			}
-			
+
 			return new ItemAir();
 		}
 
@@ -3467,7 +3446,8 @@ namespace Protocol.Network
 				var inputMeta = inputIdAndMeta & 0x7fff;
 
 				var outputCount = (int)ReadUnsignedVarInt();
-				MaterialReducerRecipe.MaterialReducerRecipeOutput[] outputs = new MaterialReducerRecipe.MaterialReducerRecipeOutput[outputCount];
+				MaterialReducerRecipe.MaterialReducerRecipeOutput[] outputs =
+					new MaterialReducerRecipe.MaterialReducerRecipeOutput[outputCount];
 
 				for (int o = 0; o < outputs.Length; o++)
 				{
@@ -3519,8 +3499,8 @@ namespace Protocol.Network
 		{
 			WriteSignedVarLong(map.MapId);
 			WriteUnsignedVarInt((uint)map.UpdateType);
-			Write((byte)0); 
-			Write(false); 
+			Write((byte)0);
+			Write(false);
 			Write(map.Origin);
 
 			if ((map.UpdateType & MapUpdateFlagInitialisation) != 0)
@@ -3611,30 +3591,26 @@ namespace Protocol.Network
 
 			map.MapId = ReadSignedVarLong();
 			map.UpdateType = (byte)ReadUnsignedVarInt();
-			ReadByte(); 
-			ReadBool(); 
+			ReadByte();
+			ReadBool();
 
 			if ((map.UpdateType & MapUpdateFlagInitialisation) == MapUpdateFlagInitialisation)
 			{
-				
 				var count = ReadUnsignedVarInt();
-				for (int i = 0; i < count - 1; i++) 
+				for (int i = 0; i < count - 1; i++)
 				{
 					var eid = ReadSignedVarLong();
 				}
 			}
 
-			if ((map.UpdateType & MapUpdateFlagTexture) == MapUpdateFlagTexture || (map.UpdateType & MapUpdateFlagDecoration) == MapUpdateFlagDecoration)
+			if ((map.UpdateType & MapUpdateFlagTexture) == MapUpdateFlagTexture ||
+			    (map.UpdateType & MapUpdateFlagDecoration) == MapUpdateFlagDecoration)
 			{
 				map.Scale = ReadByte();
-				
 			}
 
 			if ((map.UpdateType & MapUpdateFlagDecoration) == MapUpdateFlagDecoration)
 			{
-				
-				
-
 				try
 				{
 					var entityCount = ReadUnsignedVarInt();
@@ -3643,12 +3619,10 @@ namespace Protocol.Network
 						var type = ReadInt();
 						if (type == 0)
 						{
-							
 							var q = ReadSignedVarLong();
 						}
 						else if (type == 1)
 						{
-							
 							var b = ReadBlockCoordinates();
 						}
 					}
@@ -3669,21 +3643,19 @@ namespace Protocol.Network
 				}
 				catch (Exception e)
 				{
-
 				}
 			}
 
 			if ((map.UpdateType & MapUpdateFlagTexture) == MapUpdateFlagTexture)
 			{
-				
 				try
 				{
 					map.Col = ReadSignedVarInt();
-					map.Row = ReadSignedVarInt(); 
+					map.Row = ReadSignedVarInt();
 
-					map.XOffset = ReadSignedVarInt(); 
-					map.ZOffset = ReadSignedVarInt(); 
-					ReadUnsignedVarInt(); 
+					map.XOffset = ReadSignedVarInt();
+					map.ZOffset = ReadSignedVarInt();
+					ReadUnsignedVarInt();
 					for (int col = 0; col < map.Col; col++)
 					{
 						for (int row = 0; row < map.Row; row++)
@@ -3698,51 +3670,6 @@ namespace Protocol.Network
 				}
 			}
 
-			
-			
-			
-			
-
-			
-			
-			
-			
-			
-			
-
-			
-			
-			
-
-			
-			
-			
-			
-			
-			
-			
-			
-			
-
-			
-			
-
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
 
 			return map;
 		}
@@ -3756,6 +3683,7 @@ namespace Protocol.Network
 			{
 				mapData.mapData.Add(new pixelsData { pixel = ReadUnsignedVarInt(), index = ReadShort() });
 			}
+
 			return mapData;
 		}
 
@@ -3763,7 +3691,9 @@ namespace Protocol.Network
 		{
 			if (list == null) list = new ScoreEntries();
 
-			Write((byte)(list.FirstOrDefault() is ScoreEntryRemove ? McpeSetScore.Types.Remove : McpeSetScore.Types.Change));
+			Write((byte)(list.FirstOrDefault() is ScoreEntryRemove
+				? McpeSetScore.Types.Remove
+				: McpeSetScore.Types.Change));
 			WriteUnsignedVarInt((uint)list.Count);
 			foreach (var entry in list)
 			{
@@ -3844,7 +3774,9 @@ namespace Protocol.Network
 		{
 			if (list == null) list = new ScoreboardIdentityEntries();
 
-			Write((byte)(list.FirstOrDefault() is ScoreboardClearIdentityEntry ? McpeSetScoreboardIdentity.Operations.ClearIdentity : McpeSetScoreboardIdentity.Operations.RegisterIdentity));
+			Write((byte)(list.FirstOrDefault() is ScoreboardClearIdentityEntry
+				? McpeSetScoreboardIdentity.Operations.ClearIdentity
+				: McpeSetScoreboardIdentity.Operations.RegisterIdentity));
 			WriteUnsignedVarInt((uint)list.Count);
 			foreach (var entry in list)
 			{
@@ -3895,6 +3827,7 @@ namespace Protocol.Network
 				var enabled = ReadBool();
 				experiments.Add(new Experiments.Experiment(experimentName, enabled));
 			}
+
 			return experiments;
 		}
 
@@ -3905,6 +3838,7 @@ namespace Protocol.Network
 				Write(0);
 				return;
 			}
+
 			Write(experiments.Count);
 
 			foreach (var experiment in experiments)
@@ -4059,7 +3993,7 @@ namespace Protocol.Network
 		public DimensionData ReadDimensionData()
 		{
 			DimensionData data = new DimensionData();
-            data.Identifier = ReadString();
+			data.Identifier = ReadString();
 			data.MaxHeight = ReadVarInt();
 			data.MinHeight = ReadVarInt();
 			data.Generator = ReadVarInt();
@@ -4110,6 +4044,7 @@ namespace Protocol.Network
 				WriteUnsignedVarInt(0);
 				return;
 			}
+
 			WriteUnsignedVarInt((uint)syncData.intProperties.Count);
 
 			foreach (var intP in syncData.intProperties)
@@ -4141,6 +4076,7 @@ namespace Protocol.Network
 			{
 				syncData.floatProperties.Add(ReadUnsignedVarInt(), ReadFloat());
 			}
+
 			return syncData;
 		}
 
@@ -4152,6 +4088,7 @@ namespace Protocol.Network
 			{
 				Ids.emoteId.Add(ReadUUID());
 			}
+
 			return Ids;
 		}
 
@@ -4164,25 +4101,6 @@ namespace Protocol.Network
 			}
 		}
 
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-
-		
-		
-		
-		
 
 		public fogStack Read()
 		{
@@ -4192,6 +4110,7 @@ namespace Protocol.Network
 			{
 				stack.fogList.Add(ReadString());
 			}
+
 			return stack;
 		}
 
@@ -4243,9 +4162,10 @@ namespace Protocol.Network
 				{
 					biome.Id = ReadShort();
 				}
+
 				biome.Temperature = ReadFloat();
 				biome.Downfall = ReadFloat();
-				
+
 				biomes[i] = biome;
 			}
 
@@ -4257,622 +4177,632 @@ namespace Protocol.Network
 
 			return biomes;
 		}
-      
-
-        #region BiomeWeight
-
-        public void WriteBiomeWeight(BiomeWeight weight)
-        {
-            Write(weight.Biome); 
-            WriteUnsignedVarInt(weight.Weight); 
-        }
-
-        public BiomeWeight ReadBiomeWeight()
-        {
-            short biome = ReadShort(false); 
-            uint weight = ReadUnsignedVarInt(); 
-            return new BiomeWeight { Biome = biome, Weight = weight };
-        }
-        #endregion
-
-        #region BiomeTemperatureWeight
-
-        public void WriteBiomeTemperatureWeight(BiomeTemperatureWeight tempWeight)
-        {
-            WriteSignedVarInt(tempWeight.Temperature); 
-            WriteUnsignedVarInt(tempWeight.Weight); 
-        }
-
-        public BiomeTemperatureWeight ReadBiomeTemperatureWeight()
-        {
-            int temperature = ReadSignedVarInt(); 
-            uint weight = ReadUnsignedVarInt(); 
-            return new BiomeTemperatureWeight { Temperature = temperature, Weight = weight };
-        }
-        #endregion
-
-        #region BiomeConditionalTransformation
-
-        public void WriteBiomeConditionalTransformation(BiomeConditionalTransformation transformation)
-        {
-            
-            WriteSignedVarInt(transformation.WeightedBiomes?.Length ?? 0);
-            if (transformation.WeightedBiomes != null)
-            {
-                foreach (var item in transformation.WeightedBiomes)
-                {
-                    WriteBiomeWeight(item);
-                }
-            }
-            Write(transformation.ConditionJSON); 
-            WriteUnsignedVarInt(transformation.MinPassingNeighbours); 
-        }
-
-        public BiomeConditionalTransformation ReadBiomeConditionalTransformation()
-        {
-            
-            int count = ReadSignedVarInt();
-            BiomeWeight[] weightedBiomes = new BiomeWeight[count];
-            for (int i = 0; i < count; i++)
-            {
-                weightedBiomes[i] = ReadBiomeWeight();
-            }
-
-            short conditionJson = ReadShort(false); 
-            uint minPassingNeighbours = ReadUnsignedVarInt(); 
-
-            return new BiomeConditionalTransformation
-            {
-                WeightedBiomes = weightedBiomes,
-                ConditionJSON = conditionJson,
-                MinPassingNeighbours = minPassingNeighbours
-            };
-        }
-        #endregion
-
-        #region BiomeMultiNoiseRules
-
-        public void WriteBiomeMultiNoiseRules(BiomeMultiNoiseRules rules)
-        {
-            Write(rules.Temperature); 
-            Write(rules.Humidity); 
-            Write(rules.Altitude); 
-            Write(rules.Weirdness); 
-            Write(rules.Weight); 
-        }
-
-        public BiomeMultiNoiseRules ReadBiomeMultiNoiseRules()
-        {
-            float temperature = ReadFloat(); 
-            float humidity = ReadFloat(); 
-            float altitude = ReadFloat(); 
-            float weirdness = ReadFloat(); 
-            float weight = ReadFloat(); 
-
-            return new BiomeMultiNoiseRules
-            {
-                Temperature = temperature,
-                Humidity = humidity,
-                Altitude = altitude,
-                Weirdness = weirdness,
-                Weight = weight
-            };
-        }
-        #endregion
-
-        #region BiomeOverworldRules
-
-        public void WriteBiomeOverworldRules(BiomeOverworldRules rules)
-        {
-            
-            WriteSignedVarInt(rules.HillsTransformations?.Length ?? 0);
-            if (rules.HillsTransformations != null)
-                foreach (var item in rules.HillsTransformations)
-                    WriteBiomeWeight(item);
-
-            WriteSignedVarInt(rules.MutateTransformations?.Length ?? 0);
-            if (rules.MutateTransformations != null)
-                foreach (var item in rules.MutateTransformations)
-                    WriteBiomeWeight(item);
-
-            WriteSignedVarInt(rules.RiverTransformations?.Length ?? 0);
-            if (rules.RiverTransformations != null)
-                foreach (var item in rules.RiverTransformations)
-                    WriteBiomeWeight(item);
-
-            WriteSignedVarInt(rules.ShoreTransformations?.Length ?? 0);
-            if (rules.ShoreTransformations != null)
-                foreach (var item in rules.ShoreTransformations)
-                    WriteBiomeWeight(item);
-
-            WriteSignedVarInt(rules.PreHillsEdgeTransformations?.Length ?? 0);
-            if (rules.PreHillsEdgeTransformations != null)
-                foreach (var item in rules.PreHillsEdgeTransformations)
-                    WriteBiomeConditionalTransformation(item);
-
-            WriteSignedVarInt(rules.PostShoreEdgeTransformations?.Length ?? 0);
-            if (rules.PostShoreEdgeTransformations != null)
-                foreach (var item in rules.PostShoreEdgeTransformations)
-                    WriteBiomeConditionalTransformation(item);
-
-            WriteSignedVarInt(rules.ClimateTransformations?.Length ?? 0);
-            if (rules.ClimateTransformations != null)
-                foreach (var item in rules.ClimateTransformations)
-                    WriteBiomeTemperatureWeight(item);
-        }
-
-        public BiomeOverworldRules ReadBiomeOverworldRules()
-        {
-            int count1 = ReadSignedVarInt();
-            BiomeWeight[] hills = new BiomeWeight[count1];
-            for (int i = 0; i < count1; i++) hills[i] = ReadBiomeWeight();
-
-            int count2 = ReadSignedVarInt();
-            BiomeWeight[] mutate = new BiomeWeight[count2];
-            for (int i = 0; i < count2; i++) mutate[i] = ReadBiomeWeight();
-
-            int count3 = ReadSignedVarInt();
-            BiomeWeight[] river = new BiomeWeight[count3];
-            for (int i = 0; i < count3; i++) river[i] = ReadBiomeWeight();
-
-            int count4 = ReadSignedVarInt();
-            BiomeWeight[] shore = new BiomeWeight[count4];
-            for (int i = 0; i < count4; i++) shore[i] = ReadBiomeWeight();
-
-            int count5 = ReadSignedVarInt();
-            BiomeConditionalTransformation[] preHills = new BiomeConditionalTransformation[count5];
-            for (int i = 0; i < count5; i++) preHills[i] = ReadBiomeConditionalTransformation();
-
-            int count6 = ReadSignedVarInt();
-            BiomeConditionalTransformation[] postShore = new BiomeConditionalTransformation[count6];
-            for (int i = 0; i < count6; i++) postShore[i] = ReadBiomeConditionalTransformation();
-
-            int count7 = ReadSignedVarInt();
-            BiomeTemperatureWeight[] climate = new BiomeTemperatureWeight[count7];
-            for (int i = 0; i < count7; i++) climate[i] = ReadBiomeTemperatureWeight();
-
-            return new BiomeOverworldRules
-            {
-                HillsTransformations = hills,
-                MutateTransformations = mutate,
-                RiverTransformations = river,
-                ShoreTransformations = shore,
-                PreHillsEdgeTransformations = preHills,
-                PostShoreEdgeTransformations = postShore,
-                ClimateTransformations = climate
-            };
-        }
-        #endregion
-
-        #region BiomeCappedSurface
-
-        public void WriteBiomeCappedSurface(BiomeCappedSurface surface)
-        {
-            
-            WriteSignedVarInt(surface.FloorBlocks?.Length ?? 0);
-            if (surface.FloorBlocks != null)
-                foreach (var item in surface.FloorBlocks)
-                    Write(item, false); 
-
-            
-            WriteSignedVarInt(surface.CeilingBlocks?.Length ?? 0);
-            if (surface.CeilingBlocks != null)
-                foreach (var item in surface.CeilingBlocks)
-                    Write(item, false); 
-
-            
-            Write(surface.SeaBlock.HasValue);
-            if (surface.SeaBlock.HasValue) WriteUnsignedVarInt(surface.SeaBlock.Value);
-
-            
-            Write(surface.FoundationBlock.HasValue);
-            if (surface.FoundationBlock.HasValue) WriteUnsignedVarInt(surface.FoundationBlock.Value);
-
-            
-            Write(surface.BeachBlock.HasValue);
-            if (surface.BeachBlock.HasValue) WriteUnsignedVarInt(surface.BeachBlock.Value);
-        }
-
-        public BiomeCappedSurface ReadBiomeCappedSurface()
-        {
-            
-            int count1 = ReadSignedVarInt();
-            int[] floor = new int[count1];
-            for (int i = 0; i < count1; i++) floor[i] = ReadInt(false); 
-
-            
-            int count2 = ReadSignedVarInt();
-            int[] ceiling = new int[count2];
-            for (int i = 0; i < count2; i++) ceiling[i] = ReadInt(false); 
-
-            
-            bool hasSea = ReadBool();
-            Optional<uint> seaBlock = new Optional<uint>();
-            if (hasSea) seaBlock = new Optional<uint>(ReadUnsignedVarInt());
-
-            
-            bool hasFoundation = ReadBool();
-            Optional<uint> foundationBlock = new Optional<uint>();
-            if (hasFoundation) foundationBlock = new Optional<uint>(ReadUnsignedVarInt());
-
-            
-            bool hasBeach = ReadBool();
-            Optional<uint> beachBlock = new Optional<uint>();
-            if (hasBeach) beachBlock = new Optional<uint>(ReadUnsignedVarInt());
-
-            return new BiomeCappedSurface
-            {
-                FloorBlocks = floor,
-                CeilingBlocks = ceiling,
-                SeaBlock = seaBlock,
-                FoundationBlock = foundationBlock,
-                BeachBlock = beachBlock
-            };
-        }
-        #endregion
-
-        #region BiomeMesaSurface
-
-        public void WriteBiomeMesaSurface(BiomeMesaSurface mesa)
-        {
-            WriteUnsignedVarInt(mesa.ClayMaterial); 
-            WriteUnsignedVarInt(mesa.HardClayMaterial); 
-            Write(mesa.BrycePillars); 
-            Write(mesa.HasForest); 
-        }
-
-        public BiomeMesaSurface ReadBiomeMesaSurface()
-        {
-            uint clay = ReadUnsignedVarInt(); 
-            uint hardClay = ReadUnsignedVarInt(); 
-            bool bryce = ReadBool(); 
-            bool forest = ReadBool(); 
-
-            return new BiomeMesaSurface
-            {
-                ClayMaterial = clay,
-                HardClayMaterial = hardClay,
-                BrycePillars = bryce,
-                HasForest = forest
-            };
-        }
-        #endregion
-
-        #region BiomeSurfaceMaterial
-
-        public void WriteBiomeSurfaceMaterial(BiomeSurfaceMaterial material)
-        {
-            Write(material.TopBlock, false); 
-            Write(material.MidBlock, false); 
-            Write(material.SeaFloorBlock, false); 
-            Write(material.FoundationBlock, false); 
-            Write(material.SeaBlock, false); 
-            Write(material.SeaFloorDepth, false); 
-        }
-
-        public BiomeSurfaceMaterial ReadBiomeSurfaceMaterial()
-        {
-            int top = ReadInt(false); 
-            int mid = ReadInt(false); 
-            int seaFloor = ReadInt(false); 
-            int foundation = ReadInt(false); 
-            int sea = ReadInt(false); 
-            int seaFloorDepth = ReadInt(false); 
-
-            return new BiomeSurfaceMaterial
-            {
-                TopBlock = top,
-                MidBlock = mid,
-                SeaFloorBlock = seaFloor,
-                FoundationBlock = foundation,
-                SeaBlock = sea,
-                SeaFloorDepth = seaFloorDepth
-            };
-        }
-        #endregion
-
-        #region BiomeElementData
-
-        public void WriteBiomeElementData(BiomeElementData data)
-        {
-            Write(data.NoiseFrequencyScale); 
-            Write(data.NoiseLowerBound); 
-            Write(data.NoiseUpperBound); 
-            WriteSignedVarInt(data.HeightMinType); 
-            Write(data.HeightMin); 
-            WriteSignedVarInt(data.HeightMaxType); 
-            Write(data.HeightMax); 
-            WriteBiomeSurfaceMaterial(data.AdjustedMaterials); 
-        }
-
-        public BiomeElementData ReadBiomeElementData()
-        {
-            float freq = ReadFloat(); 
-            float lower = ReadFloat(); 
-            float upper = ReadFloat(); 
-            int minHeightType = ReadSignedVarInt(); 
-            short minHeight = ReadShort(false); 
-            int maxHeightType = ReadSignedVarInt(); 
-            short maxHeight = ReadShort(false); 
-            BiomeSurfaceMaterial materials = ReadBiomeSurfaceMaterial(); 
-
-            return new BiomeElementData
-            {
-                NoiseFrequencyScale = freq,
-                NoiseLowerBound = lower,
-                NoiseUpperBound = upper,
-                HeightMinType = minHeightType,
-                HeightMin = minHeight,
-                HeightMaxType = maxHeightType,
-                HeightMax = maxHeight,
-                AdjustedMaterials = materials
-            };
-        }
-        #endregion
-
-        #region BiomeMountainParameters
-
-        public void WriteBiomeMountainParameters(BiomeMountainParameters parameters)
-        {
-            Write(parameters.SteepBlock, false); 
-            Write(parameters.NorthSlopes); 
-            Write(parameters.SouthSlopes); 
-            Write(parameters.WestSlopes); 
-            Write(parameters.EastSlopes); 
-            Write(parameters.TopSlideEnabled); 
-        }
-
-        public BiomeMountainParameters ReadBiomeMountainParameters()
-        {
-            int steep = ReadInt(false); 
-            bool north = ReadBool(); 
-            bool south = ReadBool(); 
-            bool west = ReadBool(); 
-            bool east = ReadBool(); 
-            bool topSlide = ReadBool(); 
-
-            return new BiomeMountainParameters
-            {
-                SteepBlock = steep,
-                NorthSlopes = north,
-                SouthSlopes = south,
-                WestSlopes = west,
-                EastSlopes = east,
-                TopSlideEnabled = topSlide
-            };
-        }
-        #endregion
-
-        #region BiomeCoordinate
-
-        public void WriteBiomeCoordinate(BiomeCoordinate coord)
-        {
-            WriteSignedVarInt(coord.MinValueType); 
-            Write(coord.MinValue); 
-            WriteSignedVarInt(coord.MaxValueType); 
-            Write(coord.MaxValue); 
-            WriteUnsignedVarInt(coord.GridOffset); 
-            WriteUnsignedVarInt(coord.GridStepSize); 
-            WriteSignedVarInt(coord.Distribution); 
-        }
-
-        public BiomeCoordinate ReadBiomeCoordinate()
-        {
-            int minType = ReadSignedVarInt(); 
-            short minVal = ReadShort(false); 
-            int maxType = ReadSignedVarInt(); 
-            short maxVal = ReadShort(false); 
-            uint gridOffset = ReadUnsignedVarInt(); 
-            uint gridStep = ReadUnsignedVarInt(); 
-            int dist = ReadSignedVarInt(); 
-
-            return new BiomeCoordinate
-            {
-                MinValueType = minType,
-                MinValue = minVal,
-                MaxValueType = maxType,
-                MaxValue = maxVal,
-                GridOffset = gridOffset,
-                GridStepSize = gridStep,
-                Distribution = dist
-            };
-        }
-        #endregion
-
-        #region BiomeScatterParameter
-
-        public void WriteBiomeScatterParameter(BiomeScatterParameter param)
-        {
-            
-            WriteSignedVarInt(param.Coordinates?.Length ?? 0);
-            if (param.Coordinates != null)
-                foreach (var item in param.Coordinates)
-                    WriteBiomeCoordinate(item);
-
-            WriteSignedVarInt(param.EvaluationOrder); 
-            WriteSignedVarInt(param.ChancePercentType); 
-            Write(param.ChancePercent); 
-            Write(param.ChanceNumerator, false); 
-            Write(param.ChanceDenominator, false); 
-            WriteSignedVarInt(param.IterationsType); 
-            Write(param.Iterations); 
-        }
-
-        public BiomeScatterParameter ReadBiomeScatterParameter()
-        {
-            
-            int count = ReadSignedVarInt();
-            BiomeCoordinate[] coords = new BiomeCoordinate[count];
-            for (int i = 0; i < count; i++)
-            {
-                coords[i] = ReadBiomeCoordinate();
-            }
-
-            int evalOrder = ReadSignedVarInt(); 
-            int chanceType = ReadSignedVarInt(); 
-            short chancePercent = ReadShort(false); 
-            int chanceNum = ReadInt(false); 
-            int chanceDen = ReadInt(false); 
-            int iterType = ReadSignedVarInt(); 
-            short iter = ReadShort(false); 
-
-            return new BiomeScatterParameter
-            {
-                Coordinates = coords,
-                EvaluationOrder = evalOrder,
-                ChancePercentType = chanceType,
-                ChancePercent = chancePercent,
-                ChanceNumerator = chanceNum,
-                ChanceDenominator = chanceDen,
-                IterationsType = iterType,
-                Iterations = iter
-            };
-        }
-        #endregion
-
-        #region BiomeConsolidatedFeature
-
-        public void WriteBiomeConsolidatedFeature(BiomeConsolidatedFeature feature)
-        {
-            WriteBiomeScatterParameter(feature.Scatter); 
-            Write(feature.Feature); 
-            Write(feature.Identifier); 
-            Write(feature.Pass); 
-            Write(feature.CanUseInternal); 
-        }
-
-        public BiomeConsolidatedFeature ReadBiomeConsolidatedFeature()
-        {
-            BiomeScatterParameter scatter = ReadBiomeScatterParameter(); 
-            short feat = ReadShort(false); 
-            short id = ReadShort(false); 
-            short pass = ReadShort(false); 
-            bool canUse = ReadBool(); 
-
-            return new BiomeConsolidatedFeature
-            {
-                Scatter = scatter,
-                Feature = feat,
-                Identifier = id,
-                Pass = pass,
-                CanUseInternal = canUse
-            };
-        }
-        #endregion
-
-        #region BiomeClimate
-
-        public void WriteBiomeClimate(BiomeClimate climate)
-        {
-            Write(climate.Temperature); 
-            Write(climate.Downfall); 
-            Write(climate.RedSporeDensity); 
-            Write(climate.BlueSporeDensity); 
-            Write(climate.AshDensity); 
-            Write(climate.WhiteAshDensity); 
-            Write(climate.SnowAccumulationMin); 
-            Write(climate.SnowAccumulationMax); 
-        }
-
-        public BiomeClimate ReadBiomeClimate()
-        {
-            float temp = ReadFloat(); 
-            float down = ReadFloat(); 
-            float red = ReadFloat(); 
-            float blue = ReadFloat(); 
-            float ash = ReadFloat(); 
-            float whiteAsh = ReadFloat(); 
-            float snowMin = ReadFloat(); 
-            float snowMax = ReadFloat(); 
-
-            return new BiomeClimate
-            {
-                Temperature = temp,
-                Downfall = down,
-                RedSporeDensity = red,
-                BlueSporeDensity = blue,
-                AshDensity = ash,
-                WhiteAshDensity = whiteAsh,
-                SnowAccumulationMin = snowMin,
-                SnowAccumulationMax = snowMax
-            };
-        }
-        #endregion
-
-        #region BiomeChunkGeneration
-
-        public void WriteBiomeChunkGeneration(BiomeChunkGeneration generation)
-        {
-            
-            Write(generation.Climate.HasValue);
-            if (generation.Climate.HasValue) WriteBiomeClimate(generation.Climate.Value);
-
-            
-            Write(generation.ConsolidatedFeatures.HasValue);
-            if (generation.ConsolidatedFeatures.HasValue)
-            {
-                WriteUnsignedVarInt((uint)(generation.ConsolidatedFeatures.Value?.Length ?? 0));
-                if (generation.ConsolidatedFeatures.Value != null)
-                    foreach (var item in generation.ConsolidatedFeatures.Value)
-                        WriteBiomeConsolidatedFeature(item);
-            }
-
-            
-            Write(generation.MountainParameters.HasValue);
-            if (generation.MountainParameters.HasValue) WriteBiomeMountainParameters(generation.MountainParameters.Value);
-
-            
-            Write(generation.SurfaceMaterialAdjustments.HasValue);
-            if (generation.SurfaceMaterialAdjustments.HasValue)
-            {
-                WriteUnsignedVarInt((uint)(generation.SurfaceMaterialAdjustments.Value?.Length ?? 0));
-                if (generation.SurfaceMaterialAdjustments.Value != null)
-                    foreach (var item in generation.SurfaceMaterialAdjustments.Value)
-                        WriteBiomeElementData(item);
-            }
-
-            
-            Write(generation.SurfaceMaterials.HasValue);
-            if (generation.SurfaceMaterials.HasValue) WriteBiomeSurfaceMaterial(generation.SurfaceMaterials.Value);
-
-            Write(generation.HasSwampSurface); 
-            Write(generation.HasFrozenOceanSurface); 
-            Write(generation.HasEndSurface); 
-
-            
-            Write(generation.MesaSurface.HasValue);
-            if (generation.MesaSurface.HasValue) WriteBiomeMesaSurface(generation.MesaSurface.Value);
-
-            
-            Write(generation.CappedSurface.HasValue);
-            if (generation.CappedSurface.HasValue) WriteBiomeCappedSurface(generation.CappedSurface.Value);
-
-            
-            Write(generation.OverworldRules.HasValue);
-            if (generation.OverworldRules.HasValue) WriteBiomeOverworldRules(generation.OverworldRules.Value);
-
-            
-            Write(generation.MultiNoiseRules.HasValue);
-            if (generation.MultiNoiseRules.HasValue) WriteBiomeMultiNoiseRules(generation.MultiNoiseRules.Value);
-
-            
-            Write(generation.LegacyRules.HasValue);
-            if (generation.LegacyRules.HasValue)
-            {
-                WriteUnsignedVarInt((uint)(generation.LegacyRules.Value?.Length ?? 0));
-                if (generation.LegacyRules.Value != null)
-                    foreach (var item in generation.LegacyRules.Value)
-                        WriteBiomeConditionalTransformation(item);
-            }
+
+
+		#region BiomeWeight
+
+		public void WriteBiomeWeight(BiomeWeight weight)
+		{
+			Write(weight.Biome);
+			WriteUnsignedVarInt(weight.Weight);
+		}
+
+		public BiomeWeight ReadBiomeWeight()
+		{
+			short biome = ReadShort(false);
+			uint weight = ReadUnsignedVarInt();
+			return new BiomeWeight { Biome = biome, Weight = weight };
+		}
+
+		#endregion
+
+		#region BiomeTemperatureWeight
+
+		public void WriteBiomeTemperatureWeight(BiomeTemperatureWeight tempWeight)
+		{
+			WriteSignedVarInt(tempWeight.Temperature);
+			WriteUnsignedVarInt(tempWeight.Weight);
+		}
+
+		public BiomeTemperatureWeight ReadBiomeTemperatureWeight()
+		{
+			int temperature = ReadSignedVarInt();
+			uint weight = ReadUnsignedVarInt();
+			return new BiomeTemperatureWeight { Temperature = temperature, Weight = weight };
+		}
+
+		#endregion
+
+		#region BiomeConditionalTransformation
+
+		public void WriteBiomeConditionalTransformation(BiomeConditionalTransformation transformation)
+		{
+			WriteSignedVarInt(transformation.WeightedBiomes?.Length ?? 0);
+			if (transformation.WeightedBiomes != null)
+			{
+				foreach (var item in transformation.WeightedBiomes)
+				{
+					WriteBiomeWeight(item);
+				}
+			}
+
+			Write(transformation.ConditionJSON);
+			WriteUnsignedVarInt(transformation.MinPassingNeighbours);
+		}
+
+		public BiomeConditionalTransformation ReadBiomeConditionalTransformation()
+		{
+			int count = ReadSignedVarInt();
+			BiomeWeight[] weightedBiomes = new BiomeWeight[count];
+			for (int i = 0; i < count; i++)
+			{
+				weightedBiomes[i] = ReadBiomeWeight();
+			}
+
+			short conditionJson = ReadShort(false);
+			uint minPassingNeighbours = ReadUnsignedVarInt();
+
+			return new BiomeConditionalTransformation
+			{
+				WeightedBiomes = weightedBiomes,
+				ConditionJSON = conditionJson,
+				MinPassingNeighbours = minPassingNeighbours
+			};
+		}
+
+		#endregion
+
+		#region BiomeMultiNoiseRules
+
+		public void WriteBiomeMultiNoiseRules(BiomeMultiNoiseRules rules)
+		{
+			Write(rules.Temperature);
+			Write(rules.Humidity);
+			Write(rules.Altitude);
+			Write(rules.Weirdness);
+			Write(rules.Weight);
+		}
+
+		public BiomeMultiNoiseRules ReadBiomeMultiNoiseRules()
+		{
+			float temperature = ReadFloat();
+			float humidity = ReadFloat();
+			float altitude = ReadFloat();
+			float weirdness = ReadFloat();
+			float weight = ReadFloat();
+
+			return new BiomeMultiNoiseRules
+			{
+				Temperature = temperature,
+				Humidity = humidity,
+				Altitude = altitude,
+				Weirdness = weirdness,
+				Weight = weight
+			};
+		}
+
+		#endregion
+
+		#region BiomeOverworldRules
+
+		public void WriteBiomeOverworldRules(BiomeOverworldRules rules)
+		{
+			WriteSignedVarInt(rules.HillsTransformations?.Length ?? 0);
+			if (rules.HillsTransformations != null)
+				foreach (var item in rules.HillsTransformations)
+					WriteBiomeWeight(item);
+
+			WriteSignedVarInt(rules.MutateTransformations?.Length ?? 0);
+			if (rules.MutateTransformations != null)
+				foreach (var item in rules.MutateTransformations)
+					WriteBiomeWeight(item);
+
+			WriteSignedVarInt(rules.RiverTransformations?.Length ?? 0);
+			if (rules.RiverTransformations != null)
+				foreach (var item in rules.RiverTransformations)
+					WriteBiomeWeight(item);
+
+			WriteSignedVarInt(rules.ShoreTransformations?.Length ?? 0);
+			if (rules.ShoreTransformations != null)
+				foreach (var item in rules.ShoreTransformations)
+					WriteBiomeWeight(item);
+
+			WriteSignedVarInt(rules.PreHillsEdgeTransformations?.Length ?? 0);
+			if (rules.PreHillsEdgeTransformations != null)
+				foreach (var item in rules.PreHillsEdgeTransformations)
+					WriteBiomeConditionalTransformation(item);
+
+			WriteSignedVarInt(rules.PostShoreEdgeTransformations?.Length ?? 0);
+			if (rules.PostShoreEdgeTransformations != null)
+				foreach (var item in rules.PostShoreEdgeTransformations)
+					WriteBiomeConditionalTransformation(item);
+
+			WriteSignedVarInt(rules.ClimateTransformations?.Length ?? 0);
+			if (rules.ClimateTransformations != null)
+				foreach (var item in rules.ClimateTransformations)
+					WriteBiomeTemperatureWeight(item);
+		}
+
+		public BiomeOverworldRules ReadBiomeOverworldRules()
+		{
+			int count1 = ReadSignedVarInt();
+			BiomeWeight[] hills = new BiomeWeight[count1];
+			for (int i = 0; i < count1; i++) hills[i] = ReadBiomeWeight();
+
+			int count2 = ReadSignedVarInt();
+			BiomeWeight[] mutate = new BiomeWeight[count2];
+			for (int i = 0; i < count2; i++) mutate[i] = ReadBiomeWeight();
+
+			int count3 = ReadSignedVarInt();
+			BiomeWeight[] river = new BiomeWeight[count3];
+			for (int i = 0; i < count3; i++) river[i] = ReadBiomeWeight();
+
+			int count4 = ReadSignedVarInt();
+			BiomeWeight[] shore = new BiomeWeight[count4];
+			for (int i = 0; i < count4; i++) shore[i] = ReadBiomeWeight();
+
+			int count5 = ReadSignedVarInt();
+			BiomeConditionalTransformation[] preHills = new BiomeConditionalTransformation[count5];
+			for (int i = 0; i < count5; i++) preHills[i] = ReadBiomeConditionalTransformation();
+
+			int count6 = ReadSignedVarInt();
+			BiomeConditionalTransformation[] postShore = new BiomeConditionalTransformation[count6];
+			for (int i = 0; i < count6; i++) postShore[i] = ReadBiomeConditionalTransformation();
+
+			int count7 = ReadSignedVarInt();
+			BiomeTemperatureWeight[] climate = new BiomeTemperatureWeight[count7];
+			for (int i = 0; i < count7; i++) climate[i] = ReadBiomeTemperatureWeight();
+
+			return new BiomeOverworldRules
+			{
+				HillsTransformations = hills,
+				MutateTransformations = mutate,
+				RiverTransformations = river,
+				ShoreTransformations = shore,
+				PreHillsEdgeTransformations = preHills,
+				PostShoreEdgeTransformations = postShore,
+				ClimateTransformations = climate
+			};
+		}
+
+		#endregion
+
+		#region BiomeCappedSurface
+
+		public void WriteBiomeCappedSurface(BiomeCappedSurface surface)
+		{
+			WriteSignedVarInt(surface.FloorBlocks?.Length ?? 0);
+			if (surface.FloorBlocks != null)
+				foreach (var item in surface.FloorBlocks)
+					Write(item, false);
+
+
+			WriteSignedVarInt(surface.CeilingBlocks?.Length ?? 0);
+			if (surface.CeilingBlocks != null)
+				foreach (var item in surface.CeilingBlocks)
+					Write(item, false);
+
+
+			Write(surface.SeaBlock.HasValue);
+			if (surface.SeaBlock.HasValue) WriteUnsignedVarInt(surface.SeaBlock.Value);
+
+
+			Write(surface.FoundationBlock.HasValue);
+			if (surface.FoundationBlock.HasValue) WriteUnsignedVarInt(surface.FoundationBlock.Value);
+
+
+			Write(surface.BeachBlock.HasValue);
+			if (surface.BeachBlock.HasValue) WriteUnsignedVarInt(surface.BeachBlock.Value);
+		}
+
+		public BiomeCappedSurface ReadBiomeCappedSurface()
+		{
+			int count1 = ReadSignedVarInt();
+			int[] floor = new int[count1];
+			for (int i = 0; i < count1; i++) floor[i] = ReadInt(false);
+
+
+			int count2 = ReadSignedVarInt();
+			int[] ceiling = new int[count2];
+			for (int i = 0; i < count2; i++) ceiling[i] = ReadInt(false);
+
+
+			bool hasSea = ReadBool();
+			Optional<uint> seaBlock = new Optional<uint>();
+			if (hasSea) seaBlock = new Optional<uint>(ReadUnsignedVarInt());
+
+
+			bool hasFoundation = ReadBool();
+			Optional<uint> foundationBlock = new Optional<uint>();
+			if (hasFoundation) foundationBlock = new Optional<uint>(ReadUnsignedVarInt());
+
+
+			bool hasBeach = ReadBool();
+			Optional<uint> beachBlock = new Optional<uint>();
+			if (hasBeach) beachBlock = new Optional<uint>(ReadUnsignedVarInt());
+
+			return new BiomeCappedSurface
+			{
+				FloorBlocks = floor,
+				CeilingBlocks = ceiling,
+				SeaBlock = seaBlock,
+				FoundationBlock = foundationBlock,
+				BeachBlock = beachBlock
+			};
+		}
+
+		#endregion
+
+		#region BiomeMesaSurface
+
+		public void WriteBiomeMesaSurface(BiomeMesaSurface mesa)
+		{
+			WriteUnsignedVarInt(mesa.ClayMaterial);
+			WriteUnsignedVarInt(mesa.HardClayMaterial);
+			Write(mesa.BrycePillars);
+			Write(mesa.HasForest);
+		}
+
+		public BiomeMesaSurface ReadBiomeMesaSurface()
+		{
+			uint clay = ReadUnsignedVarInt();
+			uint hardClay = ReadUnsignedVarInt();
+			bool bryce = ReadBool();
+			bool forest = ReadBool();
+
+			return new BiomeMesaSurface
+			{
+				ClayMaterial = clay,
+				HardClayMaterial = hardClay,
+				BrycePillars = bryce,
+				HasForest = forest
+			};
+		}
+
+		#endregion
+
+		#region BiomeSurfaceMaterial
+
+		public void WriteBiomeSurfaceMaterial(BiomeSurfaceMaterial material)
+		{
+			Write(material.TopBlock, false);
+			Write(material.MidBlock, false);
+			Write(material.SeaFloorBlock, false);
+			Write(material.FoundationBlock, false);
+			Write(material.SeaBlock, false);
+			Write(material.SeaFloorDepth, false);
+		}
+
+		public BiomeSurfaceMaterial ReadBiomeSurfaceMaterial()
+		{
+			int top = ReadInt(false);
+			int mid = ReadInt(false);
+			int seaFloor = ReadInt(false);
+			int foundation = ReadInt(false);
+			int sea = ReadInt(false);
+			int seaFloorDepth = ReadInt(false);
+
+			return new BiomeSurfaceMaterial
+			{
+				TopBlock = top,
+				MidBlock = mid,
+				SeaFloorBlock = seaFloor,
+				FoundationBlock = foundation,
+				SeaBlock = sea,
+				SeaFloorDepth = seaFloorDepth
+			};
+		}
+
+		#endregion
+
+		#region BiomeElementData
+
+		public void WriteBiomeElementData(BiomeElementData data)
+		{
+			Write(data.NoiseFrequencyScale);
+			Write(data.NoiseLowerBound);
+			Write(data.NoiseUpperBound);
+			WriteSignedVarInt(data.HeightMinType);
+			Write(data.HeightMin);
+			WriteSignedVarInt(data.HeightMaxType);
+			Write(data.HeightMax);
+			WriteBiomeSurfaceMaterial(data.AdjustedMaterials);
+		}
+
+		public BiomeElementData ReadBiomeElementData()
+		{
+			float freq = ReadFloat();
+			float lower = ReadFloat();
+			float upper = ReadFloat();
+			int minHeightType = ReadSignedVarInt();
+			short minHeight = ReadShort(false);
+			int maxHeightType = ReadSignedVarInt();
+			short maxHeight = ReadShort(false);
+			BiomeSurfaceMaterial materials = ReadBiomeSurfaceMaterial();
+
+			return new BiomeElementData
+			{
+				NoiseFrequencyScale = freq,
+				NoiseLowerBound = lower,
+				NoiseUpperBound = upper,
+				HeightMinType = minHeightType,
+				HeightMin = minHeight,
+				HeightMaxType = maxHeightType,
+				HeightMax = maxHeight,
+				AdjustedMaterials = materials
+			};
+		}
+
+		#endregion
+
+		#region BiomeMountainParameters
+
+		public void WriteBiomeMountainParameters(BiomeMountainParameters parameters)
+		{
+			Write(parameters.SteepBlock, false);
+			Write(parameters.NorthSlopes);
+			Write(parameters.SouthSlopes);
+			Write(parameters.WestSlopes);
+			Write(parameters.EastSlopes);
+			Write(parameters.TopSlideEnabled);
+		}
+
+		public BiomeMountainParameters ReadBiomeMountainParameters()
+		{
+			int steep = ReadInt(false);
+			bool north = ReadBool();
+			bool south = ReadBool();
+			bool west = ReadBool();
+			bool east = ReadBool();
+			bool topSlide = ReadBool();
+
+			return new BiomeMountainParameters
+			{
+				SteepBlock = steep,
+				NorthSlopes = north,
+				SouthSlopes = south,
+				WestSlopes = west,
+				EastSlopes = east,
+				TopSlideEnabled = topSlide
+			};
+		}
+
+		#endregion
+
+		#region BiomeCoordinate
+
+		public void WriteBiomeCoordinate(BiomeCoordinate coord)
+		{
+			WriteSignedVarInt(coord.MinValueType);
+			Write(coord.MinValue);
+			WriteSignedVarInt(coord.MaxValueType);
+			Write(coord.MaxValue);
+			WriteUnsignedVarInt(coord.GridOffset);
+			WriteUnsignedVarInt(coord.GridStepSize);
+			WriteSignedVarInt(coord.Distribution);
+		}
+
+		public BiomeCoordinate ReadBiomeCoordinate()
+		{
+			int minType = ReadSignedVarInt();
+			short minVal = ReadShort(false);
+			int maxType = ReadSignedVarInt();
+			short maxVal = ReadShort(false);
+			uint gridOffset = ReadUnsignedVarInt();
+			uint gridStep = ReadUnsignedVarInt();
+			int dist = ReadSignedVarInt();
+
+			return new BiomeCoordinate
+			{
+				MinValueType = minType,
+				MinValue = minVal,
+				MaxValueType = maxType,
+				MaxValue = maxVal,
+				GridOffset = gridOffset,
+				GridStepSize = gridStep,
+				Distribution = dist
+			};
+		}
+
+		#endregion
+
+		#region BiomeScatterParameter
+
+		public void WriteBiomeScatterParameter(BiomeScatterParameter param)
+		{
+			WriteSignedVarInt(param.Coordinates?.Length ?? 0);
+			if (param.Coordinates != null)
+				foreach (var item in param.Coordinates)
+					WriteBiomeCoordinate(item);
+
+			WriteSignedVarInt(param.EvaluationOrder);
+			WriteSignedVarInt(param.ChancePercentType);
+			Write(param.ChancePercent);
+			Write(param.ChanceNumerator, false);
+			Write(param.ChanceDenominator, false);
+			WriteSignedVarInt(param.IterationsType);
+			Write(param.Iterations);
+		}
+
+		public BiomeScatterParameter ReadBiomeScatterParameter()
+		{
+			int count = ReadSignedVarInt();
+			BiomeCoordinate[] coords = new BiomeCoordinate[count];
+			for (int i = 0; i < count; i++)
+			{
+				coords[i] = ReadBiomeCoordinate();
+			}
+
+			int evalOrder = ReadSignedVarInt();
+			int chanceType = ReadSignedVarInt();
+			short chancePercent = ReadShort(false);
+			int chanceNum = ReadInt(false);
+			int chanceDen = ReadInt(false);
+			int iterType = ReadSignedVarInt();
+			short iter = ReadShort(false);
+
+			return new BiomeScatterParameter
+			{
+				Coordinates = coords,
+				EvaluationOrder = evalOrder,
+				ChancePercentType = chanceType,
+				ChancePercent = chancePercent,
+				ChanceNumerator = chanceNum,
+				ChanceDenominator = chanceDen,
+				IterationsType = iterType,
+				Iterations = iter
+			};
+		}
+
+		#endregion
+
+		#region BiomeConsolidatedFeature
+
+		public void WriteBiomeConsolidatedFeature(BiomeConsolidatedFeature feature)
+		{
+			WriteBiomeScatterParameter(feature.Scatter);
+			Write(feature.Feature);
+			Write(feature.Identifier);
+			Write(feature.Pass);
+			Write(feature.CanUseInternal);
+		}
+
+		public BiomeConsolidatedFeature ReadBiomeConsolidatedFeature()
+		{
+			BiomeScatterParameter scatter = ReadBiomeScatterParameter();
+			short feat = ReadShort(false);
+			short id = ReadShort(false);
+			short pass = ReadShort(false);
+			bool canUse = ReadBool();
+
+			return new BiomeConsolidatedFeature
+			{
+				Scatter = scatter,
+				Feature = feat,
+				Identifier = id,
+				Pass = pass,
+				CanUseInternal = canUse
+			};
+		}
+
+		#endregion
+
+		#region BiomeClimate
+
+		public void WriteBiomeClimate(BiomeClimate climate)
+		{
+			Write(climate.Temperature);
+			Write(climate.Downfall);
+			Write(climate.RedSporeDensity);
+			Write(climate.BlueSporeDensity);
+			Write(climate.AshDensity);
+			Write(climate.WhiteAshDensity);
+			Write(climate.SnowAccumulationMin);
+			Write(climate.SnowAccumulationMax);
+		}
+
+		public BiomeClimate ReadBiomeClimate()
+		{
+			float temp = ReadFloat();
+			float down = ReadFloat();
+			float red = ReadFloat();
+			float blue = ReadFloat();
+			float ash = ReadFloat();
+			float whiteAsh = ReadFloat();
+			float snowMin = ReadFloat();
+			float snowMax = ReadFloat();
+
+			return new BiomeClimate
+			{
+				Temperature = temp,
+				Downfall = down,
+				RedSporeDensity = red,
+				BlueSporeDensity = blue,
+				AshDensity = ash,
+				WhiteAshDensity = whiteAsh,
+				SnowAccumulationMin = snowMin,
+				SnowAccumulationMax = snowMax
+			};
+		}
+
+		#endregion
+
+		#region BiomeChunkGeneration
+
+		public void WriteBiomeChunkGeneration(BiomeChunkGeneration generation)
+		{
+			Write(generation.Climate.HasValue);
+			if (generation.Climate.HasValue) WriteBiomeClimate(generation.Climate.Value);
+
+
+			Write(generation.ConsolidatedFeatures.HasValue);
+			if (generation.ConsolidatedFeatures.HasValue)
+			{
+				WriteUnsignedVarInt((uint)(generation.ConsolidatedFeatures.Value?.Length ?? 0));
+				if (generation.ConsolidatedFeatures.Value != null)
+					foreach (var item in generation.ConsolidatedFeatures.Value)
+						WriteBiomeConsolidatedFeature(item);
+			}
+
+
+			Write(generation.MountainParameters.HasValue);
+			if (generation.MountainParameters.HasValue)
+				WriteBiomeMountainParameters(generation.MountainParameters.Value);
+
+
+			Write(generation.SurfaceMaterialAdjustments.HasValue);
+			if (generation.SurfaceMaterialAdjustments.HasValue)
+			{
+				WriteUnsignedVarInt((uint)(generation.SurfaceMaterialAdjustments.Value?.Length ?? 0));
+				if (generation.SurfaceMaterialAdjustments.Value != null)
+					foreach (var item in generation.SurfaceMaterialAdjustments.Value)
+						WriteBiomeElementData(item);
+			}
+
+
+			Write(generation.SurfaceMaterials.HasValue);
+			if (generation.SurfaceMaterials.HasValue) WriteBiomeSurfaceMaterial(generation.SurfaceMaterials.Value);
+
+			Write(generation.HasSwampSurface);
+			Write(generation.HasFrozenOceanSurface);
+			Write(generation.HasEndSurface);
+
+
+			Write(generation.MesaSurface.HasValue);
+			if (generation.MesaSurface.HasValue) WriteBiomeMesaSurface(generation.MesaSurface.Value);
+
+
+			Write(generation.CappedSurface.HasValue);
+			if (generation.CappedSurface.HasValue) WriteBiomeCappedSurface(generation.CappedSurface.Value);
+
+
+			Write(generation.OverworldRules.HasValue);
+			if (generation.OverworldRules.HasValue) WriteBiomeOverworldRules(generation.OverworldRules.Value);
+
+
+			Write(generation.MultiNoiseRules.HasValue);
+			if (generation.MultiNoiseRules.HasValue) WriteBiomeMultiNoiseRules(generation.MultiNoiseRules.Value);
+
+
+			Write(generation.LegacyRules.HasValue);
+			if (generation.LegacyRules.HasValue)
+			{
+				WriteUnsignedVarInt((uint)(generation.LegacyRules.Value?.Length ?? 0));
+				if (generation.LegacyRules.Value != null)
+					foreach (var item in generation.LegacyRules.Value)
+						WriteBiomeConditionalTransformation(item);
+			}
+
 			Write(generation.ReplacementsData.HasValue);
 			if (generation.ReplacementsData.HasValue)
 			{
 				WriteUnsignedVarInt((uint)(generation.ReplacementsData.Value?.Length ?? 0));
 				if (generation.ReplacementsData.Value != null)
 					foreach (var item in generation.ReplacementsData.Value)
-						WriteBiomeReplacementData(item) ;
+						WriteBiomeReplacementData(item);
 			}
-        }
+		}
+
 		public void WriteBiomeReplacementData(BiomeReplacementData value)
 		{
 			Write(value.Biome);
@@ -4885,10 +4815,12 @@ namespace Protocol.Network
 					Write(item);
 				}
 			}
+
 			Write(value.Amount);
 			Write(value.NoiseFrequencyScale);
 			Write(value.ReplacementIndex);
 		}
+
 		public BiomeReplacementData ReadBiomeReplacementData()
 		{
 			var data = new BiomeReplacementData();
@@ -4896,7 +4828,7 @@ namespace Protocol.Network
 			data.Biome = ReadShort();
 			data.Dimension = ReadShort();
 
-			
+
 			int targetBiomesLength = ReadSignedVarInt();
 			if (targetBiomesLength > 0)
 			{
@@ -4919,214 +4851,220 @@ namespace Protocol.Network
 		}
 
 		public BiomeChunkGeneration ReadBiomeChunkGeneration()
-        {
-            
-            bool hasClimate = ReadBool();
-            Optional<BiomeClimate> climate = new Optional<BiomeClimate>();
-            if (hasClimate) climate = new Optional<BiomeClimate>(ReadBiomeClimate());
+		{
+			bool hasClimate = ReadBool();
+			Optional<BiomeClimate> climate = new Optional<BiomeClimate>();
+			if (hasClimate) climate = new Optional<BiomeClimate>(ReadBiomeClimate());
 
-            
-            bool hasConsolidated = ReadBool();
-            Optional<BiomeConsolidatedFeature[]> consolidated = new Optional<BiomeConsolidatedFeature[]>();
-            if (hasConsolidated)
-            {
-                uint count = ReadUnsignedVarInt();
-                BiomeConsolidatedFeature[] features = new BiomeConsolidatedFeature[count];
-                for (int i = 0; i < count; i++)
-                {
-                    features[i] = ReadBiomeConsolidatedFeature();
-                }
-                consolidated = new Optional<BiomeConsolidatedFeature[]>(features);
-            }
 
-            
-            bool hasMountain = ReadBool();
-            Optional<BiomeMountainParameters> mountain = new Optional<BiomeMountainParameters>();
-            if (hasMountain) mountain = new Optional<BiomeMountainParameters>(ReadBiomeMountainParameters());
+			bool hasConsolidated = ReadBool();
+			Optional<BiomeConsolidatedFeature[]> consolidated = new Optional<BiomeConsolidatedFeature[]>();
+			if (hasConsolidated)
+			{
+				uint count = ReadUnsignedVarInt();
+				BiomeConsolidatedFeature[] features = new BiomeConsolidatedFeature[count];
+				for (int i = 0; i < count; i++)
+				{
+					features[i] = ReadBiomeConsolidatedFeature();
+				}
 
-            
-            bool hasSurfaceAdj = ReadBool();
-            Optional<BiomeElementData[]> surfaceAdj = new Optional<BiomeElementData[]>();
-            if (hasSurfaceAdj)
-            {
-                uint count = ReadUnsignedVarInt();
-                BiomeElementData[] data = new BiomeElementData[count];
-                for (int i = 0; i < count; i++)
-                {
-                    data[i] = ReadBiomeElementData();
-                }
-                surfaceAdj = new Optional<BiomeElementData[]>(data);
-            }
+				consolidated = new Optional<BiomeConsolidatedFeature[]>(features);
+			}
 
-            
-            bool hasSurfaceMat = ReadBool();
-            Optional<BiomeSurfaceMaterial> surfaceMat = new Optional<BiomeSurfaceMaterial>();
-            if (hasSurfaceMat) surfaceMat = new Optional<BiomeSurfaceMaterial>(ReadBiomeSurfaceMaterial());
 
-            bool swamp = ReadBool(); 
-            bool frozenOcean = ReadBool(); 
-            bool end = ReadBool(); 
+			bool hasMountain = ReadBool();
+			Optional<BiomeMountainParameters> mountain = new Optional<BiomeMountainParameters>();
+			if (hasMountain) mountain = new Optional<BiomeMountainParameters>(ReadBiomeMountainParameters());
 
-            
-            bool hasMesa = ReadBool();
-            Optional<BiomeMesaSurface> mesa = new Optional<BiomeMesaSurface>();
-            if (hasMesa) mesa = new Optional<BiomeMesaSurface>(ReadBiomeMesaSurface());
 
-            
-            bool hasCapped = ReadBool();
-            Optional<BiomeCappedSurface> capped = new Optional<BiomeCappedSurface>();
-            if (hasCapped) capped = new Optional<BiomeCappedSurface>(ReadBiomeCappedSurface());
+			bool hasSurfaceAdj = ReadBool();
+			Optional<BiomeElementData[]> surfaceAdj = new Optional<BiomeElementData[]>();
+			if (hasSurfaceAdj)
+			{
+				uint count = ReadUnsignedVarInt();
+				BiomeElementData[] data = new BiomeElementData[count];
+				for (int i = 0; i < count; i++)
+				{
+					data[i] = ReadBiomeElementData();
+				}
 
-            
-            bool hasOverworld = ReadBool();
-            Optional<BiomeOverworldRules> overworld = new Optional<BiomeOverworldRules>();
-            if (hasOverworld) overworld = new Optional<BiomeOverworldRules>(ReadBiomeOverworldRules());
+				surfaceAdj = new Optional<BiomeElementData[]>(data);
+			}
 
-            
-            bool hasMultiNoise = ReadBool();
-            Optional<BiomeMultiNoiseRules> multiNoise = new Optional<BiomeMultiNoiseRules>();
-            if (hasMultiNoise) multiNoise = new Optional<BiomeMultiNoiseRules>(ReadBiomeMultiNoiseRules());
 
-            
-            bool hasLegacy = ReadBool();
-            Optional<BiomeConditionalTransformation[]> legacy = new Optional<BiomeConditionalTransformation[]>();
-            if (hasLegacy)
-            {
-                uint count = ReadUnsignedVarInt();
-                BiomeConditionalTransformation[] rules = new BiomeConditionalTransformation[count];
-                for (int i = 0; i < count; i++)
-                {
-                    rules[i] = ReadBiomeConditionalTransformation();
-                }
-                legacy = new Optional<BiomeConditionalTransformation[]>(rules);
-            }
-            bool hasReplaceMent = ReadBool();
-            Optional<BiomeReplacementData[]> replacement = new Optional<BiomeReplacementData[]>();
-            if (hasReplaceMent)
-            {
-	            uint count = ReadUnsignedVarInt();
-	            BiomeReplacementData[] rules = new BiomeReplacementData[count];
-	            for (int i = 0; i < count; i++)
-	            {
-		            rules[i] = ReadBiomeReplacementData();
-	            }
-	            replacement = new Optional<BiomeReplacementData[]>(rules);
-            }
+			bool hasSurfaceMat = ReadBool();
+			Optional<BiomeSurfaceMaterial> surfaceMat = new Optional<BiomeSurfaceMaterial>();
+			if (hasSurfaceMat) surfaceMat = new Optional<BiomeSurfaceMaterial>(ReadBiomeSurfaceMaterial());
+
+			bool swamp = ReadBool();
+			bool frozenOcean = ReadBool();
+			bool end = ReadBool();
+
+
+			bool hasMesa = ReadBool();
+			Optional<BiomeMesaSurface> mesa = new Optional<BiomeMesaSurface>();
+			if (hasMesa) mesa = new Optional<BiomeMesaSurface>(ReadBiomeMesaSurface());
+
+
+			bool hasCapped = ReadBool();
+			Optional<BiomeCappedSurface> capped = new Optional<BiomeCappedSurface>();
+			if (hasCapped) capped = new Optional<BiomeCappedSurface>(ReadBiomeCappedSurface());
+
+
+			bool hasOverworld = ReadBool();
+			Optional<BiomeOverworldRules> overworld = new Optional<BiomeOverworldRules>();
+			if (hasOverworld) overworld = new Optional<BiomeOverworldRules>(ReadBiomeOverworldRules());
+
+
+			bool hasMultiNoise = ReadBool();
+			Optional<BiomeMultiNoiseRules> multiNoise = new Optional<BiomeMultiNoiseRules>();
+			if (hasMultiNoise) multiNoise = new Optional<BiomeMultiNoiseRules>(ReadBiomeMultiNoiseRules());
+
+
+			bool hasLegacy = ReadBool();
+			Optional<BiomeConditionalTransformation[]> legacy = new Optional<BiomeConditionalTransformation[]>();
+			if (hasLegacy)
+			{
+				uint count = ReadUnsignedVarInt();
+				BiomeConditionalTransformation[] rules = new BiomeConditionalTransformation[count];
+				for (int i = 0; i < count; i++)
+				{
+					rules[i] = ReadBiomeConditionalTransformation();
+				}
+
+				legacy = new Optional<BiomeConditionalTransformation[]>(rules);
+			}
+
+			bool hasReplaceMent = ReadBool();
+			Optional<BiomeReplacementData[]> replacement = new Optional<BiomeReplacementData[]>();
+			if (hasReplaceMent)
+			{
+				uint count = ReadUnsignedVarInt();
+				BiomeReplacementData[] rules = new BiomeReplacementData[count];
+				for (int i = 0; i < count; i++)
+				{
+					rules[i] = ReadBiomeReplacementData();
+				}
+
+				replacement = new Optional<BiomeReplacementData[]>(rules);
+			}
 
 			return new BiomeChunkGeneration
-            {
-                Climate = climate,
-                ConsolidatedFeatures = consolidated,
-                MountainParameters = mountain,
-                SurfaceMaterialAdjustments = surfaceAdj,
-                SurfaceMaterials = surfaceMat,
-                HasSwampSurface = swamp,
-                HasFrozenOceanSurface = frozenOcean,
-                HasEndSurface = end,
-                MesaSurface = mesa,
-                CappedSurface = capped,
-                OverworldRules = overworld,
-                MultiNoiseRules = multiNoise,
-                LegacyRules = legacy,
+			{
+				Climate = climate,
+				ConsolidatedFeatures = consolidated,
+				MountainParameters = mountain,
+				SurfaceMaterialAdjustments = surfaceAdj,
+				SurfaceMaterials = surfaceMat,
+				HasSwampSurface = swamp,
+				HasFrozenOceanSurface = frozenOcean,
+				HasEndSurface = end,
+				MesaSurface = mesa,
+				CappedSurface = capped,
+				OverworldRules = overworld,
+				MultiNoiseRules = multiNoise,
+				LegacyRules = legacy,
 				ReplacementsData = replacement
-			
-            };
-        }
-        #endregion
+			};
+		}
 
-        #region BiomeDefinition
+		#endregion
 
-        public void WriteBiomeDefinition(BiomeDefinition definition)
-        {
-            Write(definition.NameIndex); 
-            Write(definition.BiomeID); 
-            Write(definition.Temperature); 
-            Write(definition.Downfall); 
-            Write(definition.RedSporeDensity); 
-            Write(definition.BlueSporeDensity); 
-            Write(definition.AshDensity); 
-            Write(definition.WhiteAshDensity); 
-            Write(definition.Depth); 
-            Write(definition.Scale); 
-            Write(definition.MapWaterColour, false); 
-            Write(definition.Rain); 
+		#region BiomeDefinition
 
-            
-            Write(definition.Tags.HasValue);
-            if (definition.Tags.HasValue)
-            {
-                WriteUnsignedVarInt((uint)(definition.Tags.Value?.Length ?? 0));
-                if (definition.Tags.Value != null)
-                    foreach (var item in definition.Tags.Value)
-                        Write(item); 
-            }
+		public void WriteBiomeDefinition(BiomeDefinition definition)
+		{
+			Write(definition.NameIndex);
+			Write(definition.BiomeID);
+			Write(definition.Temperature);
+			Write(definition.Downfall);
+			Write(definition.RedSporeDensity);
+			Write(definition.BlueSporeDensity);
+			Write(definition.AshDensity);
+			Write(definition.WhiteAshDensity);
+			Write(definition.Depth);
+			Write(definition.Scale);
+			Write(definition.MapWaterColour, false);
+			Write(definition.Rain);
 
-            
-            Write(definition.ChunkGeneration.HasValue);
-            if (definition.ChunkGeneration.HasValue)
-            {
-                WriteBiomeChunkGeneration(definition.ChunkGeneration.Value);
-            }
-        }
 
-        public BiomeDefinition ReadBiomeDefinition()
-        {
-            short nameIndex = ReadShort(false); 
-            short biomeId = ReadShort(false); 
-            float temp = ReadFloat(); 
-            float down = ReadFloat(); 
-            float red = ReadFloat(); 
-            float blue = ReadFloat(); 
-            float ash = ReadFloat(); 
-            float whiteAsh = ReadFloat(); 
-            float depth = ReadFloat(); 
-            float scale = ReadFloat(); 
-            int mapWater = ReadInt(false); 
-            bool rain = ReadBool(); 
+			Write(definition.Tags.HasValue);
+			if (definition.Tags.HasValue)
+			{
+				WriteUnsignedVarInt((uint)(definition.Tags.Value?.Length ?? 0));
+				if (definition.Tags.Value != null)
+					foreach (var item in definition.Tags.Value)
+						Write(item);
+			}
 
-            
-            bool hasTags = ReadBool();
-            Optional<ushort[]> tags = new Optional<ushort[]>();
-            if (hasTags)
-            {
-                uint count = ReadUnsignedVarInt();
-                ushort[] tagArray = new ushort[count];
-                for (int i = 0; i < count; i++)
-                {
-                    tagArray[i] = ReadUshort(false); 
-                }
-                tags = new Optional<ushort[]>(tagArray);
-            }
 
-            
-            bool hasChunkGen = ReadBool();
-            Optional<BiomeChunkGeneration> chunkGen = new Optional<BiomeChunkGeneration>();
-            if (hasChunkGen)
-            {
-                chunkGen = new Optional<BiomeChunkGeneration>(ReadBiomeChunkGeneration());
-            }
+			Write(definition.ChunkGeneration.HasValue);
+			if (definition.ChunkGeneration.HasValue)
+			{
+				WriteBiomeChunkGeneration(definition.ChunkGeneration.Value);
+			}
+		}
 
-            return new BiomeDefinition
-            {
-                NameIndex = nameIndex,
-                BiomeID = biomeId,
-                Temperature = temp,
-                Downfall = down,
-                RedSporeDensity = red,
-                BlueSporeDensity = blue,
-                AshDensity = ash,
-                WhiteAshDensity = whiteAsh,
-                Depth = depth,
-                Scale = scale,
-                MapWaterColour = mapWater,
-                Rain = rain,
-                Tags = tags,
-                ChunkGeneration = chunkGen
-            };
-        }
-        #endregion
+		public BiomeDefinition ReadBiomeDefinition()
+		{
+			short nameIndex = ReadShort(false);
+			short biomeId = ReadShort(false);
+			float temp = ReadFloat();
+			float down = ReadFloat();
+			float red = ReadFloat();
+			float blue = ReadFloat();
+			float ash = ReadFloat();
+			float whiteAsh = ReadFloat();
+			float depth = ReadFloat();
+			float scale = ReadFloat();
+			int mapWater = ReadInt(false);
+			bool rain = ReadBool();
 
-        public bool CanRead()
+
+			bool hasTags = ReadBool();
+			Optional<ushort[]> tags = new Optional<ushort[]>();
+			if (hasTags)
+			{
+				uint count = ReadUnsignedVarInt();
+				ushort[] tagArray = new ushort[count];
+				for (int i = 0; i < count; i++)
+				{
+					tagArray[i] = ReadUshort(false);
+				}
+
+				tags = new Optional<ushort[]>(tagArray);
+			}
+
+
+			bool hasChunkGen = ReadBool();
+			Optional<BiomeChunkGeneration> chunkGen = new Optional<BiomeChunkGeneration>();
+			if (hasChunkGen)
+			{
+				chunkGen = new Optional<BiomeChunkGeneration>(ReadBiomeChunkGeneration());
+			}
+
+			return new BiomeDefinition
+			{
+				NameIndex = nameIndex,
+				BiomeID = biomeId,
+				Temperature = temp,
+				Downfall = down,
+				RedSporeDensity = red,
+				BlueSporeDensity = blue,
+				AshDensity = ash,
+				WhiteAshDensity = whiteAsh,
+				Depth = depth,
+				Scale = scale,
+				MapWaterColour = mapWater,
+				Rain = rain,
+				Tags = tags,
+				ChunkGeneration = chunkGen
+			};
+		}
+
+		#endregion
+
+		public bool CanRead()
 		{
 			return _reader.Position < _reader.Length;
 		}
@@ -5142,7 +5080,7 @@ namespace Protocol.Network
 
 			ReliabilityHeader = new ReliabilityHeader();
 			_encodedMessage = null;
-		 	Bytes = null;
+			Bytes = null;
 			_writer?.Close();
 			_reader?.Close();
 			_buffer?.Close();
@@ -5167,11 +5105,9 @@ namespace Protocol.Network
 
 			lock (_encodeSync)
 			{
-				
 				if (_encodedMessage != null) return _encodedMessage;
 
-				
-				
+
 				bool isLob = _isLob.ContainsKey(Id);
 				_buffer = isLob ? _streamManager.GetStream() : new MemoryStream();
 				using (_writer = new BinaryWriter(_buffer, Encoding.UTF8, true))
@@ -5179,17 +5115,16 @@ namespace Protocol.Network
 					EncodePacket();
 
 					_writer.Flush();
-					
-					
-					
+
+
 					var buffer = (MemoryStream)_buffer;
 					_encodedMessage = buffer.ToArray();
 					if (!isLob && _encodedMessage.Length >= 85_000)
 					{
 						_isLob.TryAdd(Id, true);
-						
 					}
 				}
+
 				_buffer.Dispose();
 
 				_writer = null;
@@ -5251,8 +5186,8 @@ namespace Protocol.Network
 					.ToArray()));
 				sb.AppendLine();
 			}
+
 			return sb.ToString();
 		}
 	}
-
 }

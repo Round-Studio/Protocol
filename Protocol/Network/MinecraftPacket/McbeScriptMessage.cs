@@ -1,72 +1,48 @@
-
-
 namespace Protocol.Network.MinecraftPacket;
-
-
-
-
 
 public class McpeScriptMessage : Packet
 {
-    
-    
-    
-    public McpeScriptMessage()
-    {
-        Id = 177; 
-        IsMcpe = true;
-    }
+	public McpeScriptMessage()
+	{
+		Id = 177;
+		IsMcpe = true;
+	}
 
-    
-    
-    
-    public string Identifier { get; set; } = string.Empty; 
 
-    
-    
-    
-    public byte[] Data { get; set; } = new byte[0]; 
+	public string Identifier { get; set; } = string.Empty;
 
-    
-    
-    
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
 
-        
-        Write(Identifier);
+	public byte[] Data { get; set; } = new byte[0];
 
-        
-        
-        WriteByteArray(Data);
-    }
 
-    
-    
-    
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
-        
-        Identifier = ReadString();
 
-        
-        
-        
-        
-        
-        Data = ReadByteArray(true); 
-    }
+		Write(Identifier);
 
-    
-    
-    
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
-        Identifier = string.Empty;
-        Data = new byte[0];
-    }
+
+		WriteByteArray(Data);
+	}
+
+
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
+
+
+		Identifier = ReadString();
+
+
+		Data = ReadByteArray(true);
+	}
+
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+		Identifier = string.Empty;
+		Data = new byte[0];
+	}
 }

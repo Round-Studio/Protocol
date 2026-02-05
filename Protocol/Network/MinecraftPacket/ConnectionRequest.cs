@@ -2,44 +2,44 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class ConnectionRequest : Packet
 {
-    public long clientGuid; 
-    public byte doSecurity; 
-    public long timestamp; 
+	public long clientGuid;
+	public byte doSecurity;
+	public long timestamp;
 
-    public ConnectionRequest()
-    {
-        Id = 0x09;
-        IsMcpe = false;
-    }
+	public ConnectionRequest()
+	{
+		Id = 0x09;
+		IsMcpe = false;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        Write(clientGuid);
-        Write(timestamp);
-        Write(doSecurity);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		Write(clientGuid);
+		Write(timestamp);
+		Write(doSecurity);
+	}
 
 
-        clientGuid = ReadLong();
-        timestamp = ReadLong();
-        doSecurity = ReadByte();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		clientGuid = ReadLong();
+		timestamp = ReadLong();
+		doSecurity = ReadByte();
+	}
 
-        clientGuid = default;
-        timestamp = default;
-        doSecurity = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		clientGuid = default;
+		timestamp = default;
+		doSecurity = default;
+	}
 }

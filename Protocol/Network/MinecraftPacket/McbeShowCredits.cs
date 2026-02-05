@@ -2,40 +2,40 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeShowCredits : Packet
 {
-    public long runtimeEntityId; 
-    public int status; 
+	public long runtimeEntityId;
+	public int status;
 
-    public McpeShowCredits()
-    {
-        Id = 0x4b;
-        IsMcpe = true;
-    }
+	public McpeShowCredits()
+	{
+		Id = 0x4b;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        WriteUnsignedVarLong(runtimeEntityId);
-        WriteSignedVarInt(status);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		WriteUnsignedVarLong(runtimeEntityId);
+		WriteSignedVarInt(status);
+	}
 
 
-        runtimeEntityId = ReadUnsignedVarLong();
-        status = ReadSignedVarInt();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		runtimeEntityId = ReadUnsignedVarLong();
+		status = ReadSignedVarInt();
+	}
 
-        runtimeEntityId = default;
-        status = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		runtimeEntityId = default;
+		status = default;
+	}
 }

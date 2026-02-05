@@ -1,66 +1,48 @@
-
-
 namespace Protocol.Network.MinecraftPacket;
-
-
-
 
 public class McpeClientStartItemCooldown : Packet
 {
-    
-    
-    
-    public McpeClientStartItemCooldown()
-    {
-        Id = 176; 
-        IsMcpe = true;
-    }
+	public McpeClientStartItemCooldown()
+	{
+		Id = 176;
+		IsMcpe = true;
+	}
 
-    
-    
-    
-    public string Category { get; set; } = string.Empty; 
 
-    
-    
-    
-    public int Duration { get; set; } 
+	public string Category { get; set; } = string.Empty;
 
-    
-    
-    
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
 
-        
-        Write(Category);
+	public int Duration { get; set; }
 
-        
-        WriteSignedVarInt(Duration);
-    }
 
-    
-    
-    
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
-        
-        Category = ReadString();
 
-        
-        Duration = ReadSignedVarInt();
-    }
+		Write(Category);
 
-    
-    
-    
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
-        Category = string.Empty;
-        Duration = 0;
-    }
+
+		WriteSignedVarInt(Duration);
+	}
+
+
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
+
+
+		Category = ReadString();
+
+
+		Duration = ReadSignedVarInt();
+	}
+
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+		Category = string.Empty;
+		Duration = 0;
+	}
 }

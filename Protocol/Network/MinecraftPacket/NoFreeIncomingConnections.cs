@@ -2,43 +2,43 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class NoFreeIncomingConnections : Packet
 {
-    public readonly byte[] offlineMessageDataId = new byte[]
-    {
-        0x00, 0xff, 0xff, 0x00, 0xfe, 0xfe, 0xfe, 0xfe, 0xfd, 0xfd, 0xfd, 0xfd, 0x12, 0x34, 0x56, 0x78
-    }; 
+	public readonly byte[] offlineMessageDataId = new byte[]
+	{
+		0x00, 0xff, 0xff, 0x00, 0xfe, 0xfe, 0xfe, 0xfe, 0xfd, 0xfd, 0xfd, 0xfd, 0x12, 0x34, 0x56, 0x78
+	};
 
-    public long serverGuid; 
+	public long serverGuid;
 
-    public NoFreeIncomingConnections()
-    {
-        Id = 0x14;
-        IsMcpe = false;
-    }
+	public NoFreeIncomingConnections()
+	{
+		Id = 0x14;
+		IsMcpe = false;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        Write(offlineMessageDataId);
-        Write(serverGuid);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		Write(offlineMessageDataId);
+		Write(serverGuid);
+	}
 
 
-        ReadBytes(offlineMessageDataId.Length);
-        serverGuid = ReadLong();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		ReadBytes(offlineMessageDataId.Length);
+		serverGuid = ReadLong();
+	}
 
-        serverGuid = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		serverGuid = default;
+	}
 }

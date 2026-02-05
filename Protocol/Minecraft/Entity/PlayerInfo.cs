@@ -1,3 +1,4 @@
+using Protocol.Minecraft.Skins;
 using Protocol.Utils;
 using Protocol.Utils.Crypo;
 

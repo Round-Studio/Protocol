@@ -2,36 +2,36 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeRequestNetworkSettings : Packet
 {
-    public int protocolVersion; 
+	public int protocolVersion;
 
-    public McpeRequestNetworkSettings()
-    {
-        Id = 0xc1;
-        IsMcpe = true;
-    }
+	public McpeRequestNetworkSettings()
+	{
+		Id = 0xc1;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        WriteBe(protocolVersion);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		WriteBe(protocolVersion);
+	}
 
 
-        protocolVersion = ReadIntBe();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		protocolVersion = ReadIntBe();
+	}
 
-        protocolVersion = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		protocolVersion = default;
+	}
 }

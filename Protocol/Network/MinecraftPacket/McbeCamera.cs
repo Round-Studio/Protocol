@@ -2,40 +2,40 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeCamera : Packet
 {
-    public long unknown1; 
-    public long unknown2; 
+	public long unknown1;
+	public long unknown2;
 
-    public McpeCamera()
-    {
-        Id = 0x49;
-        IsMcpe = true;
-    }
+	public McpeCamera()
+	{
+		Id = 0x49;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        WriteSignedVarLong(unknown1);
-        WriteSignedVarLong(unknown2);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		WriteSignedVarLong(unknown1);
+		WriteSignedVarLong(unknown2);
+	}
 
 
-        unknown1 = ReadSignedVarLong();
-        unknown2 = ReadSignedVarLong();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		unknown1 = ReadSignedVarLong();
+		unknown2 = ReadSignedVarLong();
+	}
 
-        unknown1 = default;
-        unknown2 = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		unknown1 = default;
+		unknown2 = default;
+	}
 }

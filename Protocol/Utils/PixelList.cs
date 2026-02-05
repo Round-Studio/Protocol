@@ -2,11 +2,11 @@ namespace Protocol.Utils;
 
 public class pixelList
 {
-    public List<pixelsData> mapData = new();
+	public List<pixelsData> mapData = new();
 }
 
 public class pixelsData
 {
-    public short index;
-    public uint pixel;
+	public short index;
+	public uint pixel;
 }

@@ -19,6 +19,7 @@ namespace Protocol.Minecraft
 
 				value[index] = entry;
 			}
+
 			return value;
 		}
 	}

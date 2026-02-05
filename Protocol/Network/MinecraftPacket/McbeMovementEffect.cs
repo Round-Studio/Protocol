@@ -1,106 +1,73 @@
-
-
 namespace Protocol.Network.MinecraftPacket;
 
-
-
-
-public enum MovementEffectType 
+public enum MovementEffectType
 {
-    
-    
-    
-    GlideBoost = 0
+	GlideBoost = 0
 }
-
-
-
-
-
 
 public class McpeMovementEffect : Packet
 {
-    
-    
-    
-    public McpeMovementEffect()
-    {
-        Id = 318; 
-        IsMcpe = true;
-    }
+	public McpeMovementEffect()
+	{
+		Id = 318;
+		IsMcpe = true;
+	}
 
-    
-    
-    
-    
-    public long EntityRuntimeID { get; set; } 
 
-    
-    
-    
-    public MovementEffectType Type { get; set; } 
+	public long EntityRuntimeID { get; set; }
 
-    
-    
-    
-    public int Duration { get; set; } 
 
-    
-    
-    
-    public long Tick { get; set; } 
+	public MovementEffectType Type { get; set; }
 
-    
-    
-    
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
 
-        
-        WriteUnsignedVarLong(EntityRuntimeID);
+	public int Duration { get; set; }
 
-        
-        
-        WriteSignedVarInt((int)Type); 
 
-        
-        WriteSignedVarInt(Duration);
+	public long Tick { get; set; }
 
-        
-        WriteUnsignedVarLong(Tick);
-    }
 
-    
-    
-    
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
-        
-        EntityRuntimeID = ReadUnsignedVarLong();
 
-        
-        
-        Type = (MovementEffectType)ReadSignedVarInt(); 
+		WriteUnsignedVarLong(EntityRuntimeID);
 
-        
-        Duration = ReadSignedVarInt();
 
-        
-        Tick = ReadUnsignedVarLong();
-    }
+		WriteSignedVarInt((int)Type);
 
-    
-    
-    
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
-        EntityRuntimeID = 0;
-        Type = MovementEffectType.GlideBoost; 
-        Duration = 0;
-        Tick = 0;
-    }
+
+		WriteSignedVarInt(Duration);
+
+
+		WriteUnsignedVarLong(Tick);
+	}
+
+
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
+
+
+		EntityRuntimeID = ReadUnsignedVarLong();
+
+
+		Type = (MovementEffectType)ReadSignedVarInt();
+
+
+		Duration = ReadSignedVarInt();
+
+
+		Tick = ReadUnsignedVarLong();
+	}
+
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+		EntityRuntimeID = 0;
+		Type = MovementEffectType.GlideBoost;
+		Duration = 0;
+		Tick = 0;
+	}
 }

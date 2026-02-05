@@ -2,36 +2,36 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeOnScreenTextureAnimation : Packet
 {
-    public int effectId; 
+	public int effectId;
 
-    public McpeOnScreenTextureAnimation()
-    {
-        Id = 0x82;
-        IsMcpe = true;
-    }
+	public McpeOnScreenTextureAnimation()
+	{
+		Id = 0x82;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        Write(effectId);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		Write(effectId);
+	}
 
 
-        effectId = ReadInt();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		effectId = ReadInt();
+	}
 
-        effectId = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		effectId = default;
+	}
 }

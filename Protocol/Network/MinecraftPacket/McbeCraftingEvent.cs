@@ -5,67 +5,67 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeCraftingEvent : Packet
 {
-    public enum RecipeTypes
-    {
-        Shapeless = 0,
-        Shaped = 1,
-        Furnace = 2,
-        FurnaceData = 3,
-        Multi = 4,
-        ShulkerBox = 5,
-        ChemistryShapeless = 6,
-        ChemistryShaped = 7,
-        SmithingTransform = 8,
-        SmithingTrim = 9
-    }
+	public enum RecipeTypes
+	{
+		Shapeless = 0,
+		Shaped = 1,
+		Furnace = 2,
+		FurnaceData = 3,
+		Multi = 4,
+		ShulkerBox = 5,
+		ChemistryShapeless = 6,
+		ChemistryShaped = 7,
+		SmithingTransform = 8,
+		SmithingTrim = 9
+	}
 
-    public ItemStacks input; 
-    public UUID recipeId; 
-    public int recipeType; 
-    public ItemStacks result; 
+	public ItemStacks input;
+	public UUID recipeId;
+	public int recipeType;
+	public ItemStacks result;
 
-    public byte windowId; 
+	public byte windowId;
 
-    public McpeCraftingEvent()
-    {
-        Id = 0x35;
-        IsMcpe = true;
-    }
+	public McpeCraftingEvent()
+	{
+		Id = 0x35;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        Write(windowId);
-        WriteSignedVarInt(recipeType);
-        Write(recipeId);
-        Write(input);
-        Write(result);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		Write(windowId);
+		WriteSignedVarInt(recipeType);
+		Write(recipeId);
+		Write(input);
+		Write(result);
+	}
 
 
-        windowId = ReadByte();
-        recipeType = ReadSignedVarInt();
-        recipeId = ReadUUID();
-        input = ReadItemStacks();
-        result = ReadItemStacks();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		windowId = ReadByte();
+		recipeType = ReadSignedVarInt();
+		recipeId = ReadUUID();
+		input = ReadItemStacks();
+		result = ReadItemStacks();
+	}
 
-        windowId = default;
-        recipeType = default;
-        recipeId = default;
-        input = default;
-        result = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		windowId = default;
+		recipeType = default;
+		recipeId = default;
+		input = default;
+		result = default;
+	}
 }

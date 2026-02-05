@@ -8,6 +8,7 @@ namespace Protocol.Minecraft
 		public int Category { get; set; }
 		public string Name { get; set; }
 		public Item Icon { get; set; }
+
 		public creativeGroup(int category, string name, Item icon)
 		{
 			Category = category;
@@ -20,6 +21,7 @@ namespace Protocol.Minecraft
 	{
 		public uint GroupIndex { get; set; }
 		public Item Item { get; set; }
+
 		public CreativeItemEntry(uint groupIndex, Item item)
 		{
 			GroupIndex = groupIndex;

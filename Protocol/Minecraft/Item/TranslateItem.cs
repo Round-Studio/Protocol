@@ -17,10 +17,10 @@ namespace Protocol.Minecraft
 			Meta = meta;
 		}
 
-		
-#pragma warning disable CS8767 
+
+#pragma warning disable CS8767
 		public bool Equals(TranslatedItem other)
-#pragma warning restore CS8767 
+#pragma warning restore CS8767
 		{
 			if (ReferenceEquals(null, other)) return false;
 			if (ReferenceEquals(this, other)) return true;
@@ -28,7 +28,7 @@ namespace Protocol.Minecraft
 			return Id == other.Id && Meta == other.Meta;
 		}
 
-		
+
 		public override bool Equals(object obj)
 		{
 			if (ReferenceEquals(null, obj)) return false;
@@ -38,7 +38,7 @@ namespace Protocol.Minecraft
 			return Equals((TranslatedItem)obj);
 		}
 
-		
+
 		public override int GetHashCode()
 		{
 			return HashCode.Combine(Id, Meta);

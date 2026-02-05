@@ -7,7 +7,6 @@ namespace Protocol.Minecraft
 
 		public EducationUriResource()
 		{
-
 		}
 
 		public EducationUriResource(string buttonName, string linkUri)

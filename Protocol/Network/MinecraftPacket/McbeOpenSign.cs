@@ -4,40 +4,40 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeOpenSign : Packet
 {
-    public BlockCoordinates coordinates; 
-    public bool front; 
+	public BlockCoordinates coordinates;
+	public bool front;
 
-    public McpeOpenSign()
-    {
-        Id = 0x12f;
-        IsMcpe = true;
-    }
+	public McpeOpenSign()
+	{
+		Id = 0x12f;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        Write(coordinates);
-        Write(front);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		Write(coordinates);
+		Write(front);
+	}
 
 
-        coordinates = ReadBlockCoordinates();
-        front = ReadBool();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		coordinates = ReadBlockCoordinates();
+		front = ReadBool();
+	}
 
-        coordinates = default;
-        front = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		coordinates = default;
+		front = default;
+	}
 }

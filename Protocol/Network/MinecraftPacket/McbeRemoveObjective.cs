@@ -2,36 +2,36 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeRemoveObjective : Packet
 {
-    public string objectiveName; 
+	public string objectiveName;
 
-    public McpeRemoveObjective()
-    {
-        Id = 0x6a;
-        IsMcpe = true;
-    }
+	public McpeRemoveObjective()
+	{
+		Id = 0x6a;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        Write(objectiveName);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		Write(objectiveName);
+	}
 
 
-        objectiveName = ReadString();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		objectiveName = ReadString();
+	}
 
-        objectiveName = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		objectiveName = default;
+	}
 }

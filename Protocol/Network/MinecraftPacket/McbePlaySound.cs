@@ -4,49 +4,49 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpePlaySound : Packet
 {
-    public BlockCoordinates coordinates; 
+	public BlockCoordinates coordinates;
 
-    public string name; 
-    public float pitch; 
-    public float volume; 
+	public string name;
+	public float pitch;
+	public float volume;
 
-    public McpePlaySound()
-    {
-        Id = 0x56;
-        IsMcpe = true;
-    }
+	public McpePlaySound()
+	{
+		Id = 0x56;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        Write(name);
-        Write(coordinates);
-        Write(volume);
-        Write(pitch);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		Write(name);
+		Write(coordinates);
+		Write(volume);
+		Write(pitch);
+	}
 
 
-        name = ReadString();
-        coordinates = ReadBlockCoordinates();
-        volume = ReadFloat();
-        pitch = ReadFloat();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		name = ReadString();
+		coordinates = ReadBlockCoordinates();
+		volume = ReadFloat();
+		pitch = ReadFloat();
+	}
 
-        name = default;
-        coordinates = default;
-        volume = default;
-        pitch = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		name = default;
+		coordinates = default;
+		volume = default;
+		pitch = default;
+	}
 }

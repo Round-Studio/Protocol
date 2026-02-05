@@ -4,36 +4,36 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpePlayerList : Packet
 {
-    public PlayerRecords records; 
+	public PlayerRecords records;
 
-    public McpePlayerList()
-    {
-        Id = 0x3f;
-        IsMcpe = true;
-    }
+	public McpePlayerList()
+	{
+		Id = 0x3f;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        Write(records);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		Write(records);
+	}
 
 
-        records = ReadPlayerRecords();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		records = ReadPlayerRecords();
+	}
 
-        records = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		records = default;
+	}
 }

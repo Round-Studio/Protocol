@@ -4,45 +4,45 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeUpdateAttributes : Packet
 {
-    public PlayerAttributes attributes; 
+	public PlayerAttributes attributes;
 
-    public long runtimeEntityId; 
-    public long tick; 
+	public long runtimeEntityId;
+	public long tick;
 
-    public McpeUpdateAttributes()
-    {
-        Id = 0x1d;
-        IsMcpe = true;
-    }
+	public McpeUpdateAttributes()
+	{
+		Id = 0x1d;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        WriteUnsignedVarLong(runtimeEntityId);
-        Write(attributes);
-        WriteUnsignedVarLong(tick);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		WriteUnsignedVarLong(runtimeEntityId);
+		Write(attributes);
+		WriteUnsignedVarLong(tick);
+	}
 
 
-        runtimeEntityId = ReadUnsignedVarLong();
-        attributes = ReadPlayerAttributes();
-        tick = ReadUnsignedVarLong();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		runtimeEntityId = ReadUnsignedVarLong();
+		attributes = ReadPlayerAttributes();
+		tick = ReadUnsignedVarLong();
+	}
 
-        runtimeEntityId = default;
-        attributes = default;
-        tick = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		runtimeEntityId = default;
+		attributes = default;
+		tick = default;
+	}
 }

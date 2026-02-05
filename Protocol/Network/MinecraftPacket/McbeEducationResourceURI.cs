@@ -1,109 +1,67 @@
-
-
-
-
 namespace Protocol.Network.MinecraftPacket;
-
-
-
 
 public class EducationSharedResourceURI
 {
-    
-    
-    
-    public EducationSharedResourceURI()
-    {
-    }
+	public EducationSharedResourceURI()
+	{
+	}
 
-    
-    
-    
-    
-    
-    public EducationSharedResourceURI(string buttonName, string linkUri)
-    {
-        ButtonName = buttonName ?? string.Empty;
-        LinkURI = linkUri ?? string.Empty;
-    }
 
-    
-    
-    
-    public string ButtonName { get; set; } = string.Empty;
+	public EducationSharedResourceURI(string buttonName, string linkUri)
+	{
+		ButtonName = buttonName ?? string.Empty;
+		LinkURI = linkUri ?? string.Empty;
+	}
 
-    
-    
-    
-    public string LinkURI { get; set; } = string.Empty;
+
+	public string ButtonName { get; set; } = string.Empty;
+
+
+	public string LinkURI { get; set; } = string.Empty;
 }
-
-
-
 
 public class McpeEducationResourceURI : Packet
 {
-    
-    
-    
-    public McpeEducationResourceURI()
-    {
-        Id = 170; 
-        IsMcpe = true;
-    }
+	public McpeEducationResourceURI()
+	{
+		Id = 170;
+		IsMcpe = true;
+	}
 
-    
-    
-    
-    public EducationSharedResourceURI Resource { get; set; } = new();
 
-    
-    
-    
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
+	public EducationSharedResourceURI Resource { get; set; } = new();
 
-        
-        
-        
-        
 
-        
-        Write(Resource?.ButtonName ?? string.Empty);
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
-        
-        Write(Resource?.LinkURI ?? string.Empty);
-    }
 
-    
-    
-    
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		Write(Resource?.ButtonName ?? string.Empty);
 
-        
-        
-        
-        
 
-        
-        var buttonName = ReadString();
+		Write(Resource?.LinkURI ?? string.Empty);
+	}
 
-        
-        var linkUri = ReadString();
 
-        
-        Resource = new EducationSharedResourceURI(buttonName, linkUri);
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
-    
-    
-    
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
-        Resource = new EducationSharedResourceURI();
-    }
+
+		var buttonName = ReadString();
+
+
+		var linkUri = ReadString();
+
+
+		Resource = new EducationSharedResourceURI(buttonName, linkUri);
+	}
+
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+		Resource = new EducationSharedResourceURI();
+	}
 }

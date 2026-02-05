@@ -1,104 +1,68 @@
-
-
-
-
 namespace Protocol.Network.MinecraftPacket;
-
-
-
 
 public class GenerationFeature
 {
-    
-    
-    
-    public string Name { get; set; } = string.Empty;
+	public string Name { get; set; } = string.Empty;
 
-    
-    
-    
-    public byte[] JSON { get; set; } = new byte[0];
+
+	public byte[] JSON { get; set; } = new byte[0];
 }
-
-
-
-
-
 
 public class McpeFeatureRegistry : Packet
 {
-    
-    
-    
-    public McpeFeatureRegistry()
-    {
-        Id = 191; 
-        IsMcpe = true;
-        
-    }
+	public McpeFeatureRegistry()
+	{
+		Id = 191;
+		IsMcpe = true;
+	}
 
-    
-    
-    
-    public GenerationFeature[] Features { get; set; } =
-        new GenerationFeature[0]; 
 
-    
-    
-    
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
+	public GenerationFeature[] Features { get; set; } =
+		new GenerationFeature[0];
 
-        
-        
-        WriteUnsignedVarInt((uint)(Features?.Length ?? 0));
-        
-        if (Features != null)
-            foreach (var feature in Features)
-            {
-                
-                
-                Write(feature.Name ?? string.Empty); 
-                WriteByteArray(feature.JSON ?? new byte[0]); 
-            }
-    }
 
-    
-    
-    
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
-        
-        
-        var count = ReadUnsignedVarInt();
-        
-        Features = new GenerationFeature[count];
-        for (var i = 0; i < count; i++)
-        {
-            
-            
-            var name = ReadString(); 
-            var json = ReadByteArray(true); 
-            
-            
 
-            Features[i] = new GenerationFeature
-            {
-                Name = name,
-                JSON = json
-            };
-        }
-    }
+		WriteUnsignedVarInt((uint)(Features?.Length ?? 0));
 
-    
-    
-    
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
-        Features = new GenerationFeature[0];
-    }
+		if (Features != null)
+			foreach (var feature in Features)
+			{
+				Write(feature.Name ?? string.Empty);
+				WriteByteArray(feature.JSON ?? new byte[0]);
+			}
+	}
+
+
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
+
+
+		var count = ReadUnsignedVarInt();
+
+		Features = new GenerationFeature[count];
+		for (var i = 0; i < count; i++)
+		{
+			var name = ReadString();
+			var json = ReadByteArray(true);
+
+
+			Features[i] = new GenerationFeature
+			{
+				Name = name,
+				JSON = json
+			};
+		}
+	}
+
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+		Features = new GenerationFeature[0];
+	}
 }

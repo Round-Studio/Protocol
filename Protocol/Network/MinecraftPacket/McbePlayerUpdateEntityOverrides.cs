@@ -1,137 +1,101 @@
-
-
 namespace Protocol.Network.MinecraftPacket;
-
-
-
 
 public class McpePlayerUpdateEntityOverrides : Packet
 {
-    public enum PlayerUpdate : byte
-    {
-        
-        
-        
-        PlayerUpdateEntityOverridesTypeClearAll = 0,
+	public enum PlayerUpdate : byte
+	{
+		PlayerUpdateEntityOverridesTypeClearAll = 0,
 
-        
-        
-        
-        PlayerUpdateEntityOverridesTypeRemove = 1,
 
-        
-        
-        
-        PlayerUpdateEntityOverridesTypeInt = 2,
+		PlayerUpdateEntityOverridesTypeRemove = 1,
 
-        
-        
-        
-        PlayerUpdateEntityOverridesTypeFloat = 3
-    }
 
-    
-    
-    
-    public McpePlayerUpdateEntityOverrides()
-    {
-        Id = 325; 
-        IsMcpe = true;
-    }
+		PlayerUpdateEntityOverridesTypeInt = 2,
 
-    
-    
-    
-    
-    public long EntityRuntimeID { get; set; } 
 
-    
-    
-    
-    public uint PropertyIndex { get; set; } 
+		PlayerUpdateEntityOverridesTypeFloat = 3
+	}
 
-    
-    
-    
-    public byte Type { get; set; } 
 
-    
-    
-    
-    public int IntValue { get; set; } 
+	public McpePlayerUpdateEntityOverrides()
+	{
+		Id = 325;
+		IsMcpe = true;
+	}
 
-    
-    
-    
-    public float FloatValue { get; set; } 
 
-    
-    
-    
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
+	public long EntityRuntimeID { get; set; }
 
-        
-        WriteUnsignedVarLong(EntityRuntimeID);
 
-        
-        WriteUnsignedVarInt(PropertyIndex);
+	public uint PropertyIndex { get; set; }
 
-        
-        Write(Type);
 
-        if (Type == (byte)PlayerUpdate.PlayerUpdateEntityOverridesTypeInt)
-            
-            
-            Write(IntValue);
-        else if (Type == (byte)PlayerUpdate.PlayerUpdateEntityOverridesTypeFloat)
-            
-            Write(FloatValue);
-        
-        
-    }
+	public byte Type { get; set; }
 
-    
-    
-    
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
 
-        
-        EntityRuntimeID = ReadUnsignedVarLong();
+	public int IntValue { get; set; }
 
-        
-        PropertyIndex = ReadUnsignedVarInt();
 
-        
-        Type = ReadByte();
+	public float FloatValue { get; set; }
 
-        
-        IntValue = 0;
-        FloatValue = 0.0f;
 
-        if (Type == (byte)PlayerUpdate.PlayerUpdateEntityOverridesTypeInt)
-            
-            
-            IntValue = ReadInt();
-        else if (Type == (byte)PlayerUpdate.PlayerUpdateEntityOverridesTypeFloat)
-            
-            FloatValue = ReadFloat();
-        
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
-    
-    
-    
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
-        EntityRuntimeID = 0;
-        PropertyIndex = 0;
-        Type = 0;
-        IntValue = 0;
-        FloatValue = 0.0f;
-    }
+
+		WriteUnsignedVarLong(EntityRuntimeID);
+
+
+		WriteUnsignedVarInt(PropertyIndex);
+
+
+		Write(Type);
+
+		if (Type == (byte)PlayerUpdate.PlayerUpdateEntityOverridesTypeInt)
+
+
+			Write(IntValue);
+		else if (Type == (byte)PlayerUpdate.PlayerUpdateEntityOverridesTypeFloat)
+
+			Write(FloatValue);
+	}
+
+
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
+
+
+		EntityRuntimeID = ReadUnsignedVarLong();
+
+
+		PropertyIndex = ReadUnsignedVarInt();
+
+
+		Type = ReadByte();
+
+
+		IntValue = 0;
+		FloatValue = 0.0f;
+
+		if (Type == (byte)PlayerUpdate.PlayerUpdateEntityOverridesTypeInt)
+
+
+			IntValue = ReadInt();
+		else if (Type == (byte)PlayerUpdate.PlayerUpdateEntityOverridesTypeFloat)
+
+			FloatValue = ReadFloat();
+	}
+
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+		EntityRuntimeID = 0;
+		PropertyIndex = 0;
+		Type = 0;
+		IntValue = 0;
+		FloatValue = 0.0f;
+	}
 }

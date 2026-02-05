@@ -4,44 +4,44 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeSetEntityMotion : Packet
 {
-    public long runtimeEntityId; 
-    public long tick; 
-    public Vector3 velocity; 
+	public long runtimeEntityId;
+	public long tick;
+	public Vector3 velocity;
 
-    public McpeSetEntityMotion()
-    {
-        Id = 0x28;
-        IsMcpe = true;
-    }
+	public McpeSetEntityMotion()
+	{
+		Id = 0x28;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        WriteUnsignedVarLong(runtimeEntityId);
-        Write(velocity);
-        WriteUnsignedVarLong(tick);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		WriteUnsignedVarLong(runtimeEntityId);
+		Write(velocity);
+		WriteUnsignedVarLong(tick);
+	}
 
 
-        runtimeEntityId = ReadUnsignedVarLong();
-        velocity = ReadVector3();
-        tick = ReadUnsignedVarLong();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		runtimeEntityId = ReadUnsignedVarLong();
+		velocity = ReadVector3();
+		tick = ReadUnsignedVarLong();
+	}
 
-        runtimeEntityId = default;
-        velocity = default;
-        tick = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		runtimeEntityId = default;
+		velocity = default;
+		tick = default;
+	}
 }

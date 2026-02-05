@@ -34,9 +34,11 @@ namespace Protocol.Minecraft
 			Metadata = metadata;
 			Count = (byte)count;
 		}
+
 		protected internal Item(short id, short metadata = 0, int count = 1) : this(String.Empty, id, metadata, count)
 		{
 		}
+
 		public override int GetHashCode()
 		{
 			unchecked
@@ -54,11 +56,10 @@ namespace Protocol.Minecraft
 		{
 			return $"{GetType().Name}(Id={Id}, Meta={Metadata}, UniqueId={UniqueId}) Count={Count}, NBT={ExtraData}";
 		}
-
 	}
+
 	public enum ItemMaterial
 	{
-		
 		Leather = -2,
 		Chain = -1,
 
@@ -73,7 +74,6 @@ namespace Protocol.Minecraft
 
 	public enum ItemType
 	{
-		
 		Sword,
 		Bow,
 		Shovel,
@@ -89,7 +89,7 @@ namespace Protocol.Minecraft
 		FishingRod,
 		Book,
 
-		
+
 		Helmet,
 		Chestplate,
 		Leggings,

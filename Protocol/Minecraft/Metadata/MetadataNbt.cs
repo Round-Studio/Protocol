@@ -29,7 +29,6 @@ namespace Protocol.Minecraft
 
 		public override void FromStream(BinaryReader reader)
 		{
-			
 			Value = (NbtCompound)Packet.ReadNbt(reader.BaseStream).NbtFile.RootTag;
 		}
 

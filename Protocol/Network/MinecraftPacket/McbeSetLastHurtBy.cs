@@ -2,36 +2,36 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeSetLastHurtBy : Packet
 {
-    public int unknown; 
+	public int unknown;
 
-    public McpeSetLastHurtBy()
-    {
-        Id = 0x60;
-        IsMcpe = true;
-    }
+	public McpeSetLastHurtBy()
+	{
+		Id = 0x60;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        WriteVarInt(unknown);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		WriteVarInt(unknown);
+	}
 
 
-        unknown = ReadVarInt();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		unknown = ReadVarInt();
+	}
 
-        unknown = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		unknown = default;
+	}
 }

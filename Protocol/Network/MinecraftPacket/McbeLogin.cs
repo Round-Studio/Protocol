@@ -2,41 +2,41 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeLogin : Packet
 {
-    public byte[] payload; 
+	public byte[] payload;
 
-    public int protocolVersion; 
+	public int protocolVersion;
 
-    public McpeLogin()
-    {
-        Id = 0x01;
-        IsMcpe = true;
-    }
+	public McpeLogin()
+	{
+		Id = 0x01;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        WriteBe(protocolVersion);
-        WriteByteArray(payload);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		WriteBe(protocolVersion);
+		WriteByteArray(payload);
+	}
 
 
-        protocolVersion = ReadIntBe();
-        payload = ReadByteArray();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		protocolVersion = ReadIntBe();
+		payload = ReadByteArray();
+	}
 
-        protocolVersion = default;
-        payload = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		protocolVersion = default;
+		payload = default;
+	}
 }

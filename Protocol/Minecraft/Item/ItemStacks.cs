@@ -8,9 +8,6 @@ public class CreativeItemStacks : ItemStacks
 {
 }
 
-
-
-
 public class GlobalItemStacks : List<Item>
 {
 }

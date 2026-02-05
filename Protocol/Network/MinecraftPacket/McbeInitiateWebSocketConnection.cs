@@ -2,36 +2,36 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeInitiateWebSocketConnection : Packet
 {
-    public string server; 
+	public string server;
 
-    public McpeInitiateWebSocketConnection()
-    {
-        Id = 0x5f;
-        IsMcpe = true;
-    }
+	public McpeInitiateWebSocketConnection()
+	{
+		Id = 0x5f;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        Write(server);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		Write(server);
+	}
 
 
-        server = ReadString();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		server = ReadString();
+	}
 
-        server = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		server = default;
+	}
 }

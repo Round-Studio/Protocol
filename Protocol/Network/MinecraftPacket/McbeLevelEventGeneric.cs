@@ -4,43 +4,43 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeLevelEventGeneric : Packet
 {
-    public Nbt eventData; 
+	public Nbt eventData;
 
-    public int eventId; 
+	public int eventId;
 
-    public McpeLevelEventGeneric()
-    {
-        Id = 0x7c;
-        IsMcpe = true;
-    }
+	public McpeLevelEventGeneric()
+	{
+		Id = 0x7c;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        WriteSignedVarInt(eventId);
-        Write(eventData);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		WriteSignedVarInt(eventId);
+		Write(eventData);
+	}
 
 
-        eventId = ReadSignedVarInt();
-        
-        for (byte i = 0; i < 60; i++) 
-            ReadByte();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		eventId = ReadSignedVarInt();
 
-        eventId = default;
-        eventData = default;
-    }
+		for (byte i = 0; i < 60; i++)
+			ReadByte();
+	}
+
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		eventId = default;
+		eventData = default;
+	}
 }

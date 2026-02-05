@@ -1,4 +1,4 @@
-using Protocol.Utils;
+using Protocol.Utils.IO;
 using System.Globalization;
 using System.Text;
 
@@ -75,15 +75,15 @@ namespace Protocol.Minecraft
 
 		public static readonly CreateEntryInstance[] EntryTypes = new CreateEntryInstance[]
 		{
-			() => new MetadataByte(), 
-			() => new MetadataShort(), 
-			() => new MetadataInt(), 
-			() => new MetadataFloat(), 
-			() => new MetadataString(), 
-			() => new MetadataNbt(), 
-			() => new MetadataIntCoordinates(), 
-			() => new MetadataLong(), 
-			() => new MetadataVector3(), 
+			() => new MetadataByte(),
+			() => new MetadataShort(),
+			() => new MetadataInt(),
+			() => new MetadataFloat(),
+			() => new MetadataString(),
+			() => new MetadataNbt(),
+			() => new MetadataIntCoordinates(),
+			() => new MetadataLong(),
+			() => new MetadataVector3(),
 		};
 
 		public override string ToString()
@@ -134,64 +134,66 @@ namespace Protocol.Minecraft
 				switch (entry.Identifier)
 				{
 					case 0:
-						{
-							var e = (MetadataByte)entry;
-							sb.Append($"{e.GetType().Name}({e.Value});");
-							break;
-						}
+					{
+						var e = (MetadataByte)entry;
+						sb.Append($"{e.GetType().Name}({e.Value});");
+						break;
+					}
 					case 1:
-						{
-							var e = (MetadataShort)entry;
-							sb.Append($"{e.GetType().Name}({e.Value});");
-							break;
-						}
+					{
+						var e = (MetadataShort)entry;
+						sb.Append($"{e.GetType().Name}({e.Value});");
+						break;
+					}
 					case 2:
-						{
-							var e = (MetadataInt)entry;
-							sb.Append($"{e.GetType().Name}({e.Value});");
-							break;
-						}
+					{
+						var e = (MetadataInt)entry;
+						sb.Append($"{e.GetType().Name}({e.Value});");
+						break;
+					}
 					case 3:
-						{
-							var e = (MetadataFloat)entry;
-							sb.Append($"{e.GetType().Name}({e.Value.ToString(NumberFormatInfo.InvariantInfo)}f);");
-							break;
-						}
+					{
+						var e = (MetadataFloat)entry;
+						sb.Append($"{e.GetType().Name}({e.Value.ToString(NumberFormatInfo.InvariantInfo)}f);");
+						break;
+					}
 					case 4:
-						{
-							var e = (MetadataString)entry;
-							sb.Append($"{e.GetType().Name}(\"{e.Value}\");");
-							break;
-						}
+					{
+						var e = (MetadataString)entry;
+						sb.Append($"{e.GetType().Name}(\"{e.Value}\");");
+						break;
+					}
 					case 5:
-						{
-							var e = (MetadataNbt)entry;
-							sb.Append($"{e.GetType().Name}({e.Value});");
-							break;
-						}
+					{
+						var e = (MetadataNbt)entry;
+						sb.Append($"{e.GetType().Name}({e.Value});");
+						break;
+					}
 					case 6:
-						{
-							var e = (MetadataIntCoordinates)entry;
-							sb.Append($"{e.GetType().Name}({e.Value});");
-							break;
-						}
+					{
+						var e = (MetadataIntCoordinates)entry;
+						sb.Append($"{e.GetType().Name}({e.Value});");
+						break;
+					}
 					case 7:
+					{
+						var e = (MetadataLong)entry;
+						sb.Append($"{e.GetType().Name}({e.Value});");
+						if (idx == 0)
 						{
-							var e = (MetadataLong)entry;
-							sb.Append($"{e.GetType().Name}({e.Value});");
-							if (idx == 0)
-							{
-								sb.Append($" // {Convert.ToString(e.Value, 2)}");
-							}
-							break;
+							sb.Append($" // {Convert.ToString(e.Value, 2)}");
 						}
+
+						break;
+					}
 					case 8:
-						{
-							var e = (MetadataVector3)entry;
-							sb.Append($"{e.GetType().Name}({e.Value});");
-							break;
-						}
+					{
+						var e = (MetadataVector3)entry;
+						sb.Append($"{e.GetType().Name}({e.Value});");
+						break;
+					}
 				}
+
 				sb.AppendLine();
 			}
 

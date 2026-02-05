@@ -4,40 +4,40 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeCreativeContent : Packet
 {
-    public List<creativeGroup> groups; 
-    public List<CreativeItemEntry> input; 
+	public List<creativeGroup> groups;
+	public List<CreativeItemEntry> input;
 
-    public McpeCreativeContent()
-    {
-        Id = 0x91;
-        IsMcpe = true;
-    }
+	public McpeCreativeContent()
+	{
+		Id = 0x91;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        Write(groups);
-        Write(input);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		Write(groups);
+		Write(input);
+	}
 
 
-        groups = ReadCreativeGroups();
-        input = ReadCreativeItemStacks();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		groups = ReadCreativeGroups();
+		input = ReadCreativeItemStacks();
+	}
 
-        groups = default;
-        input = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		groups = default;
+		input = default;
+	}
 }

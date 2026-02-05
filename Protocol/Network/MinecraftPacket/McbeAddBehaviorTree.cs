@@ -2,36 +2,36 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeAddBehaviorTree : Packet
 {
-    public string behaviortree; 
+	public string behaviortree;
 
-    public McpeAddBehaviorTree()
-    {
-        Id = 0x59;
-        IsMcpe = true;
-    }
+	public McpeAddBehaviorTree()
+	{
+		Id = 0x59;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        Write(behaviortree);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		Write(behaviortree);
+	}
 
 
-        behaviortree = ReadString();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		behaviortree = ReadString();
+	}
 
-        behaviortree = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		behaviortree = default;
+	}
 }

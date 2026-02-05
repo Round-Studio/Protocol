@@ -2,36 +2,36 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeRemoveEntity : Packet
 {
-    public long entityIdSelf; 
+	public long entityIdSelf;
 
-    public McpeRemoveEntity()
-    {
-        Id = 0x0e;
-        IsMcpe = true;
-    }
+	public McpeRemoveEntity()
+	{
+		Id = 0x0e;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        WriteSignedVarLong(entityIdSelf);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		WriteSignedVarLong(entityIdSelf);
+	}
 
 
-        entityIdSelf = ReadSignedVarLong();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		entityIdSelf = ReadSignedVarLong();
+	}
 
-        entityIdSelf = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		entityIdSelf = default;
+	}
 }

@@ -2,53 +2,53 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeSetDisplayObjective : Packet
 {
-    public string criteriaName; 
-    public string displayName; 
+	public string criteriaName;
+	public string displayName;
 
-    public string displaySlot; 
-    public string objectiveName; 
-    public int sortOrder; 
+	public string displaySlot;
+	public string objectiveName;
+	public int sortOrder;
 
-    public McpeSetDisplayObjective()
-    {
-        Id = 0x6b;
-        IsMcpe = true;
-    }
+	public McpeSetDisplayObjective()
+	{
+		Id = 0x6b;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        Write(displaySlot);
-        Write(objectiveName);
-        Write(displayName);
-        Write(criteriaName);
-        WriteSignedVarInt(sortOrder);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		Write(displaySlot);
+		Write(objectiveName);
+		Write(displayName);
+		Write(criteriaName);
+		WriteSignedVarInt(sortOrder);
+	}
 
 
-        displaySlot = ReadString();
-        objectiveName = ReadString();
-        displayName = ReadString();
-        criteriaName = ReadString();
-        sortOrder = ReadSignedVarInt();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		displaySlot = ReadString();
+		objectiveName = ReadString();
+		displayName = ReadString();
+		criteriaName = ReadString();
+		sortOrder = ReadSignedVarInt();
+	}
 
-        displaySlot = default;
-        objectiveName = default;
-        displayName = default;
-        criteriaName = default;
-        sortOrder = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		displaySlot = default;
+		objectiveName = default;
+		displayName = default;
+		criteriaName = default;
+		sortOrder = default;
+	}
 }

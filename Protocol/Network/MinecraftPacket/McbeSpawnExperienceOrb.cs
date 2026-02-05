@@ -2,53 +2,53 @@ using System.Numerics;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public partial class McpeSpawnExperienceOrb : Packet 
+public partial class McpeSpawnExperienceOrb : Packet
 {
-    public int count; 
+	public int count;
 
-    public Vector3 position; 
+	public Vector3 position;
 
-    public McpeSpawnExperienceOrb()
-    {
-        Id = 0x42;
-        IsMcpe = true;
-    }
+	public McpeSpawnExperienceOrb()
+	{
+		Id = 0x42;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
-        BeforeEncode();
+		BeforeEncode();
 
-        Write(position);
-        WriteSignedVarInt(count);
+		Write(position);
+		WriteSignedVarInt(count);
 
-        AfterEncode();
-    }
+		AfterEncode();
+	}
 
-    partial void BeforeEncode();
-    partial void AfterEncode();
+	partial void BeforeEncode();
+	partial void AfterEncode();
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
-        BeforeDecode();
+		BeforeDecode();
 
-        position = ReadVector3();
-        count = ReadSignedVarInt();
+		position = ReadVector3();
+		count = ReadSignedVarInt();
 
-        AfterDecode();
-    }
+		AfterDecode();
+	}
 
-    partial void BeforeDecode();
-    partial void AfterDecode();
+	partial void BeforeDecode();
+	partial void AfterDecode();
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
 
-        position = default;
-        count = default;
-    }
+		position = default;
+		count = default;
+	}
 }

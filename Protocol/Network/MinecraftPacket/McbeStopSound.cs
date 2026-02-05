@@ -2,40 +2,40 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpeStopSound : Packet
 {
-    public string name; 
-    public bool stopAll; 
+	public string name;
+	public bool stopAll;
 
-    public McpeStopSound()
-    {
-        Id = 0x57;
-        IsMcpe = true;
-    }
+	public McpeStopSound()
+	{
+		Id = 0x57;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        Write(name);
-        Write(stopAll);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		Write(name);
+		Write(stopAll);
+	}
 
 
-        name = ReadString();
-        stopAll = ReadBool();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		name = ReadString();
+		stopAll = ReadBool();
+	}
 
-        name = default;
-        stopAll = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		name = default;
+		stopAll = default;
+	}
 }

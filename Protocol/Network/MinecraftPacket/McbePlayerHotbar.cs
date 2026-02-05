@@ -2,44 +2,44 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McpePlayerHotbar : Packet
 {
-    public uint selectedSlot; 
-    public bool selectSlot; 
-    public byte windowId; 
+	public uint selectedSlot;
+	public bool selectSlot;
+	public byte windowId;
 
-    public McpePlayerHotbar()
-    {
-        Id = 0x30;
-        IsMcpe = true;
-    }
+	public McpePlayerHotbar()
+	{
+		Id = 0x30;
+		IsMcpe = true;
+	}
 
-    protected override void EncodePacket()
-    {
-        base.EncodePacket();
-
-
-        WriteUnsignedVarInt(selectedSlot);
-        Write(windowId);
-        Write(selectSlot);
-    }
+	protected override void EncodePacket()
+	{
+		base.EncodePacket();
 
 
-    protected override void DecodePacket()
-    {
-        base.DecodePacket();
+		WriteUnsignedVarInt(selectedSlot);
+		Write(windowId);
+		Write(selectSlot);
+	}
 
 
-        selectedSlot = ReadUnsignedVarInt();
-        windowId = ReadByte();
-        selectSlot = ReadBool();
-    }
+	protected override void DecodePacket()
+	{
+		base.DecodePacket();
 
 
-    protected override void ResetPacket()
-    {
-        base.ResetPacket();
+		selectedSlot = ReadUnsignedVarInt();
+		windowId = ReadByte();
+		selectSlot = ReadBool();
+	}
 
-        selectedSlot = default;
-        windowId = default;
-        selectSlot = default;
-    }
+
+	protected override void ResetPacket()
+	{
+		base.ResetPacket();
+
+		selectedSlot = default;
+		windowId = default;
+		selectSlot = default;
+	}
 }
