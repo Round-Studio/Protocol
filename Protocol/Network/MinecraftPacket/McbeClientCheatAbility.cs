@@ -3,12 +3,12 @@ using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeClientCheatAbility : Packet
+public class McbeClientCheatAbility : Packet
 {
-	public McpeClientCheatAbility()
+	public McbeClientCheatAbility()
 	{
 		Id = 197;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 

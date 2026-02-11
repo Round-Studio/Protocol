@@ -2,7 +2,7 @@ using System.Numerics;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeCorrectPlayerMovePrediction : Packet
+public class McbeCorrectPlayerMovePrediction : Packet
 {
 	public enum PredictionType : byte
 	{
@@ -11,10 +11,10 @@ public class McpeCorrectPlayerMovePrediction : Packet
 	}
 
 
-	public McpeCorrectPlayerMovePrediction()
+	public McbeCorrectPlayerMovePrediction()
 	{
 		Id = 161;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 

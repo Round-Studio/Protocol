@@ -1,6 +1,6 @@
 using Protocol.Minecraft.Skins;
 using Protocol.Utils;
-using Protocol.Utils.Crypo;
+using Protocol.Utils.Crypto;
 
 namespace Protocol.Minecraft
 {

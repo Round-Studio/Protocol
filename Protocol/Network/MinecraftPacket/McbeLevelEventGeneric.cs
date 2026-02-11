@@ -2,16 +2,16 @@ using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeLevelEventGeneric : Packet
+public class McbeLevelEventGeneric : Packet
 {
 	public Nbt eventData;
 
 	public int eventId;
 
-	public McpeLevelEventGeneric()
+	public McbeLevelEventGeneric()
 	{
 		Id = 0x7c;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

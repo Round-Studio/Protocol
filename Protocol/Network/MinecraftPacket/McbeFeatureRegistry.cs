@@ -8,12 +8,12 @@ public class GenerationFeature
 	public byte[] JSON { get; set; } = new byte[0];
 }
 
-public class McpeFeatureRegistry : Packet
+public class McbeFeatureRegistry : Packet
 {
-	public McpeFeatureRegistry()
+	public McbeFeatureRegistry()
 	{
 		Id = 191;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 

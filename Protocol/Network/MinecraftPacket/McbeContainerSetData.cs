@@ -1,16 +1,16 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeContainerSetData : Packet
+public class McbeContainerSetData : Packet
 {
 	public int property;
 	public int value;
 
 	public byte windowId;
 
-	public McpeContainerSetData()
+	public McbeContainerSetData()
 	{
 		Id = 0x33;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

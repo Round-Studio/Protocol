@@ -1,6 +1,6 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeVideoStreamConnect : Packet
+public class McbeVideoStreamConnect : Packet
 {
 	public byte action;
 	public float frameSendFrequency;
@@ -9,10 +9,10 @@ public class McpeVideoStreamConnect : Packet
 
 	public string serverUri;
 
-	public McpeVideoStreamConnect()
+	public McbeVideoStreamConnect()
 	{
 		Id = 0x7e;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

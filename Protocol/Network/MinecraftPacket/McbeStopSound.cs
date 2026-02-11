@@ -1,14 +1,14 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeStopSound : Packet
+public class McbeStopSound : Packet
 {
 	public string name;
 	public bool stopAll;
 
-	public McpeStopSound()
+	public McbeStopSound()
 	{
 		Id = 0x57;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

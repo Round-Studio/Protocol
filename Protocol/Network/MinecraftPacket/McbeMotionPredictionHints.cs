@@ -2,12 +2,12 @@ using System.Numerics;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeMotionPredictionHints : Packet
+public class McbeMotionPredictionHints : Packet
 {
-	public McpeMotionPredictionHints()
+	public McbeMotionPredictionHints()
 	{
 		Id = 157;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 

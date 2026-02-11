@@ -2,12 +2,12 @@ using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeAddVolumeEntity : Packet
+public class McbeAddVolumeEntity : Packet
 {
-	public McpeAddVolumeEntity()
+	public McbeAddVolumeEntity()
 	{
 		Id = 166;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 

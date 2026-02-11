@@ -17,12 +17,12 @@ public enum ControlSchemeType : byte
 	PlayerRelativeStrafe = 4
 }
 
-public class McpeClientBoundControlSchemeSet : Packet
+public class McbeClientBoundControlSchemeSet : Packet
 {
-	public McpeClientBoundControlSchemeSet()
+	public McbeClientBoundControlSchemeSet()
 	{
 		Id = 327;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 

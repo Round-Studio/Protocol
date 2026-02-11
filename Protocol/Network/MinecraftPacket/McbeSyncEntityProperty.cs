@@ -2,14 +2,14 @@ using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeSyncEntityProperty : Packet
+public class McbeSyncEntityProperty : Packet
 {
 	public Nbt propertyData;
 
-	public McpeSyncEntityProperty()
+	public McbeSyncEntityProperty()
 	{
 		Id = 0xa5;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

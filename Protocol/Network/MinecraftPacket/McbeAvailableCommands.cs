@@ -15,12 +15,12 @@ public class EnumData
 	public string[] Values { get; set; }
 }
 
-public class McpeAvailableCommands : Packet
+public class McbeAvailableCommands : Packet
 {
-	public McpeAvailableCommands()
+	public McbeAvailableCommands()
 	{
 		Id = 0x4c;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	public CommandSet CommandSet { get; set; }

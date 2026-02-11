@@ -2,14 +2,14 @@ using System.Net;
 using Protocol.Minecraft;
 using Protocol.Minecraft.Skins;
 using Protocol.Network.MinecraftPacket;
-using Protocol.Utils.Crypo;
+using Protocol.Utils.Crypto;
 using Protocol.Utils;
 
 namespace Protocol.Minecraft;
 
 public class Player : Entity
 {
-	private Dictionary<ChunkCoordinates, McpeWrapper> _chunksUsed = new();
+	private Dictionary<ChunkCoordinates, McbeWrapper> _chunksUsed = new();
 	private ChunkCoordinates _currentChunkPosition;
 
 	internal IInventory _openInventory = null;

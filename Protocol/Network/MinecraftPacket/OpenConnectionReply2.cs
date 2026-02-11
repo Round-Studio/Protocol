@@ -17,7 +17,7 @@ public class OpenConnectionReply2 : Packet
 	public OpenConnectionReply2()
 	{
 		Id = 0x08;
-		IsMcpe = false;
+		IsMcbe = false;
 	}
 
 	protected override void EncodePacket()

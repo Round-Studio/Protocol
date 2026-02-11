@@ -2,16 +2,16 @@ using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeAnvilDamage : Packet
+public class McbeAnvilDamage : Packet
 {
 	public BlockCoordinates coordinates;
 
 	public byte damageAmount;
 
-	public McpeAnvilDamage()
+	public McbeAnvilDamage()
 	{
 		Id = 0x8D;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

@@ -5,8 +5,8 @@ namespace Protocol.Minecraft.Transaction;
 
 public class ItemUseTransaction : Transaction
 {
-	public McpeInventoryTransaction.ItemUseAction ActionType { get; set; }
-	public McpeInventoryTransaction.TriggerType TriggerType { get; set; }
+	public McbeInventoryTransaction.ItemUseAction ActionType { get; set; }
+	public McbeInventoryTransaction.TriggerType TriggerType { get; set; }
 	public BlockCoordinates Position { get; set; }
 	public int Face { get; set; }
 	public int Slot { get; set; }

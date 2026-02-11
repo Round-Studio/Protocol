@@ -45,12 +45,12 @@ public static class CodeBuilderStatus
 	public const byte Succeeded = 5;
 }
 
-public class McpeCodeBuilderSource : Packet
+public class McbeCodeBuilderSource : Packet
 {
-	public McpeCodeBuilderSource()
+	public McbeCodeBuilderSource()
 	{
 		Id = 178;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 

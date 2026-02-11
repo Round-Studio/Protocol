@@ -1,11 +1,11 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeRefreshEntitlements : Packet
+public class McbeRefreshEntitlements : Packet
 {
-	public McpeRefreshEntitlements()
+	public McbeRefreshEntitlements()
 	{
 		Id = 305;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 

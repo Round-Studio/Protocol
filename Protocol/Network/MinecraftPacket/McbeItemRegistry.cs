@@ -19,12 +19,12 @@ public class ItemEntry
 	public Nbt Data { get; set; }
 }
 
-public class McpeItemRegistry : Packet
+public class McbeItemRegistry : Packet
 {
-	public McpeItemRegistry()
+	public McbeItemRegistry()
 	{
 		Id = 162;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 

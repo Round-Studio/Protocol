@@ -8,12 +8,12 @@ public static class NPCDialogueActionType
 	public const int Close = 1;
 }
 
-public class McpeNPCDialogue : Packet
+public class McbeNPCDialogue : Packet
 {
-	public McpeNPCDialogue()
+	public McbeNPCDialogue()
 	{
 		Id = 169;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 

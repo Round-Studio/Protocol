@@ -1,6 +1,6 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeLabTable : Packet
+public class McbeLabTable : Packet
 {
 	public int labTableX;
 	public int labTableY;
@@ -9,10 +9,10 @@ public class McpeLabTable : Packet
 
 	public byte uselessByte;
 
-	public McpeLabTable()
+	public McbeLabTable()
 	{
 		Id = 0x6d;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

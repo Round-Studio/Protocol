@@ -8,12 +8,12 @@ public enum ClientCameraAimAssistAction : byte
 	Clear = 1
 }
 
-public class McpeClientCameraAimAssist : Packet
+public class McbeClientCameraAimAssist : Packet
 {
-	public McpeClientCameraAimAssist()
+	public McbeClientCameraAimAssist()
 	{
 		Id = 321;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 

@@ -1,6 +1,6 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeSetInventoryOptions : Packet
+public class McbeSetInventoryOptions : Packet
 {
 	public int craftingLayout;
 	public bool filtering;
@@ -9,10 +9,10 @@ public class McpeSetInventoryOptions : Packet
 	public int leftTab;
 	public int rightTab;
 
-	public McpeSetInventoryOptions()
+	public McbeSetInventoryOptions()
 	{
 		Id = 0x133;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

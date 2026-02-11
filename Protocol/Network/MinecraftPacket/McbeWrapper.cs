@@ -1,13 +1,13 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeWrapper : Packet
+public class McbeWrapper : Packet
 {
 	public ReadOnlyMemory<byte> payload;
 
-	public McpeWrapper()
+	public McbeWrapper()
 	{
 		Id = 0xfe;
-		IsMcpe = false;
+		IsMcbe = false;
 	}
 
 	protected override void EncodePacket()

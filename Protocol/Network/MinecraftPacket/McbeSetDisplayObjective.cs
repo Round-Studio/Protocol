@@ -1,6 +1,6 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeSetDisplayObjective : Packet
+public class McbeSetDisplayObjective : Packet
 {
 	public string criteriaName;
 	public string displayName;
@@ -9,10 +9,10 @@ public class McpeSetDisplayObjective : Packet
 	public string objectiveName;
 	public int sortOrder;
 
-	public McpeSetDisplayObjective()
+	public McbeSetDisplayObjective()
 	{
 		Id = 0x6b;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

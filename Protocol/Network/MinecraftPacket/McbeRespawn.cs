@@ -1,6 +1,6 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeRespawn : Packet
+public class McbeRespawn : Packet
 {
 	public enum RespawnState
 	{
@@ -16,10 +16,10 @@ public class McpeRespawn : Packet
 	public float y;
 	public float z;
 
-	public McpeRespawn()
+	public McbeRespawn()
 	{
 		Id = 0x2d;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

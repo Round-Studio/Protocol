@@ -1,6 +1,6 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeAdventureSettings : Packet
+public class McbeAdventureSettings : Packet
 {
 	public uint actionPermissions;
 	public uint commandPermission;
@@ -10,10 +10,10 @@ public class McpeAdventureSettings : Packet
 	public uint flags;
 	public uint permissionLevel;
 
-	public McpeAdventureSettings()
+	public McbeAdventureSettings()
 	{
 		Id = 0x37;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

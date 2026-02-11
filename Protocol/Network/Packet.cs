@@ -1,8 +1,12 @@
+using System;
 using System.Buffers;
 using System.Buffers.Binary;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Numerics;
@@ -16,12 +20,21 @@ using Protocol.Minecraft.Skins;
 using Protocol.Minecraft.Transaction;
 using Protocol.Network.MinecraftPacket;
 using Protocol.Utils;
-using Protocol.Utils.Crypo;
+using Protocol.Utils.Crypto;
 using Protocol.Utils.IO;
 using Protocol.Utils.UDP;
 using Protocol.Utils;
 using Transaction = Protocol.Minecraft.Transaction.Transaction;
 using Protocol.Minecraft.Map;
+using ArgumentException = System.ArgumentException;
+using ArgumentOutOfRangeException = System.ArgumentOutOfRangeException;
+using BitConverter = System.BitConverter;
+using Console = System.Console;
+using DateTimeOffset = System.DateTimeOffset;
+using Exception = System.Exception;
+using Guid = System.Guid;
+using InvalidOperationException = System.InvalidOperationException;
+using Math = System.Math;
 
 
 namespace Protocol.Network
@@ -30,20 +43,19 @@ namespace Protocol.Network
 	{
 		private byte[] _encodedMessage;
 
-		[JsonIgnore] public ReliabilityHeader ReliabilityHeader = new ReliabilityHeader();
-
 		[JsonIgnore] public int Id;
-		[JsonIgnore] public bool IsMcpe;
+		[JsonIgnore] public bool IsMcbe;
 
 		protected MemoryStreamReader _reader;
 		protected private Stream _buffer;
 		private BinaryWriter _writer;
 
-		[JsonIgnore] public ReadOnlyMemory<byte> Bytes { get; private set; }
+		[JsonIgnore] public System.ReadOnlyMemory<byte> Bytes { get; private set; }
 
 		public Packet()
 		{
 		}
+		
 
 		public void WritePackSetting(PackSetting setting)
 		{
@@ -206,12 +218,12 @@ namespace Protocol.Network
 			return _reader.ReadByte() != 0;
 		}
 
-		public void Write(Memory<byte> value)
+		public void Write(System.Memory<byte> value)
 		{
-			Write((ReadOnlyMemory<byte>)value);
+			Write((System.ReadOnlyMemory<byte>)value);
 		}
 
-		public void Write(ReadOnlyMemory<byte> value)
+		public void Write(System.ReadOnlyMemory<byte> value)
 		{
 			if (value.IsEmpty)
 			{
@@ -231,21 +243,21 @@ namespace Protocol.Network
 			_writer.Write(value);
 		}
 
-		public ReadOnlyMemory<byte> Slice(int count)
+		public System.ReadOnlyMemory<byte> Slice(int count)
 		{
 			return _reader.Read(count);
 		}
 
-		public ReadOnlyMemory<byte> ReadReadOnlyMemory(int count, bool slurp = false)
+		public System.ReadOnlyMemory<byte> ReadReadOnlyMemory(int count, bool slurp = false)
 		{
-			if (!slurp && count == 0) return Memory<byte>.Empty;
+			if (!slurp && count == 0) return System.Memory<byte>.Empty;
 
 			if (count == 0)
 			{
 				count = (int)(_reader.Length - _reader.Position);
 			}
 
-			ReadOnlyMemory<byte> readBytes = _reader.Read(count);
+			System.ReadOnlyMemory<byte> readBytes = _reader.Read(count);
 			if (readBytes.Length != count)
 				throw new ArgumentOutOfRangeException($"Expected {count} bytes, only read {readBytes.Length}.");
 			return readBytes;
@@ -260,7 +272,7 @@ namespace Protocol.Network
 				count = (int)(_reader.Length - _reader.Position);
 			}
 
-			ReadOnlyMemory<byte> readBytes = _reader.Read(count);
+			System.ReadOnlyMemory<byte> readBytes = _reader.Read(count);
 			if (readBytes.Length != count)
 				throw new ArgumentOutOfRangeException($"Expected {count} bytes, only read {readBytes.Length}.");
 			return readBytes.ToArray();
@@ -838,7 +850,7 @@ namespace Protocol.Network
 		public void Write(Nbt nbt)
 		{
 			Write(nbt, _writer.BaseStream,
-				nbt.NbtFile.UseVarInt || this is McpeBlockEntityData || this is McpeUpdateEquipment);
+				nbt.NbtFile.UseVarInt || this is McbeBlockEntityData || this is McbeUpdateEquipment);
 		}
 
 		public static void Write(Nbt nbt, Stream stream, bool useVarInt)
@@ -999,8 +1011,8 @@ namespace Protocol.Network
 			for (int i = 0; i < count; i++)
 			{
 				int networkId = 0;
-				if (this is McpeCreativeContent) networkId = ReadVarInt();
-				Item item = ReadItem(this is not McpeCreativeContent);
+				if (this is McbeCreativeContent) networkId = ReadVarInt();
+				Item item = ReadItem(this is not McbeCreativeContent);
 				item.NetworkId = networkId;
 				metadata.Add(item);
 			}
@@ -1031,19 +1043,19 @@ namespace Protocol.Network
 			switch (transaction)
 			{
 				case InventoryMismatchTransaction _:
-					WriteUnsignedVarInt((int)McpeInventoryTransaction.TransactionType.InventoryMismatch);
+					WriteUnsignedVarInt((int)McbeInventoryTransaction.TransactionType.InventoryMismatch);
 					break;
 				case ItemReleaseTransaction _:
-					WriteUnsignedVarInt((int)McpeInventoryTransaction.TransactionType.ItemRelease);
+					WriteUnsignedVarInt((int)McbeInventoryTransaction.TransactionType.ItemRelease);
 					break;
 				case ItemUseOnEntityTransaction _:
-					WriteUnsignedVarInt((int)McpeInventoryTransaction.TransactionType.ItemUseOnEntity);
+					WriteUnsignedVarInt((int)McbeInventoryTransaction.TransactionType.ItemUseOnEntity);
 					break;
 				case ItemUseTransaction _:
-					WriteUnsignedVarInt((int)McpeInventoryTransaction.TransactionType.ItemUse);
+					WriteUnsignedVarInt((int)McbeInventoryTransaction.TransactionType.ItemUse);
 					break;
 				case NormalTransaction _:
-					WriteUnsignedVarInt((int)McpeInventoryTransaction.TransactionType.Normal);
+					WriteUnsignedVarInt((int)McbeInventoryTransaction.TransactionType.Normal);
 					break;
 			}
 
@@ -1054,21 +1066,21 @@ namespace Protocol.Network
 				switch (record)
 				{
 					case ContainerTransactionRecord r:
-						WriteVarInt((int)McpeInventoryTransaction.InventorySourceType.Container);
+						WriteVarInt((int)McbeInventoryTransaction.InventorySourceType.Container);
 						WriteSignedVarInt(r.InventoryId);
 						break;
 					case GlobalTransactionRecord _:
-						WriteVarInt((int)McpeInventoryTransaction.InventorySourceType.Global);
+						WriteVarInt((int)McbeInventoryTransaction.InventorySourceType.Global);
 						break;
 					case WorldInteractionTransactionRecord r:
-						WriteVarInt((int)McpeInventoryTransaction.InventorySourceType.WorldInteraction);
+						WriteVarInt((int)McbeInventoryTransaction.InventorySourceType.WorldInteraction);
 						WriteVarInt(r.Flags);
 						break;
 					case CreativeTransactionRecord _:
-						WriteVarInt((int)McpeInventoryTransaction.InventorySourceType.Creative);
+						WriteVarInt((int)McbeInventoryTransaction.InventorySourceType.Creative);
 						break;
 					case CraftTransactionRecord r:
-						WriteVarInt((int)McpeInventoryTransaction.InventorySourceType.Crafting);
+						WriteVarInt((int)McbeInventoryTransaction.InventorySourceType.Crafting);
 						WriteVarInt((int)r.Action);
 						break;
 				}
@@ -1136,7 +1148,7 @@ namespace Protocol.Network
 				}
 			}
 
-			var transactionType = (McpeInventoryTransaction.TransactionType)ReadVarInt();
+			var transactionType = (McbeInventoryTransaction.TransactionType)ReadVarInt();
 
 
 			var transactions = new List<TransactionRecord>();
@@ -1145,24 +1157,24 @@ namespace Protocol.Network
 			{
 				TransactionRecord record;
 				int sourceType = ReadVarInt();
-				switch ((McpeInventoryTransaction.InventorySourceType)sourceType)
+				switch ((McbeInventoryTransaction.InventorySourceType)sourceType)
 				{
-					case McpeInventoryTransaction.InventorySourceType.Container:
+					case McbeInventoryTransaction.InventorySourceType.Container:
 						record = new ContainerTransactionRecord() { InventoryId = ReadSignedVarInt() };
 						break;
-					case McpeInventoryTransaction.InventorySourceType.Global:
+					case McbeInventoryTransaction.InventorySourceType.Global:
 						record = new GlobalTransactionRecord();
 						break;
-					case McpeInventoryTransaction.InventorySourceType.WorldInteraction:
+					case McbeInventoryTransaction.InventorySourceType.WorldInteraction:
 						record = new WorldInteractionTransactionRecord() { Flags = ReadVarInt() };
 						break;
-					case McpeInventoryTransaction.InventorySourceType.Creative:
+					case McbeInventoryTransaction.InventorySourceType.Creative:
 						record = new CreativeTransactionRecord() { InventoryId = 0x79 };
 						break;
-					case McpeInventoryTransaction.InventorySourceType.Unspecified:
-					case McpeInventoryTransaction.InventorySourceType.Crafting:
+					case McbeInventoryTransaction.InventorySourceType.Unspecified:
+					case McbeInventoryTransaction.InventorySourceType.Crafting:
 						record = new CraftTransactionRecord()
-							{ Action = (McpeInventoryTransaction.CraftingAction)ReadSignedVarInt() };
+							{ Action = (McbeInventoryTransaction.CraftingAction)ReadSignedVarInt() };
 						break;
 					default:
 						Console.WriteLine($"Unknown inventory source type={sourceType}");
@@ -1180,17 +1192,17 @@ namespace Protocol.Network
 			Transaction transaction = null;
 			switch (transactionType)
 			{
-				case McpeInventoryTransaction.TransactionType.Normal:
+				case McbeInventoryTransaction.TransactionType.Normal:
 					transaction = new NormalTransaction();
 					break;
-				case McpeInventoryTransaction.TransactionType.InventoryMismatch:
+				case McbeInventoryTransaction.TransactionType.InventoryMismatch:
 					transaction = new InventoryMismatchTransaction();
 					break;
-				case McpeInventoryTransaction.TransactionType.ItemUse:
+				case McbeInventoryTransaction.TransactionType.ItemUse:
 					transaction = new ItemUseTransaction()
 					{
-						ActionType = (McpeInventoryTransaction.ItemUseAction)ReadVarInt(),
-						TriggerType = (McpeInventoryTransaction.TriggerType)ReadVarInt(),
+						ActionType = (McbeInventoryTransaction.ItemUseAction)ReadVarInt(),
+						TriggerType = (McbeInventoryTransaction.TriggerType)ReadVarInt(),
 						Position = ReadBlockCoordinates(),
 						Face = ReadSignedVarInt(),
 						Slot = ReadSignedVarInt(),
@@ -1201,21 +1213,21 @@ namespace Protocol.Network
 						ClientPredictedResult = ReadUnsignedVarInt()
 					};
 					break;
-				case McpeInventoryTransaction.TransactionType.ItemUseOnEntity:
+				case McbeInventoryTransaction.TransactionType.ItemUseOnEntity:
 					transaction = new ItemUseOnEntityTransaction()
 					{
 						EntityId = ReadVarLong(),
-						ActionType = (McpeInventoryTransaction.ItemUseOnEntityAction)ReadVarInt(),
+						ActionType = (McbeInventoryTransaction.ItemUseOnEntityAction)ReadVarInt(),
 						Slot = ReadSignedVarInt(),
 						Item = ReadItem(),
 						FromPosition = ReadVector3(),
 						ClickPosition = ReadVector3()
 					};
 					break;
-				case McpeInventoryTransaction.TransactionType.ItemRelease:
+				case McbeInventoryTransaction.TransactionType.ItemRelease:
 					transaction = new ItemReleaseTransaction()
 					{
-						ActionType = (McpeInventoryTransaction.ItemReleaseAction)ReadVarInt(),
+						ActionType = (McbeInventoryTransaction.ItemReleaseAction)ReadVarInt(),
 						Slot = ReadSignedVarInt(),
 						Item = ReadItem(),
 						FromPosition = ReadVector3()
@@ -1300,7 +1312,7 @@ namespace Protocol.Network
 					{
 						case TakeAction ta:
 						{
-							Write((byte)McpeItemStackRequest.ActionType.Take);
+							Write((byte)McbeItemStackRequest.ActionType.Take);
 							Write(ta.Count);
 							Write(ta.Source);
 							Write(ta.Destination);
@@ -1309,7 +1321,7 @@ namespace Protocol.Network
 
 						case PlaceAction ta:
 						{
-							Write((byte)McpeItemStackRequest.ActionType.Place);
+							Write((byte)McbeItemStackRequest.ActionType.Place);
 							Write(ta.Count);
 							Write(ta.Source);
 							Write(ta.Destination);
@@ -1318,7 +1330,7 @@ namespace Protocol.Network
 
 						case SwapAction ta:
 						{
-							Write((byte)McpeItemStackRequest.ActionType.Swap);
+							Write((byte)McbeItemStackRequest.ActionType.Swap);
 							Write(ta.Source);
 							Write(ta.Destination);
 							break;
@@ -1326,7 +1338,7 @@ namespace Protocol.Network
 
 						case DropAction ta:
 						{
-							Write((byte)McpeItemStackRequest.ActionType.Drop);
+							Write((byte)McbeItemStackRequest.ActionType.Drop);
 							Write(ta.Count);
 							Write(ta.Source);
 							Write(ta.Randomly);
@@ -1335,7 +1347,7 @@ namespace Protocol.Network
 
 						case DestroyAction ta:
 						{
-							Write((byte)McpeItemStackRequest.ActionType.Destroy);
+							Write((byte)McbeItemStackRequest.ActionType.Destroy);
 							Write(ta.Count);
 							Write(ta.Source);
 							break;
@@ -1343,7 +1355,7 @@ namespace Protocol.Network
 
 						case ConsumeAction ta:
 						{
-							Write((byte)McpeItemStackRequest.ActionType.Consume);
+							Write((byte)McbeItemStackRequest.ActionType.Consume);
 							Write(ta.Count);
 							Write(ta.Source);
 							break;
@@ -1351,32 +1363,32 @@ namespace Protocol.Network
 
 						case CreateAction ta:
 						{
-							Write((byte)McpeItemStackRequest.ActionType.Create);
+							Write((byte)McbeItemStackRequest.ActionType.Create);
 							Write(ta.ResultSlot);
 							break;
 						}
 
 						case PlaceIntoBundleAction ta:
 						{
-							Write((byte)McpeItemStackRequest.ActionType.PlaceIntoBundleDeprecated);
+							Write((byte)McbeItemStackRequest.ActionType.PlaceIntoBundleDeprecated);
 							break;
 						}
 
 						case TakeFromBundleAction ta:
 						{
-							Write((byte)McpeItemStackRequest.ActionType.TakeFromBundleDeprecated);
+							Write((byte)McbeItemStackRequest.ActionType.TakeFromBundleDeprecated);
 							break;
 						}
 
 						case LabTableCombineAction ta:
 						{
-							Write((byte)McpeItemStackRequest.ActionType.LabTableCombine);
+							Write((byte)McbeItemStackRequest.ActionType.LabTableCombine);
 							break;
 						}
 
 						case BeaconPaymentAction ta:
 						{
-							Write((byte)McpeItemStackRequest.ActionType.BeaconPayment);
+							Write((byte)McbeItemStackRequest.ActionType.BeaconPayment);
 							WriteSignedVarInt(ta.PrimaryEffect);
 							WriteSignedVarInt(ta.SecondaryEffect);
 							break;
@@ -1384,7 +1396,7 @@ namespace Protocol.Network
 
 						case CraftAction ta:
 						{
-							Write((byte)McpeItemStackRequest.ActionType.CraftRecipe);
+							Write((byte)McbeItemStackRequest.ActionType.CraftRecipe);
 							WriteUnsignedVarInt(ta.RecipeNetworkId);
 							Write(ta.TimesCrafted);
 							break;
@@ -1392,7 +1404,7 @@ namespace Protocol.Network
 
 						case CraftAutoAction ta:
 						{
-							Write((byte)McpeItemStackRequest.ActionType.CraftRecipeAuto);
+							Write((byte)McbeItemStackRequest.ActionType.CraftRecipeAuto);
 							WriteUnsignedVarInt(ta.RecipeNetworkId);
 							Write(ta.TimesCrafted2);
 							Write(ta.TimesCrafted);
@@ -1407,7 +1419,7 @@ namespace Protocol.Network
 
 						case CraftCreativeAction ta:
 						{
-							Write((byte)McpeItemStackRequest.ActionType.CraftCreative);
+							Write((byte)McbeItemStackRequest.ActionType.CraftCreative);
 							WriteUnsignedVarInt(ta.CreativeItemNetworkId);
 							Write(ta.ClientPredictedResult);
 							break;
@@ -1415,7 +1427,7 @@ namespace Protocol.Network
 
 						case CraftRecipeOptionalAction ta:
 						{
-							Write((byte)McpeItemStackRequest.ActionType.CraftRecipeOptional);
+							Write((byte)McbeItemStackRequest.ActionType.CraftRecipeOptional);
 							WriteUnsignedVarInt(ta.RecipeNetworkId);
 							Write(ta.FilteredStringIndex);
 							break;
@@ -1423,7 +1435,7 @@ namespace Protocol.Network
 
 						case GrindstoneStackRequestAction ta:
 						{
-							Write((byte)McpeItemStackRequest.ActionType.CraftGrindstone);
+							Write((byte)McbeItemStackRequest.ActionType.CraftGrindstone);
 							WriteUnsignedVarInt(ta.RecipeNetworkId);
 							WriteVarInt(ta.RepairCost);
 							Write(ta.TimesCrafted);
@@ -1432,7 +1444,7 @@ namespace Protocol.Network
 
 						case LoomStackRequestAction ta:
 						{
-							Write((byte)McpeItemStackRequest.ActionType.CraftLoom);
+							Write((byte)McbeItemStackRequest.ActionType.CraftLoom);
 							Write(ta.PatternId);
 							Write(ta.TimesCrafted);
 							break;
@@ -1440,13 +1452,13 @@ namespace Protocol.Network
 
 						case CraftNotImplementedDeprecatedAction ta:
 						{
-							Write((byte)McpeItemStackRequest.ActionType.CraftNotImplementedDeprecated);
+							Write((byte)McbeItemStackRequest.ActionType.CraftNotImplementedDeprecated);
 							break;
 						}
 
 						case CraftResultDeprecatedAction ta:
 						{
-							Write((byte)McpeItemStackRequest.ActionType.CraftResultsDeprecated);
+							Write((byte)McbeItemStackRequest.ActionType.CraftResultsDeprecated);
 							Write(ta.ResultItems);
 							Write(ta.TimesCrafted);
 							break;
@@ -1454,7 +1466,7 @@ namespace Protocol.Network
 
 						case MineBlockAction ta:
 						{
-							Write((byte)McpeItemStackRequest.ActionType.MineBlock);
+							Write((byte)McbeItemStackRequest.ActionType.MineBlock);
 							WriteVarInt(ta.Slot);
 							WriteVarInt(ta.Durability);
 							WriteSignedVarInt(ta.stackNetworkId);
@@ -1496,11 +1508,11 @@ namespace Protocol.Network
 
 				for (int j = 0; j < count; j++)
 				{
-					var actionType = (McpeItemStackRequest.ActionType)ReadByte();
+					var actionType = (McbeItemStackRequest.ActionType)ReadByte();
 
 					switch (actionType)
 					{
-						case McpeItemStackRequest.ActionType.Take:
+						case McbeItemStackRequest.ActionType.Take:
 						{
 							var action = new TakeAction();
 							action.Count = ReadByte();
@@ -1509,7 +1521,7 @@ namespace Protocol.Network
 							actions.Add(action);
 							break;
 						}
-						case McpeItemStackRequest.ActionType.Place:
+						case McbeItemStackRequest.ActionType.Place:
 						{
 							var action = new PlaceAction();
 							action.Count = ReadByte();
@@ -1518,7 +1530,7 @@ namespace Protocol.Network
 							actions.Add(action);
 							break;
 						}
-						case McpeItemStackRequest.ActionType.Swap:
+						case McbeItemStackRequest.ActionType.Swap:
 						{
 							var action = new SwapAction();
 							action.Source = ReadStackRequestSlotInfo();
@@ -1526,7 +1538,7 @@ namespace Protocol.Network
 							actions.Add(action);
 							break;
 						}
-						case McpeItemStackRequest.ActionType.Drop:
+						case McbeItemStackRequest.ActionType.Drop:
 						{
 							var action = new DropAction();
 							action.Count = ReadByte();
@@ -1535,7 +1547,7 @@ namespace Protocol.Network
 							actions.Add(action);
 							break;
 						}
-						case McpeItemStackRequest.ActionType.Destroy:
+						case McbeItemStackRequest.ActionType.Destroy:
 						{
 							var action = new DestroyAction();
 							action.Count = ReadByte();
@@ -1543,7 +1555,7 @@ namespace Protocol.Network
 							actions.Add(action);
 							break;
 						}
-						case McpeItemStackRequest.ActionType.Consume:
+						case McbeItemStackRequest.ActionType.Consume:
 						{
 							var action = new ConsumeAction();
 							action.Count = ReadByte();
@@ -1551,7 +1563,7 @@ namespace Protocol.Network
 							actions.Add(action);
 							break;
 						}
-						case McpeItemStackRequest.ActionType.Create:
+						case McbeItemStackRequest.ActionType.Create:
 						{
 							var action = new CreateAction();
 							action.ResultSlot = ReadByte();
@@ -1559,26 +1571,26 @@ namespace Protocol.Network
 							break;
 						}
 
-						case McpeItemStackRequest.ActionType.PlaceIntoBundleDeprecated:
+						case McbeItemStackRequest.ActionType.PlaceIntoBundleDeprecated:
 						{
 							var action = new PlaceIntoBundleAction();
 							actions.Add(action);
 							break;
 						}
 
-						case McpeItemStackRequest.ActionType.TakeFromBundleDeprecated:
+						case McbeItemStackRequest.ActionType.TakeFromBundleDeprecated:
 						{
 							var action = new TakeFromBundleAction();
 							actions.Add(action);
 							break;
 						}
-						case McpeItemStackRequest.ActionType.LabTableCombine:
+						case McbeItemStackRequest.ActionType.LabTableCombine:
 						{
 							var action = new LabTableCombineAction();
 							actions.Add(action);
 							break;
 						}
-						case McpeItemStackRequest.ActionType.BeaconPayment:
+						case McbeItemStackRequest.ActionType.BeaconPayment:
 						{
 							var action = new BeaconPaymentAction();
 							action.PrimaryEffect = ReadSignedVarInt();
@@ -1586,7 +1598,7 @@ namespace Protocol.Network
 							actions.Add(action);
 							break;
 						}
-						case McpeItemStackRequest.ActionType.CraftRecipe:
+						case McbeItemStackRequest.ActionType.CraftRecipe:
 						{
 							var action = new CraftAction();
 							action.RecipeNetworkId = ReadUnsignedVarInt();
@@ -1594,7 +1606,7 @@ namespace Protocol.Network
 							actions.Add(action);
 							break;
 						}
-						case McpeItemStackRequest.ActionType.CraftRecipeAuto:
+						case McbeItemStackRequest.ActionType.CraftRecipeAuto:
 						{
 							var action = new CraftAutoAction();
 							action.RecipeNetworkId = ReadUnsignedVarInt();
@@ -1609,7 +1621,7 @@ namespace Protocol.Network
 							actions.Add(action);
 							break;
 						}
-						case McpeItemStackRequest.ActionType.CraftCreative:
+						case McbeItemStackRequest.ActionType.CraftCreative:
 						{
 							var action = new CraftCreativeAction();
 							action.CreativeItemNetworkId = ReadUnsignedVarInt();
@@ -1617,7 +1629,7 @@ namespace Protocol.Network
 							actions.Add(action);
 							break;
 						}
-						case McpeItemStackRequest.ActionType.CraftRecipeOptional:
+						case McbeItemStackRequest.ActionType.CraftRecipeOptional:
 						{
 							var action = new CraftRecipeOptionalAction();
 							action.RecipeNetworkId = ReadUnsignedVarInt();
@@ -1625,7 +1637,7 @@ namespace Protocol.Network
 							actions.Add(action);
 							break;
 						}
-						case McpeItemStackRequest.ActionType.CraftGrindstone:
+						case McbeItemStackRequest.ActionType.CraftGrindstone:
 						{
 							var action = new GrindstoneStackRequestAction();
 							action.RecipeNetworkId = ReadUnsignedVarInt();
@@ -1634,7 +1646,7 @@ namespace Protocol.Network
 							actions.Add(action);
 							break;
 						}
-						case McpeItemStackRequest.ActionType.CraftLoom:
+						case McbeItemStackRequest.ActionType.CraftLoom:
 						{
 							var action = new LoomStackRequestAction();
 							action.PatternId = ReadString();
@@ -1642,13 +1654,13 @@ namespace Protocol.Network
 							actions.Add(action);
 							break;
 						}
-						case McpeItemStackRequest.ActionType.CraftNotImplementedDeprecated:
+						case McbeItemStackRequest.ActionType.CraftNotImplementedDeprecated:
 						{
 							var action = new CraftNotImplementedDeprecatedAction();
 							actions.Add(action);
 							break;
 						}
-						case McpeItemStackRequest.ActionType.CraftResultsDeprecated:
+						case McbeItemStackRequest.ActionType.CraftResultsDeprecated:
 						{
 							var action = new CraftResultDeprecatedAction();
 							action.ResultItems = ReadItems();
@@ -1656,7 +1668,7 @@ namespace Protocol.Network
 							actions.Add(action);
 							break;
 						}
-						case McpeItemStackRequest.ActionType.MineBlock:
+						case McbeItemStackRequest.ActionType.MineBlock:
 						{
 							var action = new MineBlockAction();
 							action.Slot = ReadVarInt();
@@ -2204,76 +2216,6 @@ namespace Protocol.Network
 				Write(attribute.Value);
 				Write(attribute.MaxValue);
 			}
-		}
-
-		public void WriteCameraRotationOption(CameraRotationOption value)
-		{
-			Write(value.Value);
-			Write(value.time);
-		}
-
-		public CameraRotationOption ReadCameraRotationOption()
-		{
-			return new CameraRotationOption()
-			{
-				Value = ReadVector3(),
-				time = ReadFloat()
-			};
-		}
-
-		public void WriteCameraSplineInstruction(CameraSplineInstruction value)
-		{
-			Write(value.TotalTime);
-			Write(value.EaseType);
-			WriteUnsignedVarInt((uint)value.Curve.Length);
-			value.Curve = new Vector3[value.Curve.Length];
-			for (int i = 0; i < value.Curve.Length; i++)
-			{
-				Write(value.Curve[i]);
-			}
-
-			WriteUnsignedVarInt((uint)value.ProgressKeyFrames.Length);
-			value.ProgressKeyFrames = new Vector2[value.Curve.Length];
-			for (int i = 0; i < value.Curve.Length; i++)
-			{
-				Write(value.ProgressKeyFrames[i]);
-			}
-
-			WriteUnsignedVarInt((uint)value.RotationOptions.Length);
-			value.RotationOptions = new CameraRotationOption[value.RotationOptions.Length];
-			for (int i = 0; i < value.RotationOptions.Length; i++)
-			{
-				WriteCameraRotationOption(value.RotationOptions[i]);
-			}
-		}
-
-		public CameraSplineInstruction ReadCameraSplineInstruction()
-		{
-			var value = new CameraSplineInstruction();
-			value.TotalTime = ReadFloat();
-			value.EaseType = ReadByte();
-			var count = ReadVarInt();
-			value.Curve = new Vector3[count];
-			for (int i = 0; i < count; i++)
-			{
-				value.Curve[i] = ReadVector3();
-			}
-
-			var count1 = ReadVarInt();
-			value.ProgressKeyFrames = new Vector2[count1];
-			for (int i = 0; i < count1; i++)
-			{
-				value.ProgressKeyFrames[i] = ReadVector2();
-			}
-
-			var count2 = ReadVarInt();
-			value.RotationOptions = new CameraRotationOption[count2];
-			for (int i = 0; i < count2; i++)
-			{
-				value.RotationOptions[i] = ReadCameraRotationOption();
-			}
-
-			return value;
 		}
 
 		public EntityAttributes ReadEntityAttributes()
@@ -3692,8 +3634,8 @@ namespace Protocol.Network
 			if (list == null) list = new ScoreEntries();
 
 			Write((byte)(list.FirstOrDefault() is ScoreEntryRemove
-				? McpeSetScore.Types.Remove
-				: McpeSetScore.Types.Change));
+				? McbeSetScore.Types.Remove
+				: McbeSetScore.Types.Change));
 			WriteUnsignedVarInt((uint)list.Count);
 			foreach (var entry in list)
 			{
@@ -3708,17 +3650,17 @@ namespace Protocol.Network
 
 				if (entry is ScoreEntryChangePlayer player)
 				{
-					Write((byte)McpeSetScore.ChangeTypes.Player);
+					Write((byte)McbeSetScore.ChangeTypes.Player);
 					WriteSignedVarLong(player.EntityId);
 				}
 				else if (entry is ScoreEntryChangeEntity entity)
 				{
-					Write((byte)McpeSetScore.ChangeTypes.Entity);
+					Write((byte)McbeSetScore.ChangeTypes.Entity);
 					WriteSignedVarLong(entity.EntityId);
 				}
 				else if (entry is ScoreEntryChangeFakePlayer fakePlayer)
 				{
-					Write((byte)McpeSetScore.ChangeTypes.FakePlayer);
+					Write((byte)McbeSetScore.ChangeTypes.FakePlayer);
 					Write(fakePlayer.CustomName);
 				}
 			}
@@ -3737,22 +3679,22 @@ namespace Protocol.Network
 
 				ScoreEntry entry = null;
 
-				if (type == (int)McpeSetScore.Types.Remove)
+				if (type == (int)McbeSetScore.Types.Remove)
 				{
 					entry = new ScoreEntryRemove();
 				}
 				else
 				{
-					McpeSetScore.ChangeTypes changeType = (McpeSetScore.ChangeTypes)ReadByte();
+					McbeSetScore.ChangeTypes changeType = (McbeSetScore.ChangeTypes)ReadByte();
 					switch (changeType)
 					{
-						case McpeSetScore.ChangeTypes.Player:
+						case McbeSetScore.ChangeTypes.Player:
 							entry = new ScoreEntryChangePlayer { EntityId = ReadSignedVarLong() };
 							break;
-						case McpeSetScore.ChangeTypes.Entity:
+						case McbeSetScore.ChangeTypes.Entity:
 							entry = new ScoreEntryChangeEntity { EntityId = ReadSignedVarLong() };
 							break;
-						case McpeSetScore.ChangeTypes.FakePlayer:
+						case McbeSetScore.ChangeTypes.FakePlayer:
 							entry = new ScoreEntryChangeFakePlayer { CustomName = ReadString() };
 							break;
 					}
@@ -3775,8 +3717,8 @@ namespace Protocol.Network
 			if (list == null) list = new ScoreboardIdentityEntries();
 
 			Write((byte)(list.FirstOrDefault() is ScoreboardClearIdentityEntry
-				? McpeSetScoreboardIdentity.Operations.ClearIdentity
-				: McpeSetScoreboardIdentity.Operations.RegisterIdentity));
+				? McbeSetScoreboardIdentity.Operations.ClearIdentity
+				: McbeSetScoreboardIdentity.Operations.RegisterIdentity));
 			WriteUnsignedVarInt((uint)list.Count);
 			foreach (var entry in list)
 			{
@@ -3792,7 +3734,7 @@ namespace Protocol.Network
 		{
 			ScoreboardIdentityEntries list = new ScoreboardIdentityEntries();
 
-			McpeSetScoreboardIdentity.Operations type = (McpeSetScoreboardIdentity.Operations)ReadByte();
+			McbeSetScoreboardIdentity.Operations type = (McbeSetScoreboardIdentity.Operations)ReadByte();
 			var length = ReadUnsignedVarInt();
 			for (var i = 0; i < length; ++i)
 			{
@@ -3800,14 +3742,14 @@ namespace Protocol.Network
 
 				switch (type)
 				{
-					case McpeSetScoreboardIdentity.Operations.RegisterIdentity:
+					case McbeSetScoreboardIdentity.Operations.RegisterIdentity:
 						list.Add(new ScoreboardRegisterIdentityEntry()
 						{
 							Id = scoreboardId,
 							EntityId = ReadSignedVarLong()
 						});
 						break;
-					case McpeSetScoreboardIdentity.Operations.ClearIdentity:
+					case McbeSetScoreboardIdentity.Operations.ClearIdentity:
 						list.Add(new ScoreboardClearIdentityEntry() { Id = scoreboardId });
 						break;
 				}
@@ -5077,8 +5019,6 @@ namespace Protocol.Network
 		public virtual void Reset()
 		{
 			ResetPacket();
-
-			ReliabilityHeader = new ReliabilityHeader();
 			_encodedMessage = null;
 			Bytes = null;
 			_writer?.Close();
@@ -5137,7 +5077,7 @@ namespace Protocol.Network
 		protected virtual void EncodePacket()
 		{
 			_buffer.Position = 0;
-			if (IsMcpe) WriteVarInt(Id);
+			if (IsMcbe) WriteVarInt(Id);
 			else Write((byte)Id);
 		}
 
@@ -5163,7 +5103,7 @@ namespace Protocol.Network
 
 		protected virtual void DecodePacket()
 		{
-			Id = IsMcpe ? ReadVarInt() : ReadByte();
+			Id = IsMcbe ? ReadVarInt() : ReadByte();
 		}
 
 		public static string HexDump(ReadOnlyMemory<byte> bytes, int bytesPerLine = 16, bool printLineCount = false)

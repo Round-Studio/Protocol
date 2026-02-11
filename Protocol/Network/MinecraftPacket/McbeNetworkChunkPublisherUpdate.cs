@@ -2,7 +2,7 @@ using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeNetworkChunkPublisherUpdate : Packet
+public class McbeNetworkChunkPublisherUpdate : Packet
 {
 	public BlockCoordinates coordinates;
 	public uint radius;
@@ -10,10 +10,10 @@ public class McpeNetworkChunkPublisherUpdate : Packet
 	public uint x;
 	public uint z;
 
-	public McpeNetworkChunkPublisherUpdate()
+	public McbeNetworkChunkPublisherUpdate()
 	{
 		Id = 0x79;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

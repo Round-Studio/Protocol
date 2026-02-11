@@ -76,7 +76,7 @@ namespace Protocol.Network.MinecraftPacket
 		public McbeDebugDrawer()
 		{
 			Id = 328;
-			IsMcpe = true;
+			IsMcbe = true;
 		}
 
 		public List<DebugDrawerShape> Shapes { get; set; } = new();

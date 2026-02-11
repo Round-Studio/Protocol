@@ -1,14 +1,14 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeShowCredits : Packet
+public class McbeShowCredits : Packet
 {
 	public long runtimeEntityId;
 	public int status;
 
-	public McpeShowCredits()
+	public McbeShowCredits()
 	{
 		Id = 0x4b;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

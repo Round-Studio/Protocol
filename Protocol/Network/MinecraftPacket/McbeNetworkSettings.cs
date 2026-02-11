@@ -1,6 +1,6 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeNetworkSettings : Packet
+public class McbeNetworkSettings : Packet
 {
 	public enum Compression
 	{
@@ -15,10 +15,10 @@ public class McpeNetworkSettings : Packet
 
 	public short compressionThreshold;
 
-	public McpeNetworkSettings()
+	public McbeNetworkSettings()
 	{
 		Id = 0x8f;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

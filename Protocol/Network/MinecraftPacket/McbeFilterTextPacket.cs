@@ -1,15 +1,15 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public partial class McpeFilterTextPacket : Packet
+public partial class McbeFilterTextPacket : Packet
 {
 	public bool fromServer;
 
 	public string text;
 
-	public McpeFilterTextPacket()
+	public McbeFilterTextPacket()
 	{
 		Id = 0xa3;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

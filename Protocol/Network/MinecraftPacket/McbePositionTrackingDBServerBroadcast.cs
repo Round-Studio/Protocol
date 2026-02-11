@@ -2,7 +2,7 @@ using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpePositionTrackingDBServerBroadcast : Packet
+public class McbePositionTrackingDBServerBroadcast : Packet
 {
 	public enum Action
 	{
@@ -12,10 +12,10 @@ public class McpePositionTrackingDBServerBroadcast : Packet
 	}
 
 
-	public McpePositionTrackingDBServerBroadcast()
+	public McbePositionTrackingDBServerBroadcast()
 	{
 		Id = 153;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 

@@ -7,7 +7,7 @@ public enum SubChunkRequestMode
 	SubChunkRequestModeLimited
 }
 
-public class McpeLevelChunk : Packet
+public class McbeLevelChunk : Packet
 {
 	public ulong[] blobHashes = null;
 	public bool cacheEnabled;
@@ -23,10 +23,10 @@ public class McpeLevelChunk : Packet
 	public uint subChunkCount;
 	public SubChunkRequestMode subChunkRequestMode = SubChunkRequestMode.SubChunkRequestModeLegacy;
 
-	public McpeLevelChunk()
+	public McbeLevelChunk()
 	{
 		Id = 0x3a;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

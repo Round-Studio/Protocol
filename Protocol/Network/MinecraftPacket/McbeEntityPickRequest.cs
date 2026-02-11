@@ -1,16 +1,16 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeEntityPickRequest : Packet
+public class McbeEntityPickRequest : Packet
 {
 	public bool addUserData;
 
 	public ulong runtimeEntityId;
 	public byte selectedSlot;
 
-	public McpeEntityPickRequest()
+	public McbeEntityPickRequest()
 	{
 		Id = 0x23;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

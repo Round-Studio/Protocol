@@ -19,12 +19,12 @@ public enum GameTestRequestRotation : byte
 	Rotation360 = 4
 }
 
-public class McpeGameTestRequest : Packet
+public class McbeGameTestRequest : Packet
 {
-	public McpeGameTestRequest()
+	public McbeGameTestRequest()
 	{
 		Id = 194;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 

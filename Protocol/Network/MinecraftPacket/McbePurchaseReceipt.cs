@@ -1,11 +1,11 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpePurchaseReceipt : Packet
+public class McbePurchaseReceipt : Packet
 {
-	public McpePurchaseReceipt()
+	public McbePurchaseReceipt()
 	{
 		Id = 0x5c;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

@@ -14,12 +14,12 @@ public static class SimulationTypes
 	public const byte Invalid = 3;
 }
 
-public class McpeSimulationType : Packet
+public class McbeSimulationType : Packet
 {
-	public McpeSimulationType()
+	public McbeSimulationType()
 	{
 		Id = 168;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 

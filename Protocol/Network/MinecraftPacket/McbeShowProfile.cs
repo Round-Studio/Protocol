@@ -1,13 +1,13 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeShowProfile : Packet
+public class McbeShowProfile : Packet
 {
 	public string xuid;
 
-	public McpeShowProfile()
+	public McbeShowProfile()
 	{
 		Id = 0x68;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

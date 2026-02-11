@@ -2,7 +2,7 @@ using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeAddPainting : Packet
+public class McbeAddPainting : Packet
 {
 	public BlockCoordinates coordinates;
 	public int direction;
@@ -11,10 +11,10 @@ public class McpeAddPainting : Packet
 	public long runtimeEntityId;
 	public string title;
 
-	public McpeAddPainting()
+	public McbeAddPainting()
 	{
 		Id = 0x16;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

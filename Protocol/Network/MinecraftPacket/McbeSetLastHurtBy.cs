@@ -1,13 +1,13 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeSetLastHurtBy : Packet
+public class McbeSetLastHurtBy : Packet
 {
 	public int unknown;
 
-	public McpeSetLastHurtBy()
+	public McbeSetLastHurtBy()
 	{
 		Id = 0x60;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

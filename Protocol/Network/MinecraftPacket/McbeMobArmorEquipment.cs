@@ -2,7 +2,7 @@ using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeMobArmorEquipment : Packet
+public class McbeMobArmorEquipment : Packet
 {
 	public Item body;
 	public Item boots;
@@ -12,10 +12,10 @@ public class McpeMobArmorEquipment : Packet
 
 	public long runtimeEntityId;
 
-	public McpeMobArmorEquipment()
+	public McbeMobArmorEquipment()
 	{
 		Id = 0x20;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

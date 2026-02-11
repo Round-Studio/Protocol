@@ -1,11 +1,11 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpePlayerToggleCrafterSlotRequest : Packet
+public class McbePlayerToggleCrafterSlotRequest : Packet
 {
-	public McpePlayerToggleCrafterSlotRequest()
+	public McbePlayerToggleCrafterSlotRequest()
 	{
 		Id = 306;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 

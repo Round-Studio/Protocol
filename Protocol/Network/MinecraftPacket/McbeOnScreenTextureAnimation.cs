@@ -1,13 +1,13 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeOnScreenTextureAnimation : Packet
+public class McbeOnScreenTextureAnimation : Packet
 {
 	public int effectId;
 
-	public McpeOnScreenTextureAnimation()
+	public McbeOnScreenTextureAnimation()
 	{
 		Id = 0x82;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

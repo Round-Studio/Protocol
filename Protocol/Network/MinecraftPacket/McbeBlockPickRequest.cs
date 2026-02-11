@@ -1,6 +1,6 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeBlockPickRequest : Packet
+public class McbeBlockPickRequest : Packet
 {
 	public bool addUserData;
 	public byte selectedSlot;
@@ -9,10 +9,10 @@ public class McpeBlockPickRequest : Packet
 	public int y;
 	public int z;
 
-	public McpeBlockPickRequest()
+	public McbeBlockPickRequest()
 	{
 		Id = 0x22;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

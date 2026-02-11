@@ -2,14 +2,14 @@ using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpePlayerFog : Packet
+public class McbePlayerFog : Packet
 {
 	public fogStack fogstack;
 
-	public McpePlayerFog()
+	public McbePlayerFog()
 	{
 		Id = 0xa0;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

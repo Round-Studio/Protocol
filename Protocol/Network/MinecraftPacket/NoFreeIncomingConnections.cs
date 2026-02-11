@@ -12,7 +12,7 @@ public class NoFreeIncomingConnections : Packet
 	public NoFreeIncomingConnections()
 	{
 		Id = 0x14;
-		IsMcpe = false;
+		IsMcbe = false;
 	}
 
 	protected override void EncodePacket()

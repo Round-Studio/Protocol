@@ -1,13 +1,13 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeServerToClientHandshake : Packet
+public class McbeServerToClientHandshake : Packet
 {
 	public string token;
 
-	public McpeServerToClientHandshake()
+	public McbeServerToClientHandshake()
 	{
 		Id = 0x03;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

@@ -56,12 +56,12 @@ public static class AgentActionType
 	public const int Turn = 18;
 }
 
-public class McpeAgentAction : Packet
+public class McbeAgentAction : Packet
 {
-	public McpeAgentAction()
+	public McbeAgentAction()
 	{
 		Id = 181;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 

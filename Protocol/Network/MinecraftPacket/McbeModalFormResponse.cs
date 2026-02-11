@@ -1,16 +1,16 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeModalFormResponse : Packet
+public class McbeModalFormResponse : Packet
 {
 	public byte cancelReason;
 	public string data = "";
 
 	public uint formId;
 
-	public McpeModalFormResponse()
+	public McbeModalFormResponse()
 	{
 		Id = 0x65;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

@@ -1,11 +1,11 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeLecternUpdate : Packet
+public class McbeLecternUpdate : Packet
 {
-	public McpeLecternUpdate()
+	public McbeLecternUpdate()
 	{
 		Id = 0x7d;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

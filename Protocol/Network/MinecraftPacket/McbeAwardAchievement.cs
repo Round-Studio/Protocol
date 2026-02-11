@@ -1,11 +1,11 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeAwardAchievement : Packet
+public class McbeAwardAchievement : Packet
 {
-	public McpeAwardAchievement()
+	public McbeAwardAchievement()
 	{
 		Id = 309;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 

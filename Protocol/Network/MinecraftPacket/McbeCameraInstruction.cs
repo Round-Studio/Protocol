@@ -2,12 +2,12 @@ using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeCameraInstruction : Packet
+public class McbeCameraInstruction : Packet
 {
-	public McpeCameraInstruction()
+	public McbeCameraInstruction()
 	{
 		Id = 300;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 
@@ -66,7 +66,7 @@ public class McpeCameraInstruction : Packet
 		if (FieldOfView.HasValue) Write(FieldOfView.Value);
 		if (Spline.HasValue)
 		{
-			WriteCameraSplineInstruction(Spline.Value);
+			Write(Spline.Value);
 		}
 
 		if (AttachToEntity.HasValue)

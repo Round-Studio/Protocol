@@ -1,11 +1,11 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeClientToServerHandshake : Packet
+public class McbeClientToServerHandshake : Packet
 {
-	public McpeClientToServerHandshake()
+	public McbeClientToServerHandshake()
 	{
 		Id = 0x04;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

@@ -5,7 +5,7 @@ public class DetectLostConnections : Packet
 	public DetectLostConnections()
 	{
 		Id = 0x04;
-		IsMcpe = false;
+		IsMcbe = false;
 	}
 
 	protected override void EncodePacket()

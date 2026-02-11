@@ -2,7 +2,7 @@ using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeSetSpawnPosition : Packet
+public class McbeSetSpawnPosition : Packet
 {
 	public BlockCoordinates coordinates;
 	public int dimension;
@@ -10,10 +10,10 @@ public class McpeSetSpawnPosition : Packet
 	public int spawnType;
 	public BlockCoordinates unknownCoordinates;
 
-	public McpeSetSpawnPosition()
+	public McbeSetSpawnPosition()
 	{
 		Id = 0x2b;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

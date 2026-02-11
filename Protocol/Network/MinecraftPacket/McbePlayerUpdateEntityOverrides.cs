@@ -1,6 +1,6 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpePlayerUpdateEntityOverrides : Packet
+public class McbePlayerUpdateEntityOverrides : Packet
 {
 	public enum PlayerUpdate : byte
 	{
@@ -17,10 +17,10 @@ public class McpePlayerUpdateEntityOverrides : Packet
 	}
 
 
-	public McpePlayerUpdateEntityOverrides()
+	public McbePlayerUpdateEntityOverrides()
 	{
 		Id = 325;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 

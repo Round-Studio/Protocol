@@ -7,7 +7,7 @@ public class ConnectedPing : Packet
 	public ConnectedPing()
 	{
 		Id = 0x00;
-		IsMcpe = false;
+		IsMcbe = false;
 	}
 
 	protected override void EncodePacket()

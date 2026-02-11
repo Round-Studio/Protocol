@@ -2,15 +2,15 @@ using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeBiomeDefinitionList : Packet
+public class McbeBiomeDefinitionList : Packet
 {
 	public string[] biomeNames = new string[0];
 	public BiomeDefinition[] biomes;
 
-	public McpeBiomeDefinitionList()
+	public McbeBiomeDefinitionList()
 	{
 		Id = 0x7a;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

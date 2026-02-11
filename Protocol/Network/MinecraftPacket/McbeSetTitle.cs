@@ -1,6 +1,6 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeSetTitle : Packet
+public class McbeSetTitle : Packet
 {
 	public int fadeInTime;
 	public int fadeOutTime;
@@ -12,10 +12,10 @@ public class McpeSetTitle : Packet
 	public int type;
 	public string xuid;
 
-	public McpeSetTitle()
+	public McbeSetTitle()
 	{
 		Id = 0x58;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

@@ -8,12 +8,12 @@ public enum PlayerVideoCaptureAction : byte
 	Start = 1
 }
 
-public class McpePlayerVideoCapture : Packet
+public class McbePlayerVideoCapture : Packet
 {
-	public McpePlayerVideoCapture()
+	public McbePlayerVideoCapture()
 	{
 		Id = 324;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 

@@ -1,15 +1,15 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeResourcePackChunkRequest : Packet
+public class McbeResourcePackChunkRequest : Packet
 {
 	public uint chunkIndex;
 
 	public string packageId;
 
-	public McpeResourcePackChunkRequest()
+	public McbeResourcePackChunkRequest()
 	{
 		Id = 0x54;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

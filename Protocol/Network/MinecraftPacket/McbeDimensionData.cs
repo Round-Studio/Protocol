@@ -2,14 +2,14 @@ using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeDimensionData : Packet
+public class McbeDimensionData : Packet
 {
 	public DimensionDefinitions definitions;
 
-	public McpeDimensionData()
+	public McbeDimensionData()
 	{
 		Id = 0xb4;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

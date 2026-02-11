@@ -14,12 +14,12 @@ public enum GraphicsModeType : byte
 	RayTraced = 3
 }
 
-public class McpeUpdateClientOptions : Packet
+public class McbeUpdateClientOptions : Packet
 {
-	public McpeUpdateClientOptions()
+	public McbeUpdateClientOptions()
 	{
 		Id = 323;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 

@@ -2,7 +2,7 @@ using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeCommandBlockUpdate : Packet
+public class McbeCommandBlockUpdate : Packet
 {
 	public string command;
 	public uint commandBlockMode;
@@ -16,10 +16,10 @@ public class McpeCommandBlockUpdate : Packet
 	public string name;
 	public bool shouldTrackOutput;
 
-	public McpeCommandBlockUpdate()
+	public McbeCommandBlockUpdate()
 	{
 		Id = 0x4e;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

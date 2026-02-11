@@ -1,13 +1,13 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeInitiateWebSocketConnection : Packet
+public class McbeInitiateWebSocketConnection : Packet
 {
 	public string server;
 
-	public McpeInitiateWebSocketConnection()
+	public McbeInitiateWebSocketConnection()
 	{
 		Id = 0x5f;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

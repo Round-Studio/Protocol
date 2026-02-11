@@ -10,12 +10,12 @@ public enum CameraAimAssistPresetOperation : byte
 	AddToExisting = 1
 }
 
-public class McpeCameraAimAssistPresets : Packet
+public class McbeCameraAimAssistPresets : Packet
 {
-	public McpeCameraAimAssistPresets()
+	public McbeCameraAimAssistPresets()
 	{
 		Id = 320;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 

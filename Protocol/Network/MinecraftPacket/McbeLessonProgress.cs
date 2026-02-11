@@ -11,12 +11,12 @@ public enum LessonAction : byte
 	Restart = 2
 }
 
-public class McpeLessonProgress : Packet
+public class McbeLessonProgress : Packet
 {
-	public McpeLessonProgress()
+	public McbeLessonProgress()
 	{
 		Id = 183;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 

@@ -16,7 +16,7 @@ public class OpenConnectionRequest2 : Packet
 	public OpenConnectionRequest2()
 	{
 		Id = 0x07;
-		IsMcpe = false;
+		IsMcbe = false;
 	}
 
 	protected override void EncodePacket()

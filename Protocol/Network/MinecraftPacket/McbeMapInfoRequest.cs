@@ -2,15 +2,15 @@ using Protocol.Utils;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeMapInfoRequest : Packet
+public class McbeMapInfoRequest : Packet
 {
 	public long mapId;
 	public pixelList pixellist;
 
-	public McpeMapInfoRequest()
+	public McbeMapInfoRequest()
 	{
 		Id = 0x44;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

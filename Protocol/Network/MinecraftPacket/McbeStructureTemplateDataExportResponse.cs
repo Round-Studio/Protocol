@@ -1,11 +1,11 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeStructureTemplateDataExportResponse : Packet
+public class McbeStructureTemplateDataExportResponse : Packet
 {
-	public McpeStructureTemplateDataExportResponse()
+	public McbeStructureTemplateDataExportResponse()
 	{
 		Id = 0x85;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

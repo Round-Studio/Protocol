@@ -14,7 +14,7 @@ public class UnconnectedPong : Packet
 	public UnconnectedPong()
 	{
 		Id = 0x1c;
-		IsMcpe = false;
+		IsMcbe = false;
 	}
 
 	protected override void EncodePacket()

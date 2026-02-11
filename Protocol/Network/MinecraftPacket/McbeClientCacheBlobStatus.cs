@@ -1,14 +1,14 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeClientCacheBlobStatus : Packet
+public class McbeClientCacheBlobStatus : Packet
 {
 	public ulong[] hashHits;
 	public ulong[] hashMisses;
 
-	public McpeClientCacheBlobStatus()
+	public McbeClientCacheBlobStatus()
 	{
 		Id = 0x87;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

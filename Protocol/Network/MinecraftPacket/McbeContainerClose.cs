@@ -1,15 +1,15 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeContainerClose : Packet
+public class McbeContainerClose : Packet
 {
 	public bool server;
 
 	public byte windowId;
 
-	public McpeContainerClose()
+	public McbeContainerClose()
 	{
 		Id = 0x2f;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

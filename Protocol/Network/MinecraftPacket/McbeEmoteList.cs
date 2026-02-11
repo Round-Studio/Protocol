@@ -2,16 +2,16 @@ using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeEmoteList : Packet
+public class McbeEmoteList : Packet
 {
 	public EmoteIds emoteIds;
 
 	public long runtimeEntityId;
 
-	public McpeEmoteList()
+	public McbeEmoteList()
 	{
 		Id = 0x8a;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

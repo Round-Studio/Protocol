@@ -3,12 +3,12 @@ using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeJigsawStructureData : Packet
+public class McbeJigsawStructureData : Packet
 {
-	public McpeJigsawStructureData()
+	public McbeJigsawStructureData()
 	{
 		Id = 313;
-		IsMcpe = true;
+		IsMcbe = true;
 
 
 		StructureData = null;

@@ -1,11 +1,11 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeCurrentStructureFeature : Packet
+public class McbeCurrentStructureFeature : Packet
 {
-	public McpeCurrentStructureFeature()
+	public McbeCurrentStructureFeature()
 	{
 		Id = 314;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 

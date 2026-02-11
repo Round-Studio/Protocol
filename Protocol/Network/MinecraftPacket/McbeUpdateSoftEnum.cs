@@ -1,11 +1,11 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeUpdateSoftEnum : Packet
+public class McbeUpdateSoftEnum : Packet
 {
-	public McpeUpdateSoftEnum()
+	public McbeUpdateSoftEnum()
 	{
 		Id = 0x72;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

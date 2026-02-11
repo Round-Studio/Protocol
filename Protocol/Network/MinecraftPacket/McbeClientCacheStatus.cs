@@ -1,13 +1,13 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeClientCacheStatus : Packet
+public class McbeClientCacheStatus : Packet
 {
 	public bool enabled;
 
-	public McpeClientCacheStatus()
+	public McbeClientCacheStatus()
 	{
 		Id = 0x81;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

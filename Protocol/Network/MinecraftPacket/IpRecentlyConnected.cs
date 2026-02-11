@@ -10,7 +10,7 @@ public class IpRecentlyConnected : Packet
 	public IpRecentlyConnected()
 	{
 		Id = 0x1a;
-		IsMcpe = false;
+		IsMcbe = false;
 	}
 
 	protected override void EncodePacket()

@@ -12,7 +12,7 @@ public class ConnectionBanned : Packet
 	public ConnectionBanned()
 	{
 		Id = 0x17;
-		IsMcpe = false;
+		IsMcbe = false;
 	}
 
 	protected override void EncodePacket()

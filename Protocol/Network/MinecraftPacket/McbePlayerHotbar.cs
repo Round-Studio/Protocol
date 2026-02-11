@@ -1,15 +1,15 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpePlayerHotbar : Packet
+public class McbePlayerHotbar : Packet
 {
 	public uint selectedSlot;
 	public bool selectSlot;
 	public byte windowId;
 
-	public McpePlayerHotbar()
+	public McbePlayerHotbar()
 	{
 		Id = 0x30;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

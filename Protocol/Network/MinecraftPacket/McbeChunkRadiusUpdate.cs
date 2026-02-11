@@ -1,13 +1,13 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeChunkRadiusUpdate : Packet
+public class McbeChunkRadiusUpdate : Packet
 {
 	public int chunkRadius;
 
-	public McpeChunkRadiusUpdate()
+	public McbeChunkRadiusUpdate()
 	{
 		Id = 0x46;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

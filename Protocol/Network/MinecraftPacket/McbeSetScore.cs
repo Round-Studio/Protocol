@@ -2,7 +2,7 @@ using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeSetScore : Packet
+public class McbeSetScore : Packet
 {
 	public enum ChangeTypes
 	{
@@ -19,10 +19,10 @@ public class McpeSetScore : Packet
 
 	public ScoreEntries entries;
 
-	public McpeSetScore()
+	public McbeSetScore()
 	{
 		Id = 0x6c;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

@@ -3,7 +3,7 @@ using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeMobEquipment : Packet
+public class McbeMobEquipment : Packet
 {
 	public Item item;
 
@@ -12,10 +12,10 @@ public class McpeMobEquipment : Packet
 	public byte slot;
 	public byte windowsId;
 
-	public McpeMobEquipment()
+	public McbeMobEquipment()
 	{
 		Id = 0x1f;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

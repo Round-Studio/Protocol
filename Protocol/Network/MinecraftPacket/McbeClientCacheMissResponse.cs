@@ -1,13 +1,13 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeClientCacheMissResponse : Packet
+public class McbeClientCacheMissResponse : Packet
 {
 	public Dictionary<ulong, byte[]> blobs;
 
-	public McpeClientCacheMissResponse()
+	public McbeClientCacheMissResponse()
 	{
 		Id = 0x88;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

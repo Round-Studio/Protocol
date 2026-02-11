@@ -3,7 +3,7 @@ using Protocol.Utils;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeAddPlayer : Packet
+public class McbeAddPlayer : Packet
 {
 	public byte commandPermissions;
 	public string deviceId;
@@ -31,10 +31,10 @@ public class McpeAddPlayer : Packet
 	public float yaw;
 	public float z;
 
-	public McpeAddPlayer()
+	public McbeAddPlayer()
 	{
 		Id = 0x0c;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

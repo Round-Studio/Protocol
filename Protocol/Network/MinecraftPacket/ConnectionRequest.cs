@@ -9,7 +9,7 @@ public class ConnectionRequest : Packet
 	public ConnectionRequest()
 	{
 		Id = 0x09;
-		IsMcpe = false;
+		IsMcbe = false;
 	}
 
 	protected override void EncodePacket()

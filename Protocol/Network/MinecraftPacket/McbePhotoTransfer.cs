@@ -1,15 +1,15 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpePhotoTransfer : Packet
+public class McbePhotoTransfer : Packet
 {
 	public string fileName;
 	public string imageData;
 	public string unknown2;
 
-	public McpePhotoTransfer()
+	public McbePhotoTransfer()
 	{
 		Id = 0x63;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

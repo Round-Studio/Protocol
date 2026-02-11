@@ -1,11 +1,11 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeDeathInfo : Packet
+public class McbeDeathInfo : Packet
 {
-	public McpeDeathInfo()
+	public McbeDeathInfo()
 	{
 		Id = 189;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 

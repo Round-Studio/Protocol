@@ -2,7 +2,7 @@ using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeMoveEntityDelta : Packet
+public class McbeMoveEntityDelta : Packet
 {
 	public const int HasX = 0x01;
 	public const int HasY = 0x02;
@@ -23,10 +23,10 @@ public class McpeMoveEntityDelta : Packet
 
 	public long runtimeEntityId;
 
-	public McpeMoveEntityDelta()
+	public McbeMoveEntityDelta()
 	{
 		Id = 0x6f;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

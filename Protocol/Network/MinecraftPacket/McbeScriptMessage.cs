@@ -1,11 +1,11 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeScriptMessage : Packet
+public class McbeScriptMessage : Packet
 {
-	public McpeScriptMessage()
+	public McbeScriptMessage()
 	{
 		Id = 177;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 

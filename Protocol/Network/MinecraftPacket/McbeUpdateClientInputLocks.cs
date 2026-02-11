@@ -11,12 +11,12 @@ public static class ClientInputLocks
 	public const uint Movement = 1 << (1 + 1);
 }
 
-public class McpeUpdateClientInputLocks : Packet
+public class McbeUpdateClientInputLocks : Packet
 {
-	public McpeUpdateClientInputLocks()
+	public McbeUpdateClientInputLocks()
 	{
 		Id = 196;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 

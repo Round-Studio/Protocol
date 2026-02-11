@@ -1,6 +1,6 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpePlayStatus : Packet
+public class McbePlayStatus : Packet
 {
 	public enum PlayStatus
 	{
@@ -16,10 +16,10 @@ public class McpePlayStatus : Packet
 
 	public int status;
 
-	public McpePlayStatus()
+	public McbePlayStatus()
 	{
 		Id = 0x02;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

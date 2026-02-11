@@ -1,14 +1,14 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeServerboundLoadingScreen : Packet
+public class McbeServerboundLoadingScreen : Packet
 {
 	public int? ScreenId;
 	public int ScreenType;
 
-	public McpeServerboundLoadingScreen()
+	public McbeServerboundLoadingScreen()
 	{
 		Id = 0x138;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

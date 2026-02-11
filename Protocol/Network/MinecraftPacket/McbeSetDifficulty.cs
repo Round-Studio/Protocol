@@ -1,13 +1,13 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeSetDifficulty : Packet
+public class McbeSetDifficulty : Packet
 {
 	public uint difficulty;
 
-	public McpeSetDifficulty()
+	public McbeSetDifficulty()
 	{
 		Id = 0x3c;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

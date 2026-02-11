@@ -1,11 +1,11 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeTickingAreasLoadStatus : Packet
+public class McbeTickingAreasLoadStatus : Packet
 {
-	public McpeTickingAreasLoadStatus()
+	public McbeTickingAreasLoadStatus()
 	{
 		Id = 179;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 

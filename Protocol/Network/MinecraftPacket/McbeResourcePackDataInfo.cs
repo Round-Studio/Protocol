@@ -1,6 +1,6 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeResourcePackDataInfo : Packet
+public class McbeResourcePackDataInfo : Packet
 {
 	public uint chunkCount;
 	public ulong compressedPackageSize;
@@ -11,10 +11,10 @@ public class McpeResourcePackDataInfo : Packet
 	public string packageId;
 	public byte packType;
 
-	public McpeResourcePackDataInfo()
+	public McbeResourcePackDataInfo()
 	{
 		Id = 0x52;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

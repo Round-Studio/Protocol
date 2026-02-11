@@ -1,13 +1,13 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeSetDefaultGameType : Packet
+public class McbeSetDefaultGameType : Packet
 {
 	public int gamemode;
 
-	public McpeSetDefaultGameType()
+	public McbeSetDefaultGameType()
 	{
 		Id = 0x69;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

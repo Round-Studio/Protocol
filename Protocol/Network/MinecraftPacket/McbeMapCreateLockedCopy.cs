@@ -1,11 +1,11 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeMapCreateLockedCopy : Packet
+public class McbeMapCreateLockedCopy : Packet
 {
-	public McpeMapCreateLockedCopy()
+	public McbeMapCreateLockedCopy()
 	{
 		Id = 0x83;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

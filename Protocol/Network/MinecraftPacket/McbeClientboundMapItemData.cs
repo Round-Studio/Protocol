@@ -2,14 +2,14 @@ using Protocol.Minecraft.Map;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeClientboundMapItemData : Packet
+public class McbeClientboundMapItemData : Packet
 {
 	public MapInfo mapinfo;
 
-	public McpeClientboundMapItemData()
+	public McbeClientboundMapItemData()
 	{
 		Id = 0x43;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

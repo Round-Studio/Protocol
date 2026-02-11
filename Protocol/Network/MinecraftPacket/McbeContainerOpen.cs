@@ -3,7 +3,7 @@ using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeContainerOpen : Packet
+public class McbeContainerOpen : Packet
 {
 	public BlockCoordinates coordinates;
 	public long runtimeEntityId;
@@ -11,10 +11,10 @@ public class McpeContainerOpen : Packet
 
 	public byte windowId;
 
-	public McpeContainerOpen()
+	public McbeContainerOpen()
 	{
 		Id = 0x2e;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

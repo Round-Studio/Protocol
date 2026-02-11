@@ -3,17 +3,17 @@ using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeSubChunkPacket : Packet
+public class McbeSubChunkPacket : Packet
 {
 	public bool cacheEnabled;
 	public int dimension;
 	public SubChunkEntryCommon[] entries;
 	public BlockCoordinates subchunkCoordinates;
 
-	public McpeSubChunkPacket()
+	public McbeSubChunkPacket()
 	{
 		Id = 0xae;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

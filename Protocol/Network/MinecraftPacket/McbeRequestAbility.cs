@@ -1,14 +1,14 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeRequestAbility : Packet
+public class McbeRequestAbility : Packet
 {
 	public int ability;
 	public object Value = false;
 
-	public McpeRequestAbility()
+	public McbeRequestAbility()
 	{
 		Id = 0xb8;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

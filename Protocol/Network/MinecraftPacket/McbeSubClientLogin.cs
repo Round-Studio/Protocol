@@ -1,11 +1,11 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeSubClientLogin : Packet
+public class McbeSubClientLogin : Packet
 {
-	public McpeSubClientLogin()
+	public McbeSubClientLogin()
 	{
 		Id = 0x5e;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

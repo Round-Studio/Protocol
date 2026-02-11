@@ -1,14 +1,14 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeNetworkStackLatency : Packet
+public class McbeNetworkStackLatency : Packet
 {
 	public ulong timestamp;
 	public byte unknownFlag;
 
-	public McpeNetworkStackLatency()
+	public McbeNetworkStackLatency()
 	{
 		Id = 0x73;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

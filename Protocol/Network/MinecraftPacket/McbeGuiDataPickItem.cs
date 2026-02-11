@@ -1,11 +1,11 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeGuiDataPickItem : Packet
+public class McbeGuiDataPickItem : Packet
 {
-	public McpeGuiDataPickItem()
+	public McbeGuiDataPickItem()
 	{
 		Id = 0x36;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

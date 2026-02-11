@@ -3,7 +3,7 @@ using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeUpdateBlockSynced : Packet
+public class McbeUpdateBlockSynced : Packet
 {
 	public uint blockPriority;
 	public uint blockRuntimeId;
@@ -13,10 +13,10 @@ public class McpeUpdateBlockSynced : Packet
 	public long unknown0;
 	public long unknown1;
 
-	public McpeUpdateBlockSynced()
+	public McbeUpdateBlockSynced()
 	{
 		Id = 0x6e;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

@@ -3,7 +3,7 @@ using Protocol.Minecraft.Transaction;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeInventoryContent : Packet
+public class McbeInventoryContent : Packet
 {
 	public FullContainerName ContainerName = new();
 	public ItemStacks input;
@@ -11,10 +11,10 @@ public class McpeInventoryContent : Packet
 	public uint inventoryId;
 	public Item storageItem;
 
-	public McpeInventoryContent()
+	public McbeInventoryContent()
 	{
 		Id = 0x31;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

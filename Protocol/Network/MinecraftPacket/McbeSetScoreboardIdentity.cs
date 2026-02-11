@@ -2,7 +2,7 @@ using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeSetScoreboardIdentity : Packet
+public class McbeSetScoreboardIdentity : Packet
 {
 	public enum Operations
 	{
@@ -12,10 +12,10 @@ public class McpeSetScoreboardIdentity : Packet
 
 	public ScoreboardIdentityEntries entries;
 
-	public McpeSetScoreboardIdentity()
+	public McbeSetScoreboardIdentity()
 	{
 		Id = 0x70;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

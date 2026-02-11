@@ -2,7 +2,7 @@ using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeResourcePackClientResponse : Packet
+public class McbeResourcePackClientResponse : Packet
 {
 	public enum ResponseStatus
 	{
@@ -16,10 +16,10 @@ public class McpeResourcePackClientResponse : Packet
 
 	public byte responseStatus;
 
-	public McpeResourcePackClientResponse()
+	public McbeResourcePackClientResponse()
 	{
 		Id = 0x08;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

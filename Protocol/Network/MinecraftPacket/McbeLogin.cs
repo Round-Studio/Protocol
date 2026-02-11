@@ -1,15 +1,15 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeLogin : Packet
+public class McbeLogin : Packet
 {
 	public byte[] payload;
 
 	public int protocolVersion;
 
-	public McpeLogin()
+	public McbeLogin()
 	{
 		Id = 0x01;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

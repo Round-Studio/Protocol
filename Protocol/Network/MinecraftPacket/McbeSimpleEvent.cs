@@ -1,13 +1,13 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeSimpleEvent : Packet
+public class McbeSimpleEvent : Packet
 {
 	public ushort eventType;
 
-	public McpeSimpleEvent()
+	public McbeSimpleEvent()
 	{
 		Id = 0x40;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

@@ -1,6 +1,6 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeMultiPlayerSettings : Packet
+public class McbeMultiPlayerSettings : Packet
 {
 	public enum Action
 	{
@@ -9,10 +9,10 @@ public class McpeMultiPlayerSettings : Packet
 		RefreshJoinCode = 2
 	}
 
-	public McpeMultiPlayerSettings()
+	public McbeMultiPlayerSettings()
 	{
 		Id = 139;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 

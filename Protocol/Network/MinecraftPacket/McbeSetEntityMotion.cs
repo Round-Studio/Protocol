@@ -2,16 +2,16 @@ using System.Numerics;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeSetEntityMotion : Packet
+public class McbeSetEntityMotion : Packet
 {
 	public long runtimeEntityId;
 	public long tick;
 	public Vector3 velocity;
 
-	public McpeSetEntityMotion()
+	public McbeSetEntityMotion()
 	{
 		Id = 0x28;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

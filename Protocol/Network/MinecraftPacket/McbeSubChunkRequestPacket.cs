@@ -2,17 +2,17 @@ using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeSubChunkRequestPacket : Packet
+public class McbeSubChunkRequestPacket : Packet
 {
 	public BlockCoordinates basePosition;
 
 	public int dimension;
 	public SubChunkPositionOffset[] offsets;
 
-	public McpeSubChunkRequestPacket()
+	public McbeSubChunkRequestPacket()
 	{
 		Id = 0xaf;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

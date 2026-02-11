@@ -1,11 +1,11 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeDebugInfo : Packet
+public class McbeDebugInfo : Packet
 {
-	public McpeDebugInfo()
+	public McbeDebugInfo()
 	{
 		Id = 155;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 

@@ -1,6 +1,6 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeAnimateEntity : Packet
+public class McbeAnimateEntity : Packet
 {
 	public string animationName;
 	public float blendOutTime;
@@ -10,10 +10,10 @@ public class McpeAnimateEntity : Packet
 	public string nextState;
 	public string stopExpression;
 
-	public McpeAnimateEntity()
+	public McbeAnimateEntity()
 	{
 		Id = 0x9e;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

@@ -4,5 +4,5 @@ namespace Protocol.Minecraft.Transaction;
 
 public class CraftTransactionRecord : TransactionRecord
 {
-	public McpeInventoryTransaction.CraftingAction Action { get; set; }
+	public McbeInventoryTransaction.CraftingAction Action { get; set; }
 }

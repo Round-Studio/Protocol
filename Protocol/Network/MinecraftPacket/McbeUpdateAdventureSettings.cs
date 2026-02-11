@@ -1,6 +1,6 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeUpdateAdventureSettings : Packet
+public class McbeUpdateAdventureSettings : Packet
 {
 	public bool autoJump;
 	public bool immutableWorld;
@@ -9,10 +9,10 @@ public class McpeUpdateAdventureSettings : Packet
 	public bool noPvm;
 	public bool showNametags;
 
-	public McpeUpdateAdventureSettings()
+	public McbeUpdateAdventureSettings()
 	{
 		Id = 0xbc;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

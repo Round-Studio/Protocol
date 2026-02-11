@@ -14,7 +14,7 @@ namespace Protocol.Network.MinecraftPacket
 		public McbeServerBoundPackSettingChange()
 		{
 			Id = 329;
-			IsMcpe = true;
+			IsMcbe = true;
 		}
 
 		protected override void EncodePacket()

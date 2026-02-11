@@ -1,11 +1,11 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeClientStartItemCooldown : Packet
+public class McbeClientStartItemCooldown : Packet
 {
-	public McpeClientStartItemCooldown()
+	public McbeClientStartItemCooldown()
 	{
 		Id = 176;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 

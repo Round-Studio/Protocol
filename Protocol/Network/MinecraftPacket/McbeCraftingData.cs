@@ -3,7 +3,7 @@ using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeCraftingData : Packet
+public class McbeCraftingData : Packet
 {
 	public bool isClean;
 	public MaterialReducerRecipe[] materialReducerRecipes;
@@ -12,10 +12,10 @@ public class McpeCraftingData : Packet
 
 	public Recipes recipes;
 
-	public McpeCraftingData()
+	public McbeCraftingData()
 	{
 		Id = 0x34;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

@@ -1,6 +1,5 @@
-#region LICENSE
 
-#endregion
+using System;
 
 namespace Protocol.Utils;
 

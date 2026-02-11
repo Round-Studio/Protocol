@@ -5,6 +5,31 @@ namespace Protocol.Minecraft;
 
 using System;
 using System.Numerics;
+public struct CameraProgressOption
+{
+	public float Value { get; set; }
+	public float Time { get; set; }
+	public Optional<byte> EaseType { get; set; }
+}
+public struct CameraRotationOption
+{
+	public Vector3 Value { get; set; }
+	public float time { get; set; }
+}
+public struct CameraSplineDefinition
+{
+	public string Name { get; set; }
+	public CameraSplineInstruction Instruction { get; set; }
+}
+
+public struct CameraSplineInstruction
+{
+	public float TotalTime { get; set; }
+	public Optional<byte> SplineType { get; set; }
+	public System.Collections.Generic.List<System.Numerics.Vector3> Curve { get; set; }
+	public System.Collections.Generic.List<CameraProgressOption> ProgressKeyFrames { get; set; }
+	public System.Collections.Generic.List<CameraRotationOption> RotationOptions { get; set; }
+}
 
 public struct CameraEase
 {
@@ -90,28 +115,7 @@ public enum SplineEaseType
 	SplineEaseTypeLinear
 }
 
-public struct CameraRotationOption
-{
-	public Vector3 Value { get; set; }
-	public float time { get; set; }
-}
 
-public struct CameraSplineInstruction
-{
-	public float TotalTime;
-
-
-	public byte EaseType;
-
-
-	public Vector3[] Curve;
-
-
-	public Vector2[] ProgressKeyFrames;
-
-
-	public CameraRotationOption[] RotationOptions;
-}
 
 public struct CameraAimAssistPriority
 {

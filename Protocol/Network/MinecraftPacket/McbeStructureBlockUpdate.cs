@@ -1,11 +1,11 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeStructureBlockUpdate : Packet
+public class McbeStructureBlockUpdate : Packet
 {
-	public McpeStructureBlockUpdate()
+	public McbeStructureBlockUpdate()
 	{
 		Id = 0x5a;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

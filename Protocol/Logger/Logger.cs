@@ -1,8 +1,11 @@
-namespace neo_protocol;
+using System;
+using System.IO;
+
+namespace Protocol;
 
 public static class Logger
 {
-	private static readonly TextWriter _writer = Console.Out;
+	public static readonly TextWriter _writer  = Console.Out;
 
 
 	private static string GetTime()
@@ -10,7 +13,7 @@ public static class Logger
 		return DateTime.Now.TimeOfDay.ToString();
 	}
 
-	public static void Info<T>(T str)
+	public static void info<T>(T str)
 	{
 		_writer.WriteLine(GetTime() + " " + Header.INFO + str);
 	}

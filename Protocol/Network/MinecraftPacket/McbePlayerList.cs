@@ -2,14 +2,14 @@ using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpePlayerList : Packet
+public class McbePlayerList : Packet
 {
 	public PlayerRecords records;
 
-	public McpePlayerList()
+	public McbePlayerList()
 	{
 		Id = 0x3f;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

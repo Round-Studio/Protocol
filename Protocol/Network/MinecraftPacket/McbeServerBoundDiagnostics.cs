@@ -1,11 +1,11 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeServerBoundDiagnostics : Packet
+public class McbeServerBoundDiagnostics : Packet
 {
-	public McpeServerBoundDiagnostics()
+	public McbeServerBoundDiagnostics()
 	{
 		Id = 315;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 

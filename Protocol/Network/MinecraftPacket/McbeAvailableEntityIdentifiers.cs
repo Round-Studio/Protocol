@@ -2,14 +2,14 @@ using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeAvailableEntityIdentifiers : Packet
+public class McbeAvailableEntityIdentifiers : Packet
 {
 	public Nbt namedtag;
 
-	public McpeAvailableEntityIdentifiers()
+	public McbeAvailableEntityIdentifiers()
 	{
 		Id = 0x77;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

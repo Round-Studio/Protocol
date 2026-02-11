@@ -1,6 +1,6 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeDisconnect : Packet
+public class McbeDisconnect : Packet
 {
 	public enum DisconnectReason
 	{
@@ -134,10 +134,10 @@ public class McpeDisconnect : Packet
 	public bool hideDisconnectReason;
 	public string message;
 
-	public McpeDisconnect()
+	public McbeDisconnect()
 	{
 		Id = 0x05;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

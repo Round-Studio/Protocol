@@ -49,12 +49,12 @@ public static class HudVisibility
 	public const int Reset = 1;
 }
 
-public class McpeSetHud : Packet
+public class McbeSetHud : Packet
 {
-	public McpeSetHud()
+	public McbeSetHud()
 	{
 		Id = 308;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 

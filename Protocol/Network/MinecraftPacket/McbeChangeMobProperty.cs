@@ -1,11 +1,11 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeChangeMobProperty : Packet
+public class McbeChangeMobProperty : Packet
 {
-	public McpeChangeMobProperty()
+	public McbeChangeMobProperty()
 	{
 		Id = 182;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 

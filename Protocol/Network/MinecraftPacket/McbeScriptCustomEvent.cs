@@ -1,15 +1,15 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeScriptCustomEvent : Packet
+public class McbeScriptCustomEvent : Packet
 {
 	public string eventData;
 
 	public string eventName;
 
-	public McpeScriptCustomEvent()
+	public McbeScriptCustomEvent()
 	{
 		Id = 0x75;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

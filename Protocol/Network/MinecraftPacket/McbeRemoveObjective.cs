@@ -1,13 +1,13 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeRemoveObjective : Packet
+public class McbeRemoveObjective : Packet
 {
 	public string objectiveName;
 
-	public McpeRemoveObjective()
+	public McbeRemoveObjective()
 	{
 		Id = 0x6a;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

@@ -1,16 +1,16 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeHurtArmor : Packet
+public class McbeHurtArmor : Packet
 {
 	public long armorSlotFlags;
 
 	public int cause;
 	public int health;
 
-	public McpeHurtArmor()
+	public McbeHurtArmor()
 	{
 		Id = 0x26;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

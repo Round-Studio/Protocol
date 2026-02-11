@@ -2,17 +2,17 @@ using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeUpdateAttributes : Packet
+public class McbeUpdateAttributes : Packet
 {
 	public PlayerAttributes attributes;
 
 	public long runtimeEntityId;
 	public long tick;
 
-	public McpeUpdateAttributes()
+	public McbeUpdateAttributes()
 	{
 		Id = 0x1d;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

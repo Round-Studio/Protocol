@@ -2,7 +2,7 @@ using System.Numerics;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeLevelSoundEvent : Packet
+public class McbeLevelSoundEvent : Packet
 {
 	public int blockId;
 	public long entityId = -1;
@@ -13,10 +13,10 @@ public class McpeLevelSoundEvent : Packet
 
 	public uint soundId;
 
-	public McpeLevelSoundEvent()
+	public McbeLevelSoundEvent()
 	{
 		Id = 0x7b;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

@@ -1,11 +1,11 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeClientBoundCloseForm : Packet
+public class McbeClientBoundCloseForm : Packet
 {
-	public McpeClientBoundCloseForm()
+	public McbeClientBoundCloseForm()
 	{
 		Id = 310;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 

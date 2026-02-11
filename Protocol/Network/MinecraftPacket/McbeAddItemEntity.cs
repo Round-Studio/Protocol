@@ -2,7 +2,7 @@ using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeAddItemEntity : Packet
+public class McbeAddItemEntity : Packet
 {
 	public long entityIdSelf;
 	public bool isFromFishing;
@@ -16,10 +16,10 @@ public class McpeAddItemEntity : Packet
 	public float y;
 	public float z;
 
-	public McpeAddItemEntity()
+	public McbeAddItemEntity()
 	{
 		Id = 0x0f;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

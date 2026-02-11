@@ -1,16 +1,16 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpePermissionRequest : Packet
+public class McbePermissionRequest : Packet
 {
 	public short flagss;
 	public uint permission;
 
 	public long runtimeEntityId;
 
-	public McpePermissionRequest()
+	public McbePermissionRequest()
 	{
 		Id = 0xb9;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

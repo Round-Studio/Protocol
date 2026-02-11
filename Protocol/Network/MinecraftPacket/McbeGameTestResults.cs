@@ -1,11 +1,11 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeGameTestResults : Packet
+public class McbeGameTestResults : Packet
 {
-	public McpeGameTestResults()
+	public McbeGameTestResults()
 	{
 		Id = 195;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 

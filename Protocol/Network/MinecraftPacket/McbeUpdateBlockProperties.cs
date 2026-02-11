@@ -2,14 +2,14 @@ using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeUpdateBlockProperties : Packet
+public class McbeUpdateBlockProperties : Packet
 {
 	public Nbt namedtag;
 
-	public McpeUpdateBlockProperties()
+	public McbeUpdateBlockProperties()
 	{
 		Id = 0x86;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

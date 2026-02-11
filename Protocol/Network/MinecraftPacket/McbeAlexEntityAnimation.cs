@@ -2,17 +2,17 @@ using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeAlexEntityAnimation : Packet
+public class McbeAlexEntityAnimation : Packet
 {
 	public string boneId;
 	public AnimationKey[] keys;
 
 	public long runtimeEntityId;
 
-	public McpeAlexEntityAnimation()
+	public McbeAlexEntityAnimation()
 	{
 		Id = 0xe0;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

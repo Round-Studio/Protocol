@@ -3,7 +3,7 @@ using Protocol.Utils;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeCraftingEvent : Packet
+public class McbeCraftingEvent : Packet
 {
 	public enum RecipeTypes
 	{
@@ -26,10 +26,10 @@ public class McpeCraftingEvent : Packet
 
 	public byte windowId;
 
-	public McpeCraftingEvent()
+	public McbeCraftingEvent()
 	{
 		Id = 0x35;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

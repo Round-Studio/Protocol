@@ -3,7 +3,7 @@ using Protocol.Utils;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpePlayerSkin : Packet
+public class McbePlayerSkin : Packet
 {
 	public bool isVerified;
 	public string oldSkinName;
@@ -12,10 +12,10 @@ public class McpePlayerSkin : Packet
 
 	public UUID uuid;
 
-	public McpePlayerSkin()
+	public McbePlayerSkin()
 	{
 		Id = 0x5d;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

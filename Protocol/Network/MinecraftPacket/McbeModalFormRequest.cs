@@ -1,15 +1,15 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeModalFormRequest : Packet
+public class McbeModalFormRequest : Packet
 {
 	public string formData;
 
 	public uint formId;
 
-	public McpeModalFormRequest()
+	public McbeModalFormRequest()
 	{
 		Id = 0x64;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

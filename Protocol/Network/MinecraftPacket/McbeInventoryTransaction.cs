@@ -2,7 +2,7 @@ using Protocol.Minecraft.Transaction;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeInventoryTransaction : Packet
+public class McbeInventoryTransaction : Packet
 {
 	public enum CraftingAction
 	{
@@ -70,10 +70,10 @@ public class McpeInventoryTransaction : Packet
 
 	public Transaction transaction;
 
-	public McpeInventoryTransaction()
+	public McbeInventoryTransaction()
 	{
 		Id = 0x1e;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

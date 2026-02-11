@@ -40,7 +40,7 @@ public class McbePlayerArmourDamage : Packet
 	public McbePlayerArmourDamage()
 	{
 		Id = 148;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

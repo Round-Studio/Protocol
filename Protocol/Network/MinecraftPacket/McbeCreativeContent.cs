@@ -2,15 +2,15 @@ using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeCreativeContent : Packet
+public class McbeCreativeContent : Packet
 {
 	public List<creativeGroup> groups;
 	public List<CreativeItemEntry> input;
 
-	public McpeCreativeContent()
+	public McbeCreativeContent()
 	{
 		Id = 0x91;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

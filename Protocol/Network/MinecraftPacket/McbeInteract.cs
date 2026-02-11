@@ -2,7 +2,7 @@ using System.Numerics;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeInteract : Packet
+public class McbeInteract : Packet
 {
 	public enum Actions
 	{
@@ -19,10 +19,10 @@ public class McpeInteract : Packet
 	public long targetRuntimeEntityId;
 
 
-	public McpeInteract()
+	public McbeInteract()
 	{
 		Id = 0x21;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

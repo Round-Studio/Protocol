@@ -2,7 +2,7 @@ using System.Numerics;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeCorrectPlayerMovement : Packet
+public class McbeCorrectPlayerMovement : Packet
 {
 	public bool OnGround;
 	public Vector3 Postition;
@@ -11,10 +11,10 @@ public class McpeCorrectPlayerMovement : Packet
 	public byte Type;
 	public Vector3 Velocity;
 
-	public McpeCorrectPlayerMovement()
+	public McbeCorrectPlayerMovement()
 	{
 		Id = 0xA1;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

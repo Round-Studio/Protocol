@@ -104,7 +104,7 @@ public struct PlayerBlockAction
 	}
 }
 
-public class McpePlayerAuthInput : Packet
+public class McbePlayerAuthInput : Packet
 {
 	public enum InputFlags
 	{
@@ -218,10 +218,10 @@ public class McpePlayerAuthInput : Packet
 	public PlayerBlockAction[] PlayerBlockAction_;
 	public Vector3 Position;
 
-	public McpePlayerAuthInput()
+	public McbePlayerAuthInput()
 	{
 		Id = 0x90;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 

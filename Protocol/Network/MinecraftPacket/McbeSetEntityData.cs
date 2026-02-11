@@ -2,7 +2,7 @@ using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeSetEntityData : Packet
+public class McbeSetEntityData : Packet
 {
 	public MetadataDictionary metadata;
 
@@ -10,10 +10,10 @@ public class McpeSetEntityData : Packet
 	public PropertySyncData syncdata;
 	public long tick;
 
-	public McpeSetEntityData()
+	public McbeSetEntityData()
 	{
 		Id = 0x27;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

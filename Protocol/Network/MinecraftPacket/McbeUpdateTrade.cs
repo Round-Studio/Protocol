@@ -3,7 +3,7 @@ using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeUpdateTrade : Packet
+public class McbeUpdateTrade : Packet
 {
 	public string displayName;
 	public bool isWilling;
@@ -17,10 +17,10 @@ public class McpeUpdateTrade : Packet
 	public byte windowId;
 	public byte windowType;
 
-	public McpeUpdateTrade()
+	public McbeUpdateTrade()
 	{
 		Id = 0x50;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

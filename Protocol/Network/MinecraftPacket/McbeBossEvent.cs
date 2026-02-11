@@ -1,6 +1,6 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeBossEvent : Packet
+public class McbeBossEvent : Packet
 {
 	public enum Type
 	{
@@ -24,10 +24,10 @@ public class McpeBossEvent : Packet
 	public string title;
 	public ushort unknown6;
 
-	public McpeBossEvent()
+	public McbeBossEvent()
 	{
 		Id = 0x4a;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

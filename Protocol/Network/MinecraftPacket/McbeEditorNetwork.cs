@@ -3,12 +3,12 @@ using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeEditorNetwork : Packet
+public class McbeEditorNetwork : Packet
 {
-	public McpeEditorNetwork()
+	public McbeEditorNetwork()
 	{
 		Id = 190;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 

@@ -1,11 +1,11 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeServerSettingsRequest : Packet
+public class McbeServerSettingsRequest : Packet
 {
-	public McpeServerSettingsRequest()
+	public McbeServerSettingsRequest()
 	{
 		Id = 0x66;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

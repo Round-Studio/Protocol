@@ -8,7 +8,7 @@ public class ConnectedPong : Packet
 	public ConnectedPong()
 	{
 		Id = 0x03;
-		IsMcpe = false;
+		IsMcbe = false;
 	}
 
 	protected override void EncodePacket()

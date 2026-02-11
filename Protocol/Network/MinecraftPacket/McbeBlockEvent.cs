@@ -2,17 +2,17 @@ using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeBlockEvent : Packet
+public class McbeBlockEvent : Packet
 {
 	public int case1;
 	public int case2;
 
 	public BlockCoordinates coordinates;
 
-	public McpeBlockEvent()
+	public McbeBlockEvent()
 	{
 		Id = 0x1a;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

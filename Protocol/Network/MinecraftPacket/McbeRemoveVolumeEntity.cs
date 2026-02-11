@@ -1,11 +1,11 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeRemoveVolumeEntity : Packet
+public class McbeRemoveVolumeEntity : Packet
 {
-	public McpeRemoveVolumeEntity()
+	public McbeRemoveVolumeEntity()
 	{
 		Id = 167;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 

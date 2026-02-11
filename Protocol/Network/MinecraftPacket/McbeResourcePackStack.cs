@@ -2,7 +2,7 @@ using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeResourcePackStack : Packet
+public class McbeResourcePackStack : Packet
 {
 	public ResourcePackIdVersions behaviorpackidversions;
 	public Experiments experiments;
@@ -13,10 +13,10 @@ public class McpeResourcePackStack : Packet
 	public bool mustAccept;
 	public ResourcePackIdVersions resourcepackidversions;
 
-	public McpeResourcePackStack()
+	public McbeResourcePackStack()
 	{
 		Id = 0x07;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

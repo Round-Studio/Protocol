@@ -12,7 +12,7 @@ public class NewIncomingConnection : Packet
 	public NewIncomingConnection()
 	{
 		Id = 0x13;
-		IsMcpe = false;
+		IsMcbe = false;
 	}
 
 	protected override void EncodePacket()

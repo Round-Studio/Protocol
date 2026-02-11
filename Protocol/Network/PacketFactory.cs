@@ -1,3 +1,4 @@
+using System;
 using Protocol.Network.MinecraftPacket;
 
 namespace Protocol.Network
@@ -44,7 +45,7 @@ namespace Protocol.Network
 					case 0x1A:
 						return new IpRecentlyConnected().Decode(buffer);
 					case 0xfe:
-						return new McpeWrapper().Decode(buffer);
+						return new McbeWrapper().Decode(buffer);
 					default:
 						return new UnknownPacket((byte)id, buffer);
 				}
@@ -54,490 +55,490 @@ namespace Protocol.Network
 				switch (id)
 				{
 					case 1:
-						return new McpeLogin().Decode(buffer);
+						return new McbeLogin().Decode(buffer);
 					case 2:
-						return new McpePlayStatus().Decode(buffer);
+						return new McbePlayStatus().Decode(buffer);
 					case 3:
-						return new McpeServerToClientHandshake().Decode(buffer);
+						return new McbeServerToClientHandshake().Decode(buffer);
 					case 4:
-						return new McpeClientToServerHandshake().Decode(buffer);
+						return new McbeClientToServerHandshake().Decode(buffer);
 					case 5:
-						return new McpeDisconnect().Decode(buffer);
+						return new McbeDisconnect().Decode(buffer);
 					case 6:
-						return new McpeResourcePacksInfo().Decode(buffer);
+						return new McbeResourcePacksInfo().Decode(buffer);
 					case 7:
-						return new McpeResourcePackStack().Decode(buffer);
+						return new McbeResourcePackStack().Decode(buffer);
 					case 8:
-						return new McpeResourcePackClientResponse().Decode(buffer);
+						return new McbeResourcePackClientResponse().Decode(buffer);
 					case 9:
-						return new McpeText().Decode(buffer);
+						return new McbeText().Decode(buffer);
 					case 10:
-						return new McpeSetTime().Decode(buffer);
+						return new McbeSetTime().Decode(buffer);
 					case 11:
-						return new McpeStartGame().Decode(buffer);
+						return new McbeStartGame().Decode(buffer);
 					case 12:
-						return new McpeAddPlayer().Decode(buffer);
+						return new McbeAddPlayer().Decode(buffer);
 					case 13:
-						return new McpeAddEntity().Decode(buffer);
+						return new McbeAddEntity().Decode(buffer);
 					case 14:
-						return new McpeRemoveEntity().Decode(buffer);
+						return new McbeRemoveEntity().Decode(buffer);
 					case 15:
-						return new McpeAddItemEntity().Decode(buffer);
+						return new McbeAddItemEntity().Decode(buffer);
 
 					case 17:
-						return new McpeTakeItemEntity().Decode(buffer);
+						return new McbeTakeItemEntity().Decode(buffer);
 					case 18:
-						return new McpeMoveEntity().Decode(buffer);
+						return new McbeMoveEntity().Decode(buffer);
 					case 19:
-						return new McpeMovePlayer().Decode(buffer);
+						return new McbeMovePlayer().Decode(buffer);
 
 					case 21:
-						return new McpeUpdateBlock().Decode(buffer);
+						return new McbeUpdateBlock().Decode(buffer);
 					case 22:
-						return new McpeAddPainting().Decode(buffer);
+						return new McbeAddPainting().Decode(buffer);
 
 
 					case 25:
-						return new McpeLevelEvent().Decode(buffer);
+						return new McbeLevelEvent().Decode(buffer);
 					case 26:
-						return new McpeBlockEvent().Decode(buffer);
+						return new McbeBlockEvent().Decode(buffer);
 					case 27:
-						return new McpeEntityEvent().Decode(buffer);
+						return new McbeEntityEvent().Decode(buffer);
 					case 28:
-						return new McpeMobEffect().Decode(buffer);
+						return new McbeMobEffect().Decode(buffer);
 					case 29:
-						return new McpeUpdateAttributes().Decode(buffer);
+						return new McbeUpdateAttributes().Decode(buffer);
 					case 30:
-						return new McpeInventoryTransaction().Decode(buffer);
+						return new McbeInventoryTransaction().Decode(buffer);
 					case 31:
-						return new McpeMobEquipment().Decode(buffer);
+						return new McbeMobEquipment().Decode(buffer);
 					case 32:
-						return new McpeMobArmorEquipment().Decode(buffer);
+						return new McbeMobArmorEquipment().Decode(buffer);
 					case 33:
-						return new McpeInteract().Decode(buffer);
+						return new McbeInteract().Decode(buffer);
 					case 34:
-						return new McpeBlockPickRequest().Decode(buffer);
+						return new McbeBlockPickRequest().Decode(buffer);
 					case 35:
-						return new McpeEntityPickRequest().Decode(buffer);
+						return new McbeEntityPickRequest().Decode(buffer);
 					case 36:
-						return new McpePlayerAction().Decode(buffer);
+						return new McbePlayerAction().Decode(buffer);
 
 					case 38:
-						return new McpeHurtArmor().Decode(buffer);
+						return new McbeHurtArmor().Decode(buffer);
 					case 39:
-						return new McpeSetEntityData().Decode(buffer);
+						return new McbeSetEntityData().Decode(buffer);
 					case 40:
-						return new McpeSetEntityMotion().Decode(buffer);
+						return new McbeSetEntityMotion().Decode(buffer);
 					case 41:
-						return new McpeSetEntityLink().Decode(buffer);
+						return new McbeSetEntityLink().Decode(buffer);
 					case 42:
-						return new McpeSetHealth().Decode(buffer);
+						return new McbeSetHealth().Decode(buffer);
 					case 43:
-						return new McpeSetSpawnPosition().Decode(buffer);
+						return new McbeSetSpawnPosition().Decode(buffer);
 					case 44:
-						return new McpeAnimate().Decode(buffer);
+						return new McbeAnimate().Decode(buffer);
 					case 45:
-						return new McpeRespawn().Decode(buffer);
+						return new McbeRespawn().Decode(buffer);
 					case 46:
-						return new McpeContainerOpen().Decode(buffer);
+						return new McbeContainerOpen().Decode(buffer);
 					case 47:
-						return new McpeContainerClose().Decode(buffer);
+						return new McbeContainerClose().Decode(buffer);
 					case 48:
-						return new McpePlayerHotbar().Decode(buffer);
+						return new McbePlayerHotbar().Decode(buffer);
 					case 49:
-						return new McpeInventoryContent().Decode(buffer);
+						return new McbeInventoryContent().Decode(buffer);
 					case 50:
-						return new McpeInventorySlot().Decode(buffer);
+						return new McbeInventorySlot().Decode(buffer);
 					case 51:
-						return new McpeContainerSetData().Decode(buffer);
+						return new McbeContainerSetData().Decode(buffer);
 					case 52:
-						return new McpeCraftingData().Decode(buffer);
+						return new McbeCraftingData().Decode(buffer);
 
 					case 54:
-						return new McpeGuiDataPickItem().Decode(buffer);
+						return new McbeGuiDataPickItem().Decode(buffer);
 					case 55:
-						return new McpeAdventureSettings().Decode(buffer);
+						return new McbeAdventureSettings().Decode(buffer);
 					case 56:
-						return new McpeBlockEntityData().Decode(buffer);
+						return new McbeBlockEntityData().Decode(buffer);
 
 					case 58:
-						return new McpeLevelChunk().Decode(buffer);
+						return new McbeLevelChunk().Decode(buffer);
 					case 59:
-						return new McpeSetCommandsEnabled().Decode(buffer);
+						return new McbeSetCommandsEnabled().Decode(buffer);
 					case 60:
-						return new McpeSetDifficulty().Decode(buffer);
+						return new McbeSetDifficulty().Decode(buffer);
 					case 61:
-						return new McpeChangeDimension().Decode(buffer);
+						return new McbeChangeDimension().Decode(buffer);
 					case 62:
-						return new McpeSetPlayerGameType().Decode(buffer);
+						return new McbeSetPlayerGameType().Decode(buffer);
 					case 63:
-						return new McpePlayerList().Decode(buffer);
+						return new McbePlayerList().Decode(buffer);
 					case 64:
-						return new McpeSimpleEvent().Decode(buffer);
+						return new McbeSimpleEvent().Decode(buffer);
 					case 65:
-						return new McpeTelemetryEvent().Decode(buffer);
+						return new McbeTelemetryEvent().Decode(buffer);
 					case 66:
-						return new McpeSpawnExperienceOrb().Decode(buffer);
+						return new McbeSpawnExperienceOrb().Decode(buffer);
 					case 67:
-						return new McpeClientboundMapItemData().Decode(buffer);
+						return new McbeClientboundMapItemData().Decode(buffer);
 					case 68:
-						return new McpeMapInfoRequest().Decode(buffer);
+						return new McbeMapInfoRequest().Decode(buffer);
 					case 69:
-						return new McpeRequestChunkRadius().Decode(buffer);
+						return new McbeRequestChunkRadius().Decode(buffer);
 					case 70:
-						return new McpeChunkRadiusUpdate().Decode(buffer);
+						return new McbeChunkRadiusUpdate().Decode(buffer);
 
 					case 72:
-						return new McpeGameRulesChanged().Decode(buffer);
+						return new McbeGameRulesChanged().Decode(buffer);
 					case 73:
-						return new McpeCamera().Decode(buffer);
+						return new McbeCamera().Decode(buffer);
 					case 74:
-						return new McpeBossEvent().Decode(buffer);
+						return new McbeBossEvent().Decode(buffer);
 					case 75:
-						return new McpeShowCredits().Decode(buffer);
+						return new McbeShowCredits().Decode(buffer);
 					case 76:
-						return new McpeAvailableCommands().Decode(buffer);
+						return new McbeAvailableCommands().Decode(buffer);
 					case 77:
-						return new McpeCommandRequest().Decode(buffer);
+						return new McbeCommandRequest().Decode(buffer);
 					case 78:
-						return new McpeCommandBlockUpdate().Decode(buffer);
+						return new McbeCommandBlockUpdate().Decode(buffer);
 					case 79:
-						return new McpeCommandOutput().Decode(buffer);
+						return new McbeCommandOutput().Decode(buffer);
 					case 80:
-						return new McpeUpdateTrade().Decode(buffer);
+						return new McbeUpdateTrade().Decode(buffer);
 					case 81:
-						return new McpeUpdateEquipment().Decode(buffer);
+						return new McbeUpdateEquipment().Decode(buffer);
 					case 82:
-						return new McpeResourcePackDataInfo().Decode(buffer);
+						return new McbeResourcePackDataInfo().Decode(buffer);
 					case 83:
-						return new McpeResourcePackChunkData().Decode(buffer);
+						return new McbeResourcePackChunkData().Decode(buffer);
 					case 84:
-						return new McpeResourcePackChunkRequest().Decode(buffer);
+						return new McbeResourcePackChunkRequest().Decode(buffer);
 					case 85:
-						return new McpeTransfer().Decode(buffer);
+						return new McbeTransfer().Decode(buffer);
 					case 86:
-						return new McpePlaySound().Decode(buffer);
+						return new McbePlaySound().Decode(buffer);
 					case 87:
-						return new McpeStopSound().Decode(buffer);
+						return new McbeStopSound().Decode(buffer);
 					case 88:
-						return new McpeSetTitle().Decode(buffer);
+						return new McbeSetTitle().Decode(buffer);
 					case 89:
-						return new McpeAddBehaviorTree().Decode(buffer);
+						return new McbeAddBehaviorTree().Decode(buffer);
 					case 90:
-						return new McpeStructureBlockUpdate().Decode(buffer);
+						return new McbeStructureBlockUpdate().Decode(buffer);
 					case 91:
-						return new McpeShowStoreOffer().Decode(buffer);
+						return new McbeShowStoreOffer().Decode(buffer);
 					case 92:
-						return new McpePurchaseReceipt().Decode(buffer);
+						return new McbePurchaseReceipt().Decode(buffer);
 					case 93:
-						return new McpePlayerSkin().Decode(buffer);
+						return new McbePlayerSkin().Decode(buffer);
 					case 94:
-						return new McpeSubClientLogin().Decode(buffer);
+						return new McbeSubClientLogin().Decode(buffer);
 					case 95:
-						return new McpeInitiateWebSocketConnection().Decode(buffer);
+						return new McbeInitiateWebSocketConnection().Decode(buffer);
 					case 96:
-						return new McpeSetLastHurtBy().Decode(buffer);
+						return new McbeSetLastHurtBy().Decode(buffer);
 					case 97:
-						return new McpeBookEdit().Decode(buffer);
+						return new McbeBookEdit().Decode(buffer);
 					case 98:
-						return new McpeNpcRequest().Decode(buffer);
+						return new McbeNpcRequest().Decode(buffer);
 					case 99:
-						return new McpePhotoTransfer().Decode(buffer);
+						return new McbePhotoTransfer().Decode(buffer);
 					case 100:
-						return new McpeModalFormRequest().Decode(buffer);
+						return new McbeModalFormRequest().Decode(buffer);
 					case 101:
-						return new McpeModalFormResponse().Decode(buffer);
+						return new McbeModalFormResponse().Decode(buffer);
 					case 102:
-						return new McpeServerSettingsRequest().Decode(buffer);
+						return new McbeServerSettingsRequest().Decode(buffer);
 					case 103:
-						return new McpeServerSettingsResponse().Decode(buffer);
+						return new McbeServerSettingsResponse().Decode(buffer);
 					case 104:
-						return new McpeShowProfile().Decode(buffer);
+						return new McbeShowProfile().Decode(buffer);
 					case 105:
-						return new McpeSetDefaultGameType().Decode(buffer);
+						return new McbeSetDefaultGameType().Decode(buffer);
 					case 106:
-						return new McpeRemoveObjective().Decode(buffer);
+						return new McbeRemoveObjective().Decode(buffer);
 					case 107:
-						return new McpeSetDisplayObjective().Decode(buffer);
+						return new McbeSetDisplayObjective().Decode(buffer);
 					case 108:
-						return new McpeSetScore().Decode(buffer);
+						return new McbeSetScore().Decode(buffer);
 					case 109:
-						return new McpeLabTable().Decode(buffer);
+						return new McbeLabTable().Decode(buffer);
 					case 110:
-						return new McpeUpdateBlockSynced().Decode(buffer);
+						return new McbeUpdateBlockSynced().Decode(buffer);
 					case 111:
-						return new McpeMoveEntityDelta().Decode(buffer);
+						return new McbeMoveEntityDelta().Decode(buffer);
 					case 112:
-						return new McpeSetScoreboardIdentity().Decode(buffer);
+						return new McbeSetScoreboardIdentity().Decode(buffer);
 					case 113:
-						return new McpeSetLocalPlayerAsInitialized().Decode(buffer);
+						return new McbeSetLocalPlayerAsInitialized().Decode(buffer);
 					case 114:
-						return new McpeUpdateSoftEnum().Decode(buffer);
+						return new McbeUpdateSoftEnum().Decode(buffer);
 					case 115:
-						return new McpeNetworkStackLatency().Decode(buffer);
+						return new McbeNetworkStackLatency().Decode(buffer);
 
 					case 117:
-						return new McpeScriptCustomEvent().Decode(buffer);
+						return new McbeScriptCustomEvent().Decode(buffer);
 					case 118:
-						return new McpeSpawnParticleEffect().Decode(buffer);
+						return new McbeSpawnParticleEffect().Decode(buffer);
 					case 119:
-						return new McpeAvailableEntityIdentifiers().Decode(buffer);
+						return new McbeAvailableEntityIdentifiers().Decode(buffer);
 
 					case 121:
-						return new McpeNetworkChunkPublisherUpdate().Decode(buffer);
+						return new McbeNetworkChunkPublisherUpdate().Decode(buffer);
 					case 122:
-						return new McpeBiomeDefinitionList().Decode(buffer);
+						return new McbeBiomeDefinitionList().Decode(buffer);
 					case 123:
-						return new McpeLevelSoundEvent().Decode(buffer);
+						return new McbeLevelSoundEvent().Decode(buffer);
 					case 124:
-						return new McpeLevelEventGeneric().Decode(buffer);
+						return new McbeLevelEventGeneric().Decode(buffer);
 					case 125:
-						return new McpeLecternUpdate().Decode(buffer);
+						return new McbeLecternUpdate().Decode(buffer);
 
 
 					case 129:
-						return new McpeClientCacheStatus().Decode(buffer);
+						return new McbeClientCacheStatus().Decode(buffer);
 					case 130:
-						return new McpeOnScreenTextureAnimation().Decode(buffer);
+						return new McbeOnScreenTextureAnimation().Decode(buffer);
 					case 131:
-						return new McpeMapCreateLockedCopy().Decode(buffer);
+						return new McbeMapCreateLockedCopy().Decode(buffer);
 					case 132:
-						return new McpeStructureTemplateDataExportRequest().Decode(buffer);
+						return new McbeStructureTemplateDataExportRequest().Decode(buffer);
 					case 133:
-						return new McpeStructureTemplateDataExportResponse().Decode(buffer);
+						return new McbeStructureTemplateDataExportResponse().Decode(buffer);
 
 					case 135:
-						return new McpeClientCacheBlobStatus().Decode(buffer);
+						return new McbeClientCacheBlobStatus().Decode(buffer);
 					case 136:
-						return new McpeClientCacheMissResponse().Decode(buffer);
+						return new McbeClientCacheMissResponse().Decode(buffer);
 					case 137:
-						return new McpeEducationSettings().Decode(buffer);
+						return new McbeEducationSettings().Decode(buffer);
 					case 138:
-						return new McpeEmotePacket().Decode(buffer);
+						return new McbeEmotePacket().Decode(buffer);
 					case 139:
-						return new McpeMultiPlayerSettings().Decode(buffer);
+						return new McbeMultiPlayerSettings().Decode(buffer);
 					case 140:
-						return new McpeSettingsCommand().Decode(buffer);
+						return new McbeSettingsCommand().Decode(buffer);
 					case 141:
-						return new McpeAnvilDamage().Decode(buffer);
+						return new McbeAnvilDamage().Decode(buffer);
 					case 142:
-						return new McpeCompletedUsingItem().Decode(buffer);
+						return new McbeCompletedUsingItem().Decode(buffer);
 					case 143:
-						return new McpeNetworkSettings().Decode(buffer);
+						return new McbeNetworkSettings().Decode(buffer);
 					case 144:
-						return new McpePlayerAuthInput().Decode(buffer);
+						return new McbePlayerAuthInput().Decode(buffer);
 					case 145:
-						return new McpeCreativeContent().Decode(buffer);
+						return new McbeCreativeContent().Decode(buffer);
 					case 146:
-						return new McpePlayerEnchantOptions().Decode(buffer);
+						return new McbePlayerEnchantOptions().Decode(buffer);
 					case 147:
-						return new McpeItemStackRequest().Decode(buffer);
+						return new McbeItemStackRequest().Decode(buffer);
 					case 148:
-						return new McpeItemStackResponse().Decode(buffer);
+						return new McbeItemStackResponse().Decode(buffer);
 					case 149:
-						return new McpeHurtArmor().Decode(buffer);
+						return new McbeHurtArmor().Decode(buffer);
 					case 150:
-						return new McpeCodeBuilder().Decode(buffer);
+						return new McbeCodeBuilder().Decode(buffer);
 					case 151:
-						return new McpeUpdatePlayerGameType().Decode(buffer);
+						return new McbeUpdatePlayerGameType().Decode(buffer);
 					case 152:
-						return new McpeEmoteList().Decode(buffer);
+						return new McbeEmoteList().Decode(buffer);
 					case 153:
-						return new McpePositionTrackingDBServerBroadcast().Decode(buffer);
+						return new McbePositionTrackingDBServerBroadcast().Decode(buffer);
 					case 154:
-						return new McpePositionTrackingDBClientRequest().Decode(buffer);
+						return new McbePositionTrackingDBClientRequest().Decode(buffer);
 					case 155:
-						return new McpeDebugInfo().Decode(buffer);
+						return new McbeDebugInfo().Decode(buffer);
 
 					case 156:
-						return new McpePacketViolationWarning().Decode(buffer);
+						return new McbePacketViolationWarning().Decode(buffer);
 					case 157:
-						return new McpeMotionPredictionHints().Decode(buffer);
+						return new McbeMotionPredictionHints().Decode(buffer);
 
 					case 158:
-						return new McpeAnimateEntity().Decode(buffer);
+						return new McbeAnimateEntity().Decode(buffer);
 
 					case 159:
-						return new McpeCamera().Decode(buffer);
+						return new McbeCamera().Decode(buffer);
 
 					case 160:
-						return new McpePlayerFog().Decode(buffer);
+						return new McbePlayerFog().Decode(buffer);
 					case 161:
-						return new McpeCorrectPlayerMovePrediction().Decode(buffer);
+						return new McbeCorrectPlayerMovePrediction().Decode(buffer);
 
 					case 162:
-						return new McpeItemRegistry().Decode(buffer);
+						return new McbeItemRegistry().Decode(buffer);
 
 					case 163:
-						return new McpeFilterTextPacket().Decode(buffer);
+						return new McbeFilterTextPacket().Decode(buffer);
 					case 164:
-						return new McpeClientBoundDebugRenderer().Decode(buffer);
+						return new McbeClientBoundDebugRenderer().Decode(buffer);
 					case 165:
-						return new McpeSyncEntityProperty().Decode(buffer);
+						return new McbeSyncEntityProperty().Decode(buffer);
 					case 166:
-						return new McpeAddVolumeEntity().Decode(buffer);
+						return new McbeAddVolumeEntity().Decode(buffer);
 
 					case 167:
-						return new McpeRemoveVolumeEntity().Decode(buffer);
+						return new McbeRemoveVolumeEntity().Decode(buffer);
 
 					case 168:
-						return new McpeSimulationType().Decode(buffer);
+						return new McbeSimulationType().Decode(buffer);
 
 					case 169:
-						return new McpeNPCDialogue().Decode(buffer);
+						return new McbeNPCDialogue().Decode(buffer);
 
 					case 170:
-						return new McpeEducationResourceURI().Decode(buffer);
+						return new McbeEducationResourceURI().Decode(buffer);
 
 					case 171:
-						return new McpeCreatePhoto().Decode(buffer);
+						return new McbeCreatePhoto().Decode(buffer);
 
 					case 172:
-						return new McpeUpdateSubChunkBlocksPacket().Decode(buffer);
+						return new McbeUpdateSubChunkBlocksPacket().Decode(buffer);
 					case 173:
-						return new McpePhotoInfoRequest().Decode(buffer);
+						return new McbePhotoInfoRequest().Decode(buffer);
 
 					case 174:
-						return new McpeSubChunkPacket().Decode(buffer);
+						return new McbeSubChunkPacket().Decode(buffer);
 					case 175:
-						return new McpeSubChunkRequestPacket().Decode(buffer);
+						return new McbeSubChunkRequestPacket().Decode(buffer);
 					case 176:
-						return new McpeClientStartItemCooldown().Decode(buffer);
+						return new McbeClientStartItemCooldown().Decode(buffer);
 
 					case 177:
-						return new McpeScriptMessage().Decode(buffer);
+						return new McbeScriptMessage().Decode(buffer);
 
 					case 178:
-						return new McpeCodeBuilderSource().Decode(buffer);
+						return new McbeCodeBuilderSource().Decode(buffer);
 
 					case 179:
-						return new McpeTickingAreasLoadStatus().Decode(buffer);
+						return new McbeTickingAreasLoadStatus().Decode(buffer);
 
 					case 180:
-						return new McpeDimensionData().Decode(buffer);
+						return new McbeDimensionData().Decode(buffer);
 					case 181:
-						return new McpeAgentAction().Decode(buffer);
+						return new McbeAgentAction().Decode(buffer);
 
 					case 182:
-						return new McpeChangeMobProperty().Decode(buffer);
+						return new McbeChangeMobProperty().Decode(buffer);
 
 					case 183:
-						return new McpeLessonProgress().Decode(buffer);
+						return new McbeLessonProgress().Decode(buffer);
 
 					case 184:
-						return new McpeRequestAbility().Decode(buffer);
+						return new McbeRequestAbility().Decode(buffer);
 					case 185:
-						return new McpePermissionRequest().Decode(buffer);
+						return new McbePermissionRequest().Decode(buffer);
 					case 186:
 
 					case 187:
-						return new McpeUpdateAbilities().Decode(buffer);
+						return new McbeUpdateAbilities().Decode(buffer);
 					case 188:
-						return new McpeUpdateAdventureSettings().Decode(buffer);
+						return new McbeUpdateAdventureSettings().Decode(buffer);
 					case 189:
-						return new McpeDeathInfo().Decode(buffer);
+						return new McbeDeathInfo().Decode(buffer);
 
 					case 190:
-						return new McpeEditorNetwork().Decode(buffer);
+						return new McbeEditorNetwork().Decode(buffer);
 
 					case 191:
-						return new McpeFeatureRegistry().Decode(buffer);
+						return new McbeFeatureRegistry().Decode(buffer);
 
 					case 192:
-						return new McpeServerStats().Decode(buffer);
+						return new McbeServerStats().Decode(buffer);
 
 					case 193:
-						return new McpeRequestNetworkSettings().Decode(buffer);
+						return new McbeRequestNetworkSettings().Decode(buffer);
 					case 194:
-						return new McpeGameTestRequest().Decode(buffer);
+						return new McbeGameTestRequest().Decode(buffer);
 
 					case 195:
-						return new McpeGameTestResults().Decode(buffer);
+						return new McbeGameTestResults().Decode(buffer);
 
 					case 196:
-						return new McpeUpdateClientInputLocks().Decode(buffer);
+						return new McbeUpdateClientInputLocks().Decode(buffer);
 
 					case 197:
-						return new McpeClientCheatAbility().Decode(buffer);
+						return new McbeClientCheatAbility().Decode(buffer);
 
 					case 198:
-						return new McpeCameraPresets().Decode(buffer);
+						return new McbeCameraPresets().Decode(buffer);
 
 					case 199:
-						return new McpeUnlockedRecipes().Decode(buffer);
+						return new McbeUnlockedRecipes().Decode(buffer);
 
 					case 300:
-						return new McpeCameraInstruction().Decode(buffer);
+						return new McbeCameraInstruction().Decode(buffer);
 
 
 					case 302:
-						return new McpeTrimData().Decode(buffer);
+						return new McbeTrimData().Decode(buffer);
 					case 303:
-						return new McpeOpenSign().Decode(buffer);
+						return new McbeOpenSign().Decode(buffer);
 					case 304:
-						return new McpeAlexEntityAnimation().Decode(buffer);
+						return new McbeAlexEntityAnimation().Decode(buffer);
 					case 305:
-						return new McpeRefreshEntitlements().Decode(buffer);
+						return new McbeRefreshEntitlements().Decode(buffer);
 
 					case 306:
-						return new McpePlayerToggleCrafterSlotRequest().Decode(buffer);
+						return new McbePlayerToggleCrafterSlotRequest().Decode(buffer);
 
 					case 307:
-						return new McpeSetInventoryOptions().Decode(buffer);
+						return new McbeSetInventoryOptions().Decode(buffer);
 					case 308:
-						return new McpeSetHud().Decode(buffer);
+						return new McbeSetHud().Decode(buffer);
 
 					case 309:
-						return new McpeAwardAchievement().Decode(buffer);
+						return new McbeAwardAchievement().Decode(buffer);
 
 					case 310:
-						return new McpeClientBoundCloseForm().Decode(buffer);
+						return new McbeClientBoundCloseForm().Decode(buffer);
 
 
 					case 312:
-						return new McpeServerboundLoadingScreen().Decode(buffer);
+						return new McbeServerboundLoadingScreen().Decode(buffer);
 					case 313:
-						return new McpeJigsawStructureData().Decode(buffer);
+						return new McbeJigsawStructureData().Decode(buffer);
 
 					case 314:
-						return new McpeCurrentStructureFeature().Decode(buffer);
+						return new McbeCurrentStructureFeature().Decode(buffer);
 
 					case 315:
-						return new McpeServerBoundDiagnostics().Decode(buffer);
+						return new McbeServerBoundDiagnostics().Decode(buffer);
 
 					case 316:
-						return new McpeCameraAimAssist().Decode(buffer);
+						return new McbeCameraAimAssist().Decode(buffer);
 
 					case 317:
-						return new McpeContainerRegistryCleanup().Decode(buffer);
+						return new McbeContainerRegistryCleanup().Decode(buffer);
 
 					case 318:
-						return new McpeMovementEffect().Decode(buffer);
+						return new McbeMovementEffect().Decode(buffer);
 
 
 					case 320:
-						return new McpeCameraAimAssistPresets().Decode(buffer);
+						return new McbeCameraAimAssistPresets().Decode(buffer);
 
 					case 321:
-						return new McpeClientCameraAimAssist().Decode(buffer);
+						return new McbeClientCameraAimAssist().Decode(buffer);
 
 					case 322:
-						return new McpeClientMovementPredictionSync().Decode(buffer);
+						return new McbeClientMovementPredictionSync().Decode(buffer);
 
 					case 323:
-						return new McpeUpdateClientOptions().Decode(buffer);
+						return new McbeUpdateClientOptions().Decode(buffer);
 
 					case 324:
-						return new McpePlayerVideoCapture().Decode(buffer);
+						return new McbePlayerVideoCapture().Decode(buffer);
 
 					case 325:
-						return new McpePlayerUpdateEntityOverrides().Decode(buffer);
+						return new McbePlayerUpdateEntityOverrides().Decode(buffer);
 
 					case 326:
-						return new McpePlayerLocation().Decode(buffer);
+						return new McbePlayerLocation().Decode(buffer);
 
 					case 327:
-						return new McpeClientBoundControlSchemeSet().Decode(buffer);
+						return new McbeClientBoundControlSchemeSet().Decode(buffer);
 
 					case 328:
 						return new McbeDebugDrawer().Decode(buffer);

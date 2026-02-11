@@ -1,11 +1,11 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpePhotoInfoRequest : Packet
+public class McbePhotoInfoRequest : Packet
 {
-	public McpePhotoInfoRequest()
+	public McbePhotoInfoRequest()
 	{
 		Id = 173;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 

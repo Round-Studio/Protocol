@@ -14,7 +14,7 @@ public class ConnectionRequestAccepted : Packet
 	public ConnectionRequestAccepted()
 	{
 		Id = 0x10;
-		IsMcpe = false;
+		IsMcbe = false;
 	}
 
 	protected override void EncodePacket()

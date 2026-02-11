@@ -2,7 +2,7 @@ using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeUpdateBlock : Packet
+public class McbeUpdateBlock : Packet
 {
 	public enum Flags
 	{
@@ -21,10 +21,10 @@ public class McpeUpdateBlock : Packet
 	public BlockCoordinates coordinates;
 	public uint storage;
 
-	public McpeUpdateBlock()
+	public McbeUpdateBlock()
 	{
 		Id = 0x15;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

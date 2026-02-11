@@ -2,15 +2,15 @@ using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeOpenSign : Packet
+public class McbeOpenSign : Packet
 {
 	public BlockCoordinates coordinates;
 	public bool front;
 
-	public McpeOpenSign()
+	public McbeOpenSign()
 	{
 		Id = 0x12f;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

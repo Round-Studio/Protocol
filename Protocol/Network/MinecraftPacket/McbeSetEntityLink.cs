@@ -1,6 +1,6 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeSetEntityLink : Packet
+public class McbeSetEntityLink : Packet
 {
 	public enum LinkActions
 	{
@@ -16,10 +16,10 @@ public class McpeSetEntityLink : Packet
 	public byte unknown;
 	public float vehicleAngularVelocity;
 
-	public McpeSetEntityLink()
+	public McbeSetEntityLink()
 	{
 		Id = 0x29;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

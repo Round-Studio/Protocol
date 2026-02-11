@@ -2,15 +2,15 @@ using Protocol.Utils;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeShowStoreOffer : Packet
+public class McbeShowStoreOffer : Packet
 {
 	public UUID OfferID;
 	public byte type;
 
-	public McpeShowStoreOffer()
+	public McbeShowStoreOffer()
 	{
 		Id = 0x5b;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

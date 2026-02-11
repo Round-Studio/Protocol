@@ -2,17 +2,17 @@ using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeUpdateSubChunkBlocksPacket : Packet
+public class McbeUpdateSubChunkBlocksPacket : Packet
 {
 	public UpdateSubChunkBlocksPacketEntry[] layerOneUpdates;
 	public UpdateSubChunkBlocksPacketEntry[] layerZeroUpdates;
 
 	public BlockCoordinates subchunkCoordinates;
 
-	public McpeUpdateSubChunkBlocksPacket()
+	public McbeUpdateSubChunkBlocksPacket()
 	{
 		Id = 0xac;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

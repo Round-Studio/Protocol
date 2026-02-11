@@ -8,12 +8,12 @@ public class EducationExternalLinkSettings
 	public string DisplayName { get; set; } = "";
 }
 
-public class McpeEducationSettings : Packet
+public class McbeEducationSettings : Packet
 {
-	public McpeEducationSettings()
+	public McbeEducationSettings()
 	{
 		Id = 137;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 

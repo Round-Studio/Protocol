@@ -2,16 +2,16 @@ using System.Numerics;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public partial class McpeSpawnExperienceOrb : Packet
+public partial class McbeSpawnExperienceOrb : Packet
 {
 	public int count;
 
 	public Vector3 position;
 
-	public McpeSpawnExperienceOrb()
+	public McbeSpawnExperienceOrb()
 	{
 		Id = 0x42;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

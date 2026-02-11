@@ -2,14 +2,14 @@ using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeGameRulesChanged : Packet
+public class McbeGameRulesChanged : Packet
 {
 	public GameRules rules;
 
-	public McpeGameRulesChanged()
+	public McbeGameRulesChanged()
 	{
 		Id = 0x48;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

@@ -1,6 +1,6 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeEmotePacket : Packet
+public class McbeEmotePacket : Packet
 {
 	public string emoteId;
 	public byte flags;
@@ -10,10 +10,10 @@ public class McpeEmotePacket : Packet
 	public uint tick;
 	public string xuid;
 
-	public McpeEmotePacket()
+	public McbeEmotePacket()
 	{
 		Id = 0x8a;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

@@ -1,13 +1,13 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeRiderJump : Packet
+public class McbeRiderJump : Packet
 {
 	public int unknown;
 
-	public McpeRiderJump()
+	public McbeRiderJump()
 	{
 		Id = 0x14;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

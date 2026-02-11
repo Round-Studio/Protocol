@@ -1,11 +1,11 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeCodeBuilder : Packet
+public class McbeCodeBuilder : Packet
 {
-	public McpeCodeBuilder()
+	public McbeCodeBuilder()
 	{
 		Id = 149;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 

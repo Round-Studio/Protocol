@@ -1,14 +1,14 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeTakeItemEntity : Packet
+public class McbeTakeItemEntity : Packet
 {
 	public long runtimeEntityId;
 	public long target;
 
-	public McpeTakeItemEntity()
+	public McbeTakeItemEntity()
 	{
 		Id = 0x11;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

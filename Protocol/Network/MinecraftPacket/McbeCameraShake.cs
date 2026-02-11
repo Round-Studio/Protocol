@@ -1,6 +1,6 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeCameraShake : Packet
+public class McbeCameraShake : Packet
 {
 	public enum ShakeAction : byte
 	{
@@ -16,10 +16,10 @@ public class McpeCameraShake : Packet
 	}
 
 
-	public McpeCameraShake()
+	public McbeCameraShake()
 	{
 		Id = 158;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 

@@ -2,12 +2,12 @@ using Protocol.Minecraft.Transaction;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeContainerRegistryCleanup : Packet
+public class McbeContainerRegistryCleanup : Packet
 {
-	public McpeContainerRegistryCleanup()
+	public McbeContainerRegistryCleanup()
 	{
 		Id = 317;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 

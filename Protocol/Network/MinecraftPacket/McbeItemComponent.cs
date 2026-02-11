@@ -2,14 +2,14 @@ using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeItemComponent : Packet
+public class McbeItemComponent : Packet
 {
 	public Itemstates entries;
 
-	public McpeItemComponent()
+	public McbeItemComponent()
 	{
 		Id = 0xa2;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

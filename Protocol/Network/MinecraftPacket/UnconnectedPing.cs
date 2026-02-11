@@ -14,7 +14,7 @@ public class UnconnectedPing : Packet
 	public UnconnectedPing()
 	{
 		Id = 0x01;
-		IsMcpe = false;
+		IsMcbe = false;
 	}
 
 	protected override void EncodePacket()

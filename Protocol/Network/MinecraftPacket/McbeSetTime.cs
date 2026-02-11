@@ -1,13 +1,13 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeSetTime : Packet
+public class McbeSetTime : Packet
 {
 	public int time;
 
-	public McpeSetTime()
+	public McbeSetTime()
 	{
 		Id = 0x0a;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

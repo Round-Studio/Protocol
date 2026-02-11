@@ -20,12 +20,12 @@ public class EducationSharedResourceURI
 	public string LinkURI { get; set; } = string.Empty;
 }
 
-public class McpeEducationResourceURI : Packet
+public class McbeEducationResourceURI : Packet
 {
-	public McpeEducationResourceURI()
+	public McbeEducationResourceURI()
 	{
 		Id = 170;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 

@@ -1,11 +1,11 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeServerStats : Packet
+public class McbeServerStats : Packet
 {
-	public McpeServerStats()
+	public McbeServerStats()
 	{
 		Id = 192;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 

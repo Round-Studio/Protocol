@@ -2,7 +2,7 @@ using System.Numerics;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeSpawnParticleEffect : Packet
+public class McbeSpawnParticleEffect : Packet
 {
 	public byte dimensionId;
 	public long entityId;
@@ -10,10 +10,10 @@ public class McpeSpawnParticleEffect : Packet
 	public string particleName;
 	public Vector3 position;
 
-	public McpeSpawnParticleEffect()
+	public McbeSpawnParticleEffect()
 	{
 		Id = 0x76;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

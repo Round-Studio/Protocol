@@ -2,17 +2,17 @@ using System.Numerics;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeLevelEvent : Packet
+public class McbeLevelEvent : Packet
 {
 	public int data;
 
 	public int eventId;
 	public Vector3 position;
 
-	public McpeLevelEvent()
+	public McbeLevelEvent()
 	{
 		Id = 0x19;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

@@ -1,6 +1,6 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeMobEffect : Packet
+public class McbeMobEffect : Packet
 {
 	public int amplifier;
 	public int duration;
@@ -11,10 +11,10 @@ public class McpeMobEffect : Packet
 	public long runtimeEntityId;
 	public long tick;
 
-	public McpeMobEffect()
+	public McbeMobEffect()
 	{
 		Id = 0x1c;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

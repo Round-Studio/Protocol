@@ -2,16 +2,16 @@ using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeTrimData : Packet
+public class McbeTrimData : Packet
 {
 	public List<TrimMaterial> Materials;
 
 	public List<TrimPattern> Patterns;
 
-	public McpeTrimData()
+	public McbeTrimData()
 	{
 		Id = 0x12e;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

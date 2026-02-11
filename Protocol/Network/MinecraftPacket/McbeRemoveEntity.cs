@@ -1,13 +1,13 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeRemoveEntity : Packet
+public class McbeRemoveEntity : Packet
 {
 	public long entityIdSelf;
 
-	public McpeRemoveEntity()
+	public McbeRemoveEntity()
 	{
 		Id = 0x0e;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

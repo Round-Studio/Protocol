@@ -3,7 +3,7 @@ using System.Numerics;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpePlayerLocation : Packet
+public class McbePlayerLocation : Packet
 {
 	public enum PlayerLocation
 	{
@@ -14,10 +14,10 @@ public class McpePlayerLocation : Packet
 	}
 
 
-	public McpePlayerLocation()
+	public McbePlayerLocation()
 	{
 		Id = 326;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 

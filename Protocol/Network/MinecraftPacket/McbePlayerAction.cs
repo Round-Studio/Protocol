@@ -2,7 +2,7 @@ using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpePlayerAction : Packet
+public class McbePlayerAction : Packet
 {
 	public int actionId;
 	public BlockCoordinates coordinates;
@@ -11,10 +11,10 @@ public class McpePlayerAction : Packet
 
 	public long runtimeEntityId;
 
-	public McpePlayerAction()
+	public McbePlayerAction()
 	{
 		Id = 0x24;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

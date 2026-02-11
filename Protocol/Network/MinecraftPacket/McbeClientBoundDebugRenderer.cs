@@ -11,12 +11,12 @@ public enum ClientBoundDebugRendererType : uint
 	AddCube = 2
 }
 
-public class McpeClientBoundDebugRenderer : Packet
+public class McbeClientBoundDebugRenderer : Packet
 {
-	public McpeClientBoundDebugRenderer()
+	public McbeClientBoundDebugRenderer()
 	{
 		Id = 164;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 

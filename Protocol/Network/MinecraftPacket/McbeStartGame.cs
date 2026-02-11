@@ -4,6 +4,19 @@ using Protocol.Utils;
 
 namespace Protocol.Network.MinecraftPacket;
 
+public struct ServerJoinInformation
+{
+	public Optional<GatheringJoinInfo> GatheringJoinInfo { get; set; }
+}
+public struct GatheringJoinInfo
+{
+	public string ExperienceID { get; set; }
+	public string ExperienceName { get; set; }
+	public string ExperienceWorldID { get; set; }
+	public string ExperienceWorldName { get; set; }
+	public string CreatorID { get; set; }
+	public string StoreID { get; set; }
+}
 public class SpawnSettings
 {
 	public short BiomeType { get; set; }
@@ -206,7 +219,7 @@ public class LevelSettings
 	}
 }
 
-public class McpeStartGame : Packet
+public class McbeStartGame : Packet
 {
 	public bool blockNetworkIdsAreHashes;
 	public BlockPalette blockPalette;
@@ -222,26 +235,29 @@ public class McpeStartGame : Packet
 
 	public LevelSettings levelSettings = new();
 	public int movementRewindHistorySize;
-	public int movementType;
 	public string multiplayerCorrelationId;
 	public int playerGamemode;
 	public string premiumWorldTemplateId;
 	public Nbt propertyData;
 	public Vector2 rotation;
 	public long runtimeEntityId;
-	public string scenarioId;
-	public string serverId;
-	public string serverVersion;
+	
 	public Vector3 spawn;
+
 	public bool TickDeathSystems;
 	public string worldId;
 	public string worldName;
 	public UUID worldTemplateId;
+	public Optional<ServerJoinInformation> ServerJoinInformation;
+	public string scenarioId;
+	public string serverId;
+	public string serverVersion;
+	public string OwnerID;
 
-	public McpeStartGame()
+	public McbeStartGame()
 	{
 		Id = 0x0b;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()
@@ -257,35 +273,38 @@ public class McpeStartGame : Packet
 
 		var s = levelSettings ?? new LevelSettings();
 		s.Write(this);
-		Write(serverId);
-		Write(worldId);
-		Write(scenarioId);
+		
 		Write(levelId);
 		Write(worldName);
 		Write(premiumWorldTemplateId);
 
 		Write(isTrial);
 
-
-		WriteSignedVarInt(movementType);
 		WriteSignedVarInt(movementRewindHistorySize);
 		Write(enableNewBlockBreakSystem);
 
 		Write(currentTick);
 		WriteSignedVarInt(enchantmentSeed);
 
-		Write(blockPalette);
+		Write(blockPalette);//
 
 		Write(multiplayerCorrelationId);
 		Write(enableNewInventorySystem);
 		Write(serverVersion);
 		Write(propertyData);
 		Write(blockPaletteChecksum);
-		Write(worldTemplateId);
+		Write(worldTemplateId);//
 		Write(clientSideGenerationEnabled);
 		Write(blockNetworkIdsAreHashes);
-		Write(TickDeathSystems);
-		Write(false);
+		if (ServerJoinInformation.HasValue)
+		{
+			Write(ServerJoinInformation.Value);
+		}
+		Write(serverId);
+		Write(scenarioId);
+		Write(worldId);
+		Write(OwnerID);
+	
 	}
 
 
@@ -303,17 +322,11 @@ public class McpeStartGame : Packet
 		levelSettings = new LevelSettings();
 		levelSettings.Read(this);
 
-		serverId = ReadString();
-		worldId = ReadString();
-		scenarioId = ReadString();
-
 		levelId = ReadString();
 		worldName = ReadString();
 		premiumWorldTemplateId = ReadString();
 		isTrial = ReadBool();
 
-
-		movementType = ReadSignedVarInt();
 		movementRewindHistorySize = ReadSignedVarInt();
 		enableNewBlockBreakSystem = ReadBool();
 
@@ -337,7 +350,17 @@ public class McpeStartGame : Packet
 		worldTemplateId = ReadUUID();
 		clientSideGenerationEnabled = ReadBool();
 		blockNetworkIdsAreHashes = ReadBool();
-		ReadBool();
+
+		if (ReadBool())
+		{
+			ServerJoinInformation  = new Optional<ServerJoinInformation>(ReadServerJoinInformation());
+		}
+
+		serverId = ReadString();
+		scenarioId = ReadString();
+		worldId = ReadString();
+		OwnerID = ReadString();
+
 	}
 
 
@@ -357,7 +380,6 @@ public class McpeStartGame : Packet
 		worldName = default;
 		premiumWorldTemplateId = default;
 		isTrial = default;
-		movementType = default;
 		movementRewindHistorySize = default;
 		enableNewBlockBreakSystem = default;
 		currentTick = default;

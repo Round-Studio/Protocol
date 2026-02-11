@@ -1,13 +1,13 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeSetHealth : Packet
+public class McbeSetHealth : Packet
 {
 	public int health;
 
-	public McpeSetHealth()
+	public McbeSetHealth()
 	{
 		Id = 0x2a;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

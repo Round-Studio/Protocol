@@ -2,7 +2,7 @@ using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpePlaySound : Packet
+public class McbePlaySound : Packet
 {
 	public BlockCoordinates coordinates;
 
@@ -10,10 +10,10 @@ public class McpePlaySound : Packet
 	public float pitch;
 	public float volume;
 
-	public McpePlaySound()
+	public McbePlaySound()
 	{
 		Id = 0x56;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

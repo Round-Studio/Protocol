@@ -1,13 +1,13 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeAddBehaviorTree : Packet
+public class McbeAddBehaviorTree : Packet
 {
 	public string behaviortree;
 
-	public McpeAddBehaviorTree()
+	public McbeAddBehaviorTree()
 	{
 		Id = 0x59;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

@@ -2,7 +2,7 @@ using Protocol.Minecraft.Transaction;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeItemStackRequest : Packet
+public class McbeItemStackRequest : Packet
 {
 	public enum ActionType
 	{
@@ -30,10 +30,10 @@ public class McpeItemStackRequest : Packet
 
 	public ItemStackRequests requests;
 
-	public McpeItemStackRequest()
+	public McbeItemStackRequest()
 	{
 		Id = 0x93;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

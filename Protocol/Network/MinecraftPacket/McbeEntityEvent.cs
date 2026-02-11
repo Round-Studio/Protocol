@@ -1,16 +1,16 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeEntityEvent : Packet
+public class McbeEntityEvent : Packet
 {
 	public int data;
 	public byte eventId;
 
 	public long runtimeEntityId;
 
-	public McpeEntityEvent()
+	public McbeEntityEvent()
 	{
 		Id = 0x1b;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

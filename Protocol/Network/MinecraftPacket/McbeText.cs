@@ -1,81 +1,121 @@
+using static System.Net.Mime.MediaTypeNames;
+
 namespace Protocol.Network.MinecraftPacket;
-
-public class McpeText : Packet
+// 文本类型枚举
+public enum TextType : byte
 {
-	public enum ChatTypes
-	{
-		Raw = 0,
-		Chat = 1,
-		Translation = 2,
-		Popup = 3,
-		Jukeboxpopup = 4,
-		Tip = 5,
-		System = 6,
-		Whisper = 7,
-		Announcement = 8,
-		Json = 9,
-		Jsonwhisper = 10,
-		Jsonannouncement = 11
-	}
+	Raw = 0,
+	Chat,
+	Translation,
+	Popup,
+	JukeboxPopup,
+	Tip,
+	System,
+	Whisper,
+	Announcement,
+	ObjectWhisper,
+	Object,
+	ObjectAnnouncement
+}
 
-	public string filteredMessage;
-	public string message;
-	public bool needsTranslation;
-	public string[] parameters;
-	public string platformChatId;
-	public string source;
+// 文本分类枚举
+public enum TextCategory
+{
+	MessageOnly = 0,
+	AuthoredMessage,
+	MessageWithParameters
+}
+public class McbeText : Packet
+{
 
-	public byte type;
-	public string xuid;
+	public TextType TextType { get; set; }
+	public bool NeedsTranslation { get; set; }
+	public string SourceName { get; set; }
+	public string Message { get; set; }
+	public System.Collections.Generic.List<string> Parameters { get; set; }
+	public string XUID { get; set; }
+	public string PlatformChatID { get; set; }
+	public Optional<string> FilteredMessage { get; set; }
 
-	public McpeText()
+	public McbeText()
 	{
 		Id = 0x09;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()
 	{
 		base.EncodePacket();
+		Write(NeedsTranslation);
 
-
-		Write(type);
-
-		Write(needsTranslation);
-		var chatType = (ChatTypes)type;
-		switch (chatType)
+		byte categoryType;
+		switch ((TextType)TextType)
 		{
-			case ChatTypes.Chat:
-			case ChatTypes.Whisper:
-			case ChatTypes.Announcement:
-				Write(source);
-				goto case ChatTypes.Raw;
-			case ChatTypes.Raw:
-			case ChatTypes.Tip:
-			case ChatTypes.System:
-			case ChatTypes.Json:
-				Write(message);
+			case TextType.Raw:
+			case TextType.Tip:
+			case TextType.System:
+			case TextType.ObjectWhisper:
+			case TextType.ObjectAnnouncement:
+			case TextType.Object:
+				categoryType = (byte)TextCategory.MessageOnly;
 				break;
-			case ChatTypes.Popup:
-			case ChatTypes.Translation:
-			case ChatTypes.Jukeboxpopup:
-				Write(message);
-				if (parameters == null)
-				{
-					WriteUnsignedVarInt(0);
-				}
-				else
-				{
-					WriteUnsignedVarInt((uint)parameters.Length);
-					foreach (var parameter in parameters) Write(parameter);
-				}
-
+			case TextType.Chat:
+			case TextType.Whisper:
+			case TextType.Announcement:
+				categoryType = (byte)TextCategory.AuthoredMessage;
+				break;
+			default:
+				categoryType = (byte)TextCategory.MessageWithParameters;
 				break;
 		}
 
-		Write(xuid);
-		Write(platformChatId);
-		Write(filteredMessage);
+		Write(categoryType);
+		Write((byte)TextType);
+
+		switch ((TextType)TextType)
+		{
+			case TextType.Chat:
+			case TextType.Whisper:
+			case TextType.Announcement:
+				Write(SourceName);
+				Write(Message);
+				break;
+			case TextType.Raw:
+			case TextType.Tip:
+			case TextType.System:
+			case TextType.Object:
+			case TextType.ObjectWhisper:
+			case TextType.ObjectAnnouncement:
+				Write(Message);
+				break;
+			case TextType.Translation:
+			case TextType.Popup:
+			case TextType.JukeboxPopup:
+				Write(Message);
+				if (Parameters != null)
+				{
+					WriteSlice(Parameters.ToArray(), Write);
+				}
+				else
+				{
+					WriteSignedVarInt(0);
+				}
+				break;
+		}
+
+		if (string.IsNullOrEmpty(Message))
+		{
+			throw new ArgumentException("Message cannot be empty", nameof(Message));
+		}
+
+		Write(XUID);
+		Write(PlatformChatID);
+
+		Write(FilteredMessage.HasValue);
+		if (FilteredMessage.HasValue)
+		{
+			Write(FilteredMessage.Value);
+		}
 	}
 
 
@@ -83,51 +123,52 @@ public class McpeText : Packet
 	{
 		base.DecodePacket();
 
+		NeedsTranslation = ReadBool();
+		
 
-		type = ReadByte();
+		var categoryType = ReadByte();
+		TextType = (TextType)ReadByte();
 
-		needsTranslation = ReadBool();
-
-		var chatType = (ChatTypes)type;
-		switch (chatType)
+		switch ((TextType)TextType)
 		{
-			case ChatTypes.Chat:
-			case ChatTypes.Whisper:
-			case ChatTypes.Announcement:
-				source = ReadString();
-				message = ReadString();
+			case TextType.Chat:
+			case TextType.Whisper:
+			case TextType.Announcement:
+				SourceName = ReadString();
+				Message = ReadString();
 				break;
-			case ChatTypes.Raw:
-			case ChatTypes.Tip:
-			case ChatTypes.System:
-			case ChatTypes.Json:
-			case ChatTypes.Jsonwhisper:
-			case ChatTypes.Jsonannouncement:
-				message = ReadString();
+			case TextType.Raw:
+			case TextType.Tip:
+			case TextType.System:
+			case TextType.Object:
+			case TextType.ObjectWhisper:
+			case TextType.ObjectAnnouncement:
+				Message = ReadString();
 				break;
-
-			case ChatTypes.Popup:
-			case ChatTypes.Translation:
-			case ChatTypes.Jukeboxpopup:
-				message = ReadString();
-				parameters = new string[ReadUnsignedVarInt()];
-				for (var i = 0; i < parameters.Length; ++i) parameters[i] = ReadString();
+			case TextType.Translation:
+			case TextType.Popup:
+			case TextType.JukeboxPopup:
+				Message = ReadString();
+				var paramArray = ReadSlice(ReadString);
+				Parameters = new System.Collections.Generic.List<string>(paramArray);
 				break;
 		}
 
-		xuid = ReadString();
-		platformChatId = ReadString();
-		filteredMessage = ReadString();
+		if (string.IsNullOrEmpty(Message))
+		{
+			throw new FormatException("Message cannot be empty");
+		}
+
+		XUID = ReadString();
+		PlatformChatID = ReadString();
+
+		var hasFilteredMessage = ReadBool();
+		if (hasFilteredMessage)
+		{
+			FilteredMessage = new Optional<string>(ReadString());
+		}
 	}
 
 
-	protected override void ResetPacket()
-	{
-		base.ResetPacket();
-
-		type = 0;
-		source = null;
-		message = null;
-		type = default;
-	}
+	
 }

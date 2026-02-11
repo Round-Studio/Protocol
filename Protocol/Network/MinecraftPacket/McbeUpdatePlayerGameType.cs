@@ -1,11 +1,11 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeUpdatePlayerGameType : Packet
+public class McbeUpdatePlayerGameType : Packet
 {
-	public McpeUpdatePlayerGameType()
+	public McbeUpdatePlayerGameType()
 	{
 		Id = 0x97;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

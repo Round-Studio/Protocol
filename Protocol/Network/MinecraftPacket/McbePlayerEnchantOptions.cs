@@ -2,14 +2,14 @@ using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpePlayerEnchantOptions : Packet
+public class McbePlayerEnchantOptions : Packet
 {
 	public EnchantOptions enchantOptions;
 
-	public McpePlayerEnchantOptions()
+	public McbePlayerEnchantOptions()
 	{
 		Id = 0x92;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

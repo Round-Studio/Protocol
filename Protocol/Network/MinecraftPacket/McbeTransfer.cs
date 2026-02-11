@@ -1,16 +1,16 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeTransfer : Packet
+public class McbeTransfer : Packet
 {
 	public ushort port;
 	public bool reload;
 
 	public string serverAddress;
 
-	public McpeTransfer()
+	public McbeTransfer()
 	{
 		Id = 0x55;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

@@ -1,15 +1,15 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeServerSettingsResponse : Packet
+public class McbeServerSettingsResponse : Packet
 {
 	public string data;
 
 	public long formId;
 
-	public McpeServerSettingsResponse()
+	public McbeServerSettingsResponse()
 	{
 		Id = 0x67;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

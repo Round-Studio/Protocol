@@ -1,6 +1,6 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpePacketViolationWarning : Packet
+public class McbePacketViolationWarning : Packet
 {
 	public int packetId;
 	public string reason;
@@ -8,10 +8,10 @@ public class McpePacketViolationWarning : Packet
 
 	public int violationType;
 
-	public McpePacketViolationWarning()
+	public McbePacketViolationWarning()
 	{
 		Id = 0x9c;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

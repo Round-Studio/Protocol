@@ -1,6 +1,6 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeMovePlayer : Packet
+public class McbeMovePlayer : Packet
 {
 	public enum Mode
 	{
@@ -33,10 +33,10 @@ public class McpeMovePlayer : Packet
 	public float yaw;
 	public float z;
 
-	public McpeMovePlayer()
+	public McbeMovePlayer()
 	{
 		Id = 0x13;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

@@ -1,11 +1,11 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeSettingsCommand : Packet
+public class McbeSettingsCommand : Packet
 {
-	public McpeSettingsCommand()
+	public McbeSettingsCommand()
 	{
 		Id = 140;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 

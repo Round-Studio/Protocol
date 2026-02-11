@@ -15,7 +15,7 @@ public class FtlCreatePlayer : Packet
 	public FtlCreatePlayer()
 	{
 		Id = 0x01;
-		IsMcpe = false;
+		IsMcbe = false;
 	}
 
 	protected override void EncodePacket()

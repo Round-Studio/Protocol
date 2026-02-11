@@ -8,44 +8,40 @@ namespace Protocol.Network.MinecraftPacket
 {
 	public class McbeGraphicsOverrideParameter : Packet
 	{
-		public ParameterKeyframeValue[] parameterKeyframeValues;
-		public string BiomeIdentifier;
-		public byte ParameterType;
-		public bool reset;
+		public ParameterKeyframeValue[] Values { get; set; }
+		public float FloatValue { get; set; }
+		public System.Numerics.Vector3 Vec3Value { get; set; }
+		public string BiomeIdentifier { get; set; }
+		public byte ParameterType { get; set; }
+		public bool Reset { get; set; }
 
 		public McbeGraphicsOverrideParameter()
 		{
-			IsMcpe = true;
+			IsMcbe = true;
 			Id = 331;
 		}
 
 		protected override void DecodePacket()
 		{
 			base.DecodePacket();
-			var length = ReadUnsignedVarInt();
-
-			for (int i = 0; i < length; i++)
-			{
-				parameterKeyframeValues[i] = ReadParameterKeyframeValue();
-			}
-
+			Values = ReadSlice(ReadParameterKeyframeValue);
+			FloatValue = ReadFloat();
+			Vec3Value = ReadVector3();
 			BiomeIdentifier = ReadString();
 			ParameterType = ReadByte();
-			reset = ReadBool();
+			Reset = ReadBool();
 		}
 
 		protected override void EncodePacket()
 		{
 			base.EncodePacket();
-			var length = parameterKeyframeValues.Length;
-			for (int i = 0; i < length; i++)
-			{
-				Write(parameterKeyframeValues[i]);
-			}
-
+			WriteSlice(Values, Write);
+			Write(FloatValue);
+			Write(Vec3Value);
 			Write(BiomeIdentifier);
 			Write(ParameterType);
-			Write(reset);
+			Write(Reset);
+
 		}
 
 		protected override void ResetPacket()

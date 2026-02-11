@@ -1,14 +1,14 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeRequestChunkRadius : Packet
+public class McbeRequestChunkRadius : Packet
 {
 	public int chunkRadius;
 	public byte maxRadius;
 
-	public McpeRequestChunkRadius()
+	public McbeRequestChunkRadius()
 	{
 		Id = 0x45;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

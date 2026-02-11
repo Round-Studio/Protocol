@@ -1,6 +1,6 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeResourcePackChunkData : Packet
+public class McbeResourcePackChunkData : Packet
 {
 	public uint chunkIndex;
 
@@ -8,10 +8,10 @@ public class McpeResourcePackChunkData : Packet
 	public byte[] payload;
 	public ulong progress;
 
-	public McpeResourcePackChunkData()
+	public McbeResourcePackChunkData()
 	{
 		Id = 0x53;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

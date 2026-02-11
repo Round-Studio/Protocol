@@ -1,6 +1,6 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeCompletedUsingItem : Packet
+public class McbeCompletedUsingItem : Packet
 {
 	public enum UseMethodType
 	{
@@ -23,10 +23,10 @@ public class McpeCompletedUsingItem : Packet
 		UseItemOpenedVault = 16
 	}
 
-	public McpeCompletedUsingItem()
+	public McbeCompletedUsingItem()
 	{
 		Id = 141;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 

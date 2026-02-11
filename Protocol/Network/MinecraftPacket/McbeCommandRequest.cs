@@ -2,7 +2,7 @@ using Protocol.Utils;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeCommandRequest : Packet
+public class McbeCommandRequest : Packet
 {
 	public string command;
 	public uint commandType;
@@ -11,10 +11,10 @@ public class McpeCommandRequest : Packet
 	public UUID unknownUuid;
 	public int version;
 
-	public McpeCommandRequest()
+	public McbeCommandRequest()
 	{
 		Id = 0x4d;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

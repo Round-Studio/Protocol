@@ -17,12 +17,12 @@ public enum UnlockedRecipesType : uint
 	RemoveAllUnlocked = 4
 }
 
-public class McpeUnlockedRecipes : Packet
+public class McbeUnlockedRecipes : Packet
 {
-	public McpeUnlockedRecipes()
+	public McbeUnlockedRecipes()
 	{
 		Id = 199;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 

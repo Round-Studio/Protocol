@@ -3,7 +3,7 @@ using Protocol.Utils;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeResourcePacksInfo : Packet
+public class McbeResourcePacksInfo : Packet
 {
 	public bool ForceDisableVibrantVisuals;
 	public bool hasAddons;
@@ -13,10 +13,10 @@ public class McpeResourcePacksInfo : Packet
 	public string templateVersion;
 	public TexturePackInfos texturepacks;
 
-	public McpeResourcePacksInfo()
+	public McbeResourcePacksInfo()
 	{
 		Id = 0x06;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

@@ -1,6 +1,6 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpePositionTrackingDBClientRequest : Packet
+public class McbePositionTrackingDBClientRequest : Packet
 {
 	public enum Action
 	{
@@ -8,10 +8,10 @@ public class McpePositionTrackingDBClientRequest : Packet
 	}
 
 
-	public McpePositionTrackingDBClientRequest()
+	public McbePositionTrackingDBClientRequest()
 	{
 		Id = 154;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 

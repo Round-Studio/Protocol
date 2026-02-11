@@ -1,13 +1,13 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeSetCommandsEnabled : Packet
+public class McbeSetCommandsEnabled : Packet
 {
 	public bool enabled;
 
-	public McpeSetCommandsEnabled()
+	public McbeSetCommandsEnabled()
 	{
 		Id = 0x3b;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

@@ -29,12 +29,12 @@ public enum CommandOutputType
 	DataSet = 4
 }
 
-public class McpeCommandOutput : Packet
+public class McbeCommandOutput : Packet
 {
-	public McpeCommandOutput()
+	public McbeCommandOutput()
 	{
 		Id = 0x4f;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	public CommandOriginData OriginData { get; set; }

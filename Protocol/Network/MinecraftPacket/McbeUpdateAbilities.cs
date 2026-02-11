@@ -2,7 +2,7 @@ using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeUpdateAbilities : Packet
+public class McbeUpdateAbilities : Packet
 {
 	public byte commandPermissions;
 
@@ -10,10 +10,10 @@ public class McpeUpdateAbilities : Packet
 	public AbilityLayers layers;
 	public byte playerPermissions;
 
-	public McpeUpdateAbilities()
+	public McbeUpdateAbilities()
 	{
 		Id = 0xbb;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

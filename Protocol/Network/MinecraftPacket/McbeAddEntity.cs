@@ -2,7 +2,7 @@ using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeAddEntity : Packet
+public class McbeAddEntity : Packet
 {
 	public EntityAttributes attributes;
 	public float bodyYaw;
@@ -23,10 +23,10 @@ public class McpeAddEntity : Packet
 	public float yaw;
 	public float z;
 
-	public McpeAddEntity()
+	public McbeAddEntity()
 	{
 		Id = 0x0d;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

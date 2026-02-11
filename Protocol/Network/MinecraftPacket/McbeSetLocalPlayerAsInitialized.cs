@@ -1,13 +1,13 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeSetLocalPlayerAsInitialized : Packet
+public class McbeSetLocalPlayerAsInitialized : Packet
 {
 	public long runtimeEntityId;
 
-	public McpeSetLocalPlayerAsInitialized()
+	public McbeSetLocalPlayerAsInitialized()
 	{
 		Id = 0x71;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

@@ -2,16 +2,16 @@ using System.Numerics;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeChangeDimension : Packet
+public class McbeChangeDimension : Packet
 {
 	public int dimension;
 	public Vector3 position;
 	public bool respawn;
 
-	public McpeChangeDimension()
+	public McbeChangeDimension()
 	{
 		Id = 0x3d;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

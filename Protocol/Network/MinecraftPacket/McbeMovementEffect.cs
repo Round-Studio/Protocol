@@ -5,12 +5,12 @@ public enum MovementEffectType
 	GlideBoost = 0
 }
 
-public class McpeMovementEffect : Packet
+public class McbeMovementEffect : Packet
 {
-	public McpeMovementEffect()
+	public McbeMovementEffect()
 	{
 		Id = 318;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 

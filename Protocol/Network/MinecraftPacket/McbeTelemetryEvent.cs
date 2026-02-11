@@ -1,6 +1,6 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeTelemetryEvent : Packet
+public class McbeTelemetryEvent : Packet
 {
 	public byte[] auxData;
 	public int eventData;
@@ -8,10 +8,10 @@ public class McpeTelemetryEvent : Packet
 
 	public long runtimeEntityId;
 
-	public McpeTelemetryEvent()
+	public McbeTelemetryEvent()
 	{
 		Id = 0x41;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

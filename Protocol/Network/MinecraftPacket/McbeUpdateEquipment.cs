@@ -2,7 +2,7 @@ using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeUpdateEquipment : Packet
+public class McbeUpdateEquipment : Packet
 {
 	public long entityId;
 	public Nbt namedtag;
@@ -11,10 +11,10 @@ public class McpeUpdateEquipment : Packet
 	public byte windowId;
 	public byte windowType;
 
-	public McpeUpdateEquipment()
+	public McbeUpdateEquipment()
 	{
 		Id = 0x51;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

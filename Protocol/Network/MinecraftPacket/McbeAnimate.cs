@@ -1,16 +1,16 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeAnimate : Packet
+public class McbeAnimate : Packet
 {
 	public int actionId;
 	public long runtimeEntityId;
 	public float Data;
 	public float unknownFloat;
 
-	public McpeAnimate()
+	public McbeAnimate()
 	{
 		Id = 0x2c;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

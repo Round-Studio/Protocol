@@ -5,7 +5,7 @@ public class DisconnectionNotification : Packet
 	public DisconnectionNotification()
 	{
 		Id = 0x15;
-		IsMcpe = false;
+		IsMcbe = false;
 	}
 
 	protected override void EncodePacket()

@@ -1,14 +1,14 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeCamera : Packet
+public class McbeCamera : Packet
 {
 	public long unknown1;
 	public long unknown2;
 
-	public McpeCamera()
+	public McbeCamera()
 	{
 		Id = 0x49;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

@@ -1,6 +1,6 @@
 using Jose;
 
-namespace Protocol.Utils.Crypo
+namespace Protocol.Utils.Crypto
 {
 	public class HandshakeData
 	{

@@ -4,15 +4,15 @@ using Protocol.Utils;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeClientMovementPredictionSync : Packet
+public class McbeClientMovementPredictionSync : Packet
 {
 	private const int EntityDataFlagCount = 125;
 
 
-	public McpeClientMovementPredictionSync()
+	public McbeClientMovementPredictionSync()
 	{
 		Id = 322;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 

@@ -2,14 +2,14 @@ using Protocol.Minecraft.Transaction;
 
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeItemStackResponse : Packet
+public class McbeItemStackResponse : Packet
 {
 	public ItemStackResponses responses;
 
-	public McpeItemStackResponse()
+	public McbeItemStackResponse()
 	{
 		Id = 0x94;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 	protected override void EncodePacket()

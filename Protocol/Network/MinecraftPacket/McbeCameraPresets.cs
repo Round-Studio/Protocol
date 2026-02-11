@@ -1,11 +1,11 @@
 namespace Protocol.Network.MinecraftPacket;
 
-public class McpeCameraPresets : Packet
+public class McbeCameraPresets : Packet
 {
-	public McpeCameraPresets()
+	public McbeCameraPresets()
 	{
 		Id = 198;
-		IsMcpe = true;
+		IsMcbe = true;
 	}
 
 
