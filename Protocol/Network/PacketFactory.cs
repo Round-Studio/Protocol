@@ -546,6 +546,20 @@ namespace Protocol.Network
 						return new McbeServerBoundPackSettingChange().Decode(buffer);
 					case 331:
 						return new McbeGraphicsOverrideParameter().Decode(buffer);
+					case 333:
+						return new McbeClientBoundDataDrivenUIShowScreen().Decode(buffer);
+					case 334:
+						return new McbeClientBoundDataDrivenUICloseAllScreens().Decode(buffer);
+					case 335:
+						return new McbeClientBoundDataDrivenUIReload().Decode(buffer);
+					case 336:
+						return new McbeClientBoundTextureShift().Decode(buffer);
+					case 337:
+						return new McbeVoxelShapes().Decode(buffer);
+					case 338:
+						return new McbeCameraSpline().Decode(buffer);
+					case 339:
+						return new McbeCameraAimAssistActorPriority().Decode(buffer);
 					default:
 						return new UnknownPacket((byte)id, buffer);
 				}
