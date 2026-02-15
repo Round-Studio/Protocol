@@ -4,14 +4,12 @@ namespace Protocol.Network.MinecraftPacket;
 
 public class McbeResourcePackStack : Packet
 {
-	public ResourcePackIdVersions behaviorpackidversions;
-	public Experiments experiments;
-	public bool experimentsPreviouslyToggled;
-	public string gameVersion;
-	public bool hasEditorPacks;
-
-	public bool mustAccept;
-	public ResourcePackIdVersions resourcepackidversions;
+	public bool TexturePackRequired { get; set; }
+	public StackResourcePack[] TexturePacks { get; set; }
+	public string BaseGameVersion { get; set; }
+	public Experiments Experiments { get; set; }
+	public bool ExperimentsPreviouslyToggled { get; set; }
+	public bool IncludeEditorPacks { get; set; }
 
 	public McbeResourcePackStack()
 	{
@@ -22,15 +20,16 @@ public class McbeResourcePackStack : Packet
 	protected override void EncodePacket()
 	{
 		base.EncodePacket();
+		Write(TexturePackRequired);
 
+		WriteSlice(TexturePacks,Write);
 
-		Write(mustAccept);
-		Write(behaviorpackidversions);
-		Write(resourcepackidversions);
-		Write(gameVersion);
-		Write(experiments);
-		Write(experimentsPreviouslyToggled);
-		Write(hasEditorPacks);
+		Write(BaseGameVersion);
+
+		Write(Experiments);
+
+		Write(ExperimentsPreviouslyToggled);
+		Write(IncludeEditorPacks);
 	}
 
 
@@ -39,26 +38,16 @@ public class McbeResourcePackStack : Packet
 		base.DecodePacket();
 
 
-		mustAccept = ReadBool();
-		behaviorpackidversions = ReadResourcePackIdVersions();
-		resourcepackidversions = ReadResourcePackIdVersions();
-		gameVersion = ReadString();
-		experiments = ReadExperiments();
-		experimentsPreviouslyToggled = ReadBool();
-		hasEditorPacks = ReadBool();
+		TexturePackRequired = ReadBool();
+		TexturePacks = ReadSlice(ReadStackResourcePack);
+		BaseGameVersion = ReadString();
+
+		// Read Experiments using SliceUint32Length
+		Experiments = ReadExperiments();
+
+		ExperimentsPreviouslyToggled = ReadBool();
+		IncludeEditorPacks = ReadBool();
+
 	}
 
-
-	protected override void ResetPacket()
-	{
-		base.ResetPacket();
-
-		mustAccept = default;
-		behaviorpackidversions = default;
-		resourcepackidversions = default;
-		gameVersion = default;
-		experiments = default;
-		experimentsPreviouslyToggled = default;
-		hasEditorPacks = default;
-	}
 }

@@ -1,20 +1,21 @@
 namespace Protocol.Network.MinecraftPacket;
 
+public enum PlayStatus : Int32
+{
+	LoginSuccess = 0,
+	LoginFailedClient = 1,
+	LoginFailedServer = 2,
+	PlayerSpawn = 3,
+	LoginFailedInvalidTenant = 4,
+	LoginFailedVanillaEdu = 5,
+	LoginFailedEduVanilla = 6,
+	LoginFailedServerFull = 7
+}
 public class McbePlayStatus : Packet
 {
-	public enum PlayStatus
-	{
-		LoginSuccess = 0,
-		LoginFailedClient = 1,
-		LoginFailedServer = 2,
-		PlayerSpawn = 3,
-		LoginFailedInvalidTenant = 4,
-		LoginFailedVanillaEdu = 5,
-		LoginFailedEduVanilla = 6,
-		LoginFailedServerFull = 7
-	}
 
-	public int status;
+
+	public PlayStatus status;
 
 	public McbePlayStatus()
 	{
@@ -27,7 +28,7 @@ public class McbePlayStatus : Packet
 		base.EncodePacket();
 
 
-		WriteBe(status);
+		WriteBe((Int32)status);
 	}
 
 
@@ -36,7 +37,7 @@ public class McbePlayStatus : Packet
 		base.DecodePacket();
 
 
-		status = ReadIntBe();
+		status = (PlayStatus)ReadIntBe();
 	}
 
 

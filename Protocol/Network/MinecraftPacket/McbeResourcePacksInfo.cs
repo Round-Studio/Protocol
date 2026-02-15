@@ -11,7 +11,7 @@ public class McbeResourcePacksInfo : Packet
 	public bool mustAccept;
 	public UUID templateUUID;
 	public string templateVersion;
-	public TexturePackInfos texturepacks;
+	public TexturePackInfo[] texturepacks;
 
 	public McbeResourcePacksInfo()
 	{
@@ -30,7 +30,7 @@ public class McbeResourcePacksInfo : Packet
 		Write(ForceDisableVibrantVisuals);
 		Write(templateUUID);
 		Write(templateVersion);
-		Write(texturepacks);
+		WriteSliceUint16Length(texturepacks,Write);
 	}
 
 
@@ -45,7 +45,7 @@ public class McbeResourcePacksInfo : Packet
 		ForceDisableVibrantVisuals = ReadBool();
 		templateUUID = ReadUUID();
 		templateVersion = ReadString();
-		texturepacks = ReadTexturePackInfos();
+		texturepacks = ReadSliceUint16Length(ReadTexturePackInfo);
 	}
 
 

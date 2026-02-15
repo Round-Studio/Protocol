@@ -2,9 +2,6 @@ using Protocol.Utils;
 
 namespace Protocol.Minecraft;
 
-public class ResourcePackInfos : List<ResourcePackInfo>
-{
-}
 
 public enum PackSettingType : int
 {
@@ -33,42 +30,34 @@ public class PackSetting
 	}
 }
 
-public class ResourcePackInfo
+public struct TexturePackInfo
 {
-	public UUID UUID { get; set; }
-
-
+	public Protocol.Utils.UUID UUID { get; set; }
 	public string Version { get; set; }
-
-
 	public ulong Size { get; set; }
-
-
 	public string ContentKey { get; set; }
-
 	public string SubPackName { get; set; }
-
-
 	public string ContentIdentity { get; set; }
-
-
 	public bool HasScripts { get; set; }
-
-	public bool isAddon { get; set; }
-	public string cndUrls { get; set; }
+	public bool AddonPack { get; set; }
+	public bool RTXEnabled { get; set; }
+	public string DownloadURL { get; set; }
+}
+public struct StackResourcePack
+{
+	public string UUID { get; set; }
+	public string Version { get; set; }
+	public string SubPackName { get; set; }
 }
 
-public class TexturePackInfos : List<TexturePackInfo>
+public struct ResourcePackStack
 {
-}
-
-public class TexturePackInfo : ResourcePackInfo
-{
-	public bool RtxEnabled { get; set; }
-}
-
-public class ResourcePackIdVersions : List<PackIdVersion>
-{
+	public bool TexturePackRequired { get; set; }
+	public System.Collections.Generic.List<StackResourcePack> TexturePacks { get; set; }
+	public string BaseGameVersion { get; set; }
+	public Experiments Experiments { get; set; }
+	public bool ExperimentsPreviouslyToggled { get; set; }
+	public bool IncludeEditorPacks { get; set; }
 }
 
 public class PackIdVersion

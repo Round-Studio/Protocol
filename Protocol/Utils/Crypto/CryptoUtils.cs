@@ -82,7 +82,12 @@ namespace Protocol.Utils.Crypto
 			inKey[2] = 83;
 			return inKey;
 		}
-
+		/// <summary>
+		/// KEEP This run on a single thread
+		/// </summary>
+		/// <param name="payload"></param>
+		/// <param name="cryptoContext"></param>
+		/// <returns></returns>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static byte[] Encrypt(ReadOnlyMemory<byte> payload, CryptoContext cryptoContext)
 		{
@@ -104,7 +109,12 @@ namespace Protocol.Utils.Crypto
 
 			return encrypted;
 		}
-
+		/// <summary>
+		/// KEEP This run on a single thread
+		/// </summary>
+		/// <param name="payload"></param>
+		/// <param name="cryptoContext"></param>
+		/// <returns></returns>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static ReadOnlyMemory<byte> Decrypt(ReadOnlyMemory<byte> payload, CryptoContext cryptoContext)
 		{
@@ -185,7 +195,7 @@ namespace Protocol.Utils.Crypto
 			string resourcePatchData = Convert.ToBase64String(Encoding.Default.GetBytes(Skin.ToJson(resourcePatch)));
 			string skin64 = Convert.ToBase64String(skin.Data);
 
-
+			
 
 			ECDsa signKey = ConvertToSingKeyFormat(newKey);
 			string b64Key = SubjectPublicKeyInfoFactory.CreateSubjectPublicKeyInfo(newKey.Public).GetEncoded().EncodeBase64();
