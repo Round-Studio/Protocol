@@ -1,27 +1,19 @@
 namespace Protocol.Network.MinecraftPacket;
-
 public class McbePurchaseReceipt : Packet
 {
-	public McbePurchaseReceipt()
-	{
-		Id = 0x5c;
-		IsMcbe = true;
-	}
+    public McbePurchaseReceipt()
+    {
+        Id = 0x5c;
+        IsMcbe = true;
+    }
 
-	protected override void EncodePacket()
-	{
-		base.EncodePacket();
-	}
+    protected override void EncodePacket()
+    {
+        base.EncodePacket();
+    }
 
-
-	protected override void DecodePacket()
-	{
-		base.DecodePacket();
-	}
-
-
-	protected override void ResetPacket()
-	{
-		base.ResetPacket();
-	}
+    protected override void DecodePacket()
+    {
+        base.DecodePacket();
+    }
 }

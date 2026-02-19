@@ -1,47 +1,29 @@
 namespace Protocol.Network.MinecraftPacket;
-
 public class McbeSetInventoryOptions : Packet
 {
-	public int craftingLayout;
-	public bool filtering;
-	public int inventoryLayout;
+    public int craftingLayout;
+    public bool filtering;
+    public int inventoryLayout;
+    public int leftTab;
+    public int rightTab;
+    public McbeSetInventoryOptions()
+    {
+        Id = 0x133;
+        IsMcbe = true;
+    }
 
-	public int leftTab;
-	public int rightTab;
+    protected override void EncodePacket()
+    {
+        base.EncodePacket();
+    }
 
-	public McbeSetInventoryOptions()
-	{
-		Id = 0x133;
-		IsMcbe = true;
-	}
-
-	protected override void EncodePacket()
-	{
-		base.EncodePacket();
-	}
-
-
-	protected override void DecodePacket()
-	{
-		base.DecodePacket();
-
-
-		leftTab = ReadSignedVarInt();
-		rightTab = ReadSignedVarInt();
-		filtering = ReadBool();
-		inventoryLayout = ReadSignedVarInt();
-		craftingLayout = ReadSignedVarInt();
-	}
-
-
-	protected override void ResetPacket()
-	{
-		base.ResetPacket();
-
-		leftTab = default;
-		rightTab = default;
-		filtering = default;
-		inventoryLayout = default;
-		craftingLayout = default;
-	}
+    protected override void DecodePacket()
+    {
+        base.DecodePacket();
+        leftTab = ReadSignedVarInt();
+        rightTab = ReadSignedVarInt();
+        filtering = ReadBool();
+        inventoryLayout = ReadSignedVarInt();
+        craftingLayout = ReadSignedVarInt();
+    }
 }

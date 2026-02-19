@@ -1,37 +1,22 @@
 namespace Protocol.Network.MinecraftPacket;
-
 public class McbeSetLocalPlayerAsInitialized : Packet
 {
-	public long runtimeEntityId;
+    public long runtimeEntityId;
+    public McbeSetLocalPlayerAsInitialized()
+    {
+        Id = 0x71;
+        IsMcbe = true;
+    }
 
-	public McbeSetLocalPlayerAsInitialized()
-	{
-		Id = 0x71;
-		IsMcbe = true;
-	}
+    protected override void EncodePacket()
+    {
+        base.EncodePacket();
+        WriteUnsignedVarLong(runtimeEntityId);
+    }
 
-	protected override void EncodePacket()
-	{
-		base.EncodePacket();
-
-
-		WriteUnsignedVarLong(runtimeEntityId);
-	}
-
-
-	protected override void DecodePacket()
-	{
-		base.DecodePacket();
-
-
-		runtimeEntityId = ReadUnsignedVarLong();
-	}
-
-
-	protected override void ResetPacket()
-	{
-		base.ResetPacket();
-
-		runtimeEntityId = default;
-	}
+    protected override void DecodePacket()
+    {
+        base.DecodePacket();
+        runtimeEntityId = ReadUnsignedVarLong();
+    }
 }

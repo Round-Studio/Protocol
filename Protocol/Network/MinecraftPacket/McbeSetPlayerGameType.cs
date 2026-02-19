@@ -1,37 +1,22 @@
 namespace Protocol.Network.MinecraftPacket;
-
 public class McbeSetPlayerGameType : Packet
 {
-	public int gamemode;
+    public int gamemode;
+    public McbeSetPlayerGameType()
+    {
+        Id = 0x3e;
+        IsMcbe = true;
+    }
 
-	public McbeSetPlayerGameType()
-	{
-		Id = 0x3e;
-		IsMcbe = true;
-	}
+    protected override void EncodePacket()
+    {
+        base.EncodePacket();
+        WriteSignedVarInt(gamemode);
+    }
 
-	protected override void EncodePacket()
-	{
-		base.EncodePacket();
-
-
-		WriteSignedVarInt(gamemode);
-	}
-
-
-	protected override void DecodePacket()
-	{
-		base.DecodePacket();
-
-
-		gamemode = ReadSignedVarInt();
-	}
-
-
-	protected override void ResetPacket()
-	{
-		base.ResetPacket();
-
-		gamemode = default;
-	}
+    protected override void DecodePacket()
+    {
+        base.DecodePacket();
+        gamemode = ReadSignedVarInt();
+    }
 }

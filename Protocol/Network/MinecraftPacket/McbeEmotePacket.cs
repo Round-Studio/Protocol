@@ -1,58 +1,37 @@
 namespace Protocol.Network.MinecraftPacket;
-
 public class McbeEmotePacket : Packet
 {
-	public string emoteId;
-	public byte flags;
-	public string platformId;
+    public string emoteId;
+    public byte flags;
+    public string platformId;
+    public long runtimeEntityId;
+    public uint tick;
+    public string xuid;
+    public McbeEmotePacket()
+    {
+        Id = 0x8a;
+        IsMcbe = true;
+    }
 
-	public long runtimeEntityId;
-	public uint tick;
-	public string xuid;
+    protected override void EncodePacket()
+    {
+        base.EncodePacket();
+        WriteUnsignedVarLong(runtimeEntityId);
+        Write(emoteId);
+        WriteUnsignedVarInt(tick);
+        Write(xuid);
+        Write(platformId);
+        Write(flags);
+    }
 
-	public McbeEmotePacket()
-	{
-		Id = 0x8a;
-		IsMcbe = true;
-	}
-
-	protected override void EncodePacket()
-	{
-		base.EncodePacket();
-
-
-		WriteUnsignedVarLong(runtimeEntityId);
-		Write(emoteId);
-		WriteUnsignedVarInt(tick);
-		Write(xuid);
-		Write(platformId);
-		Write(flags);
-	}
-
-
-	protected override void DecodePacket()
-	{
-		base.DecodePacket();
-
-
-		runtimeEntityId = ReadUnsignedVarLong();
-		emoteId = ReadString();
-		tick = ReadUnsignedVarInt();
-		xuid = ReadString();
-		platformId = ReadString();
-		flags = ReadByte();
-	}
-
-
-	protected override void ResetPacket()
-	{
-		base.ResetPacket();
-
-		runtimeEntityId = default;
-		xuid = default;
-		platformId = default;
-		emoteId = default;
-		tick = default;
-		flags = default;
-	}
+    protected override void DecodePacket()
+    {
+        base.DecodePacket();
+        runtimeEntityId = ReadUnsignedVarLong();
+        emoteId = ReadString();
+        tick = ReadUnsignedVarInt();
+        xuid = ReadString();
+        platformId = ReadString();
+        flags = ReadByte();
+    }
 }

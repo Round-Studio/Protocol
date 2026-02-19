@@ -1,27 +1,19 @@
 namespace Protocol.Network.MinecraftPacket;
-
 public class McbeServerSettingsRequest : Packet
 {
-	public McbeServerSettingsRequest()
-	{
-		Id = 0x66;
-		IsMcbe = true;
-	}
+    public McbeServerSettingsRequest()
+    {
+        Id = 0x66;
+        IsMcbe = true;
+    }
 
-	protected override void EncodePacket()
-	{
-		base.EncodePacket();
-	}
+    protected override void EncodePacket()
+    {
+        base.EncodePacket();
+    }
 
-
-	protected override void DecodePacket()
-	{
-		base.DecodePacket();
-	}
-
-
-	protected override void ResetPacket()
-	{
-		base.ResetPacket();
-	}
+    protected override void DecodePacket()
+    {
+        base.DecodePacket();
+    }
 }

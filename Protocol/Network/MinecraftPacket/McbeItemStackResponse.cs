@@ -1,39 +1,24 @@
 using Protocol.Minecraft.Transaction;
 
 namespace Protocol.Network.MinecraftPacket;
-
 public class McbeItemStackResponse : Packet
 {
-	public ItemStackResponses responses;
+    public ItemStackResponses responses;
+    public McbeItemStackResponse()
+    {
+        Id = 0x94;
+        IsMcbe = true;
+    }
 
-	public McbeItemStackResponse()
-	{
-		Id = 0x94;
-		IsMcbe = true;
-	}
+    protected override void EncodePacket()
+    {
+        base.EncodePacket();
+        Write(responses);
+    }
 
-	protected override void EncodePacket()
-	{
-		base.EncodePacket();
-
-
-		Write(responses);
-	}
-
-
-	protected override void DecodePacket()
-	{
-		base.DecodePacket();
-
-
-		responses = ReadItemStackResponses();
-	}
-
-
-	protected override void ResetPacket()
-	{
-		base.ResetPacket();
-
-		responses = default;
-	}
+    protected override void DecodePacket()
+    {
+        base.DecodePacket();
+        responses = ReadItemStackResponses();
+    }
 }

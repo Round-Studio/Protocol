@@ -4863,7 +4863,6 @@ namespace Protocol.Network
 
 		public virtual void Reset()
 		{
-			ResetPacket();
 			_encodedMessage = null;
 			Bytes = null;
 			_writer?.Close();

@@ -1,54 +1,34 @@
 namespace Protocol.Network.MinecraftPacket;
-
 public class McbeUpdateAdventureSettings : Packet
 {
-	public bool autoJump;
-	public bool immutableWorld;
-	public bool noMvp;
+    public bool autoJump;
+    public bool immutableWorld;
+    public bool noMvp;
+    public bool noPvm;
+    public bool showNametags;
+    public McbeUpdateAdventureSettings()
+    {
+        Id = 0xbc;
+        IsMcbe = true;
+    }
 
-	public bool noPvm;
-	public bool showNametags;
+    protected override void EncodePacket()
+    {
+        base.EncodePacket();
+        Write(noPvm);
+        Write(noMvp);
+        Write(immutableWorld);
+        Write(showNametags);
+        Write(autoJump);
+    }
 
-	public McbeUpdateAdventureSettings()
-	{
-		Id = 0xbc;
-		IsMcbe = true;
-	}
-
-	protected override void EncodePacket()
-	{
-		base.EncodePacket();
-
-
-		Write(noPvm);
-		Write(noMvp);
-		Write(immutableWorld);
-		Write(showNametags);
-		Write(autoJump);
-	}
-
-
-	protected override void DecodePacket()
-	{
-		base.DecodePacket();
-
-
-		noPvm = ReadBool();
-		noMvp = ReadBool();
-		immutableWorld = ReadBool();
-		showNametags = ReadBool();
-		autoJump = ReadBool();
-	}
-
-
-	protected override void ResetPacket()
-	{
-		base.ResetPacket();
-
-		noPvm = default;
-		noMvp = default;
-		immutableWorld = default;
-		showNametags = default;
-		autoJump = default;
-	}
+    protected override void DecodePacket()
+    {
+        base.DecodePacket();
+        noPvm = ReadBool();
+        noMvp = ReadBool();
+        immutableWorld = ReadBool();
+        showNametags = ReadBool();
+        autoJump = ReadBool();
+    }
 }

@@ -1,43 +1,27 @@
 using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
-
 public class McbeBlockEntityData : Packet
 {
-	public BlockCoordinates coordinates;
-	public Nbt namedtag;
+    public BlockCoordinates coordinates;
+    public Nbt namedtag;
+    public McbeBlockEntityData()
+    {
+        Id = 0x38;
+        IsMcbe = true;
+    }
 
-	public McbeBlockEntityData()
-	{
-		Id = 0x38;
-		IsMcbe = true;
-	}
+    protected override void EncodePacket()
+    {
+        base.EncodePacket();
+        Write(coordinates);
+        Write(namedtag);
+    }
 
-	protected override void EncodePacket()
-	{
-		base.EncodePacket();
-
-
-		Write(coordinates);
-		Write(namedtag);
-	}
-
-
-	protected override void DecodePacket()
-	{
-		base.DecodePacket();
-
-
-		coordinates = ReadBlockCoordinates();
-		namedtag = ReadNbt();
-	}
-
-
-	protected override void ResetPacket()
-	{
-		base.ResetPacket();
-
-		coordinates = default;
-		namedtag = default;
-	}
+    protected override void DecodePacket()
+    {
+        base.DecodePacket();
+        coordinates = ReadBlockCoordinates();
+        namedtag = ReadNbt();
+    }
 }

@@ -1,61 +1,41 @@
 namespace Protocol.Network.MinecraftPacket;
-
 public class McbeRespawn : Packet
 {
-	public enum RespawnState
-	{
-		Search = 0,
-		Ready = 1,
-		ClientReady = 2
-	}
+    public enum RespawnState
+    {
+        Search = 0,
+        Ready = 1,
+        ClientReady = 2
+    }
 
-	public long runtimeEntityId;
-	public byte state;
+    public long runtimeEntityId;
+    public byte state;
+    public float x;
+    public float y;
+    public float z;
+    public McbeRespawn()
+    {
+        Id = 0x2d;
+        IsMcbe = true;
+    }
 
-	public float x;
-	public float y;
-	public float z;
+    protected override void EncodePacket()
+    {
+        base.EncodePacket();
+        Write(x);
+        Write(y);
+        Write(z);
+        Write(state);
+        WriteUnsignedVarLong(runtimeEntityId);
+    }
 
-	public McbeRespawn()
-	{
-		Id = 0x2d;
-		IsMcbe = true;
-	}
-
-	protected override void EncodePacket()
-	{
-		base.EncodePacket();
-
-
-		Write(x);
-		Write(y);
-		Write(z);
-		Write(state);
-		WriteUnsignedVarLong(runtimeEntityId);
-	}
-
-
-	protected override void DecodePacket()
-	{
-		base.DecodePacket();
-
-
-		x = ReadFloat();
-		y = ReadFloat();
-		z = ReadFloat();
-		state = ReadByte();
-		runtimeEntityId = ReadUnsignedVarLong();
-	}
-
-
-	protected override void ResetPacket()
-	{
-		base.ResetPacket();
-
-		x = default;
-		y = default;
-		z = default;
-		state = default;
-		runtimeEntityId = default;
-	}
+    protected override void DecodePacket()
+    {
+        base.DecodePacket();
+        x = ReadFloat();
+        y = ReadFloat();
+        z = ReadFloat();
+        state = ReadByte();
+        runtimeEntityId = ReadUnsignedVarLong();
+    }
 }

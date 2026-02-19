@@ -1,27 +1,19 @@
 namespace Protocol.Network.MinecraftPacket;
-
 public class DisconnectionNotification : Packet
 {
-	public DisconnectionNotification()
-	{
-		Id = 0x15;
-		IsMcbe = false;
-	}
+    public DisconnectionNotification()
+    {
+        Id = 0x15;
+        IsMcbe = false;
+    }
 
-	protected override void EncodePacket()
-	{
-		base.EncodePacket();
-	}
+    protected override void EncodePacket()
+    {
+        base.EncodePacket();
+    }
 
-
-	protected override void DecodePacket()
-	{
-		base.DecodePacket();
-	}
-
-
-	protected override void ResetPacket()
-	{
-		base.ResetPacket();
-	}
+    protected override void DecodePacket()
+    {
+        base.DecodePacket();
+    }
 }

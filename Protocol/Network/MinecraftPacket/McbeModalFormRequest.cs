@@ -1,43 +1,25 @@
 namespace Protocol.Network.MinecraftPacket;
-
 public class McbeModalFormRequest : Packet
 {
-	public string formData;
+    public string formData;
+    public uint formId;
+    public McbeModalFormRequest()
+    {
+        Id = 0x64;
+        IsMcbe = true;
+    }
 
-	public uint formId;
+    protected override void EncodePacket()
+    {
+        base.EncodePacket();
+        WriteUnsignedVarInt(formId);
+        Write(formData);
+    }
 
-	public McbeModalFormRequest()
-	{
-		Id = 0x64;
-		IsMcbe = true;
-	}
-
-	protected override void EncodePacket()
-	{
-		base.EncodePacket();
-
-
-		WriteUnsignedVarInt(formId);
-		Write(formData);
-	}
-
-
-	protected override void DecodePacket()
-	{
-		base.DecodePacket();
-
-
-		formId = ReadUnsignedVarInt();
-		formData = ReadString();
-	}
-
-
-	protected override void ResetPacket()
-	{
-		base.ResetPacket();
-
-
-		formId = default;
-		formData = default;
-	}
+    protected override void DecodePacket()
+    {
+        base.DecodePacket();
+        formId = ReadUnsignedVarInt();
+        formData = ReadString();
+    }
 }

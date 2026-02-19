@@ -1,39 +1,24 @@
 using Protocol.Minecraft.Map;
 
 namespace Protocol.Network.MinecraftPacket;
-
 public class McbeClientboundMapItemData : Packet
 {
-	public MapInfo mapinfo;
+    public MapInfo mapinfo;
+    public McbeClientboundMapItemData()
+    {
+        Id = 0x43;
+        IsMcbe = true;
+    }
 
-	public McbeClientboundMapItemData()
-	{
-		Id = 0x43;
-		IsMcbe = true;
-	}
+    protected override void EncodePacket()
+    {
+        base.EncodePacket();
+        Write(mapinfo);
+    }
 
-	protected override void EncodePacket()
-	{
-		base.EncodePacket();
-
-
-		Write(mapinfo);
-	}
-
-
-	protected override void DecodePacket()
-	{
-		base.DecodePacket();
-
-
-		mapinfo = ReadMapInfo();
-	}
-
-
-	protected override void ResetPacket()
-	{
-		base.ResetPacket();
-
-		mapinfo = default;
-	}
+    protected override void DecodePacket()
+    {
+        base.DecodePacket();
+        mapinfo = ReadMapInfo();
+    }
 }

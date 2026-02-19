@@ -1,43 +1,27 @@
 using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
-
 public class McbeOpenSign : Packet
 {
-	public BlockCoordinates coordinates;
-	public bool front;
+    public BlockCoordinates coordinates;
+    public bool front;
+    public McbeOpenSign()
+    {
+        Id = 0x12f;
+        IsMcbe = true;
+    }
 
-	public McbeOpenSign()
-	{
-		Id = 0x12f;
-		IsMcbe = true;
-	}
+    protected override void EncodePacket()
+    {
+        base.EncodePacket();
+        Write(coordinates);
+        Write(front);
+    }
 
-	protected override void EncodePacket()
-	{
-		base.EncodePacket();
-
-
-		Write(coordinates);
-		Write(front);
-	}
-
-
-	protected override void DecodePacket()
-	{
-		base.DecodePacket();
-
-
-		coordinates = ReadBlockCoordinates();
-		front = ReadBool();
-	}
-
-
-	protected override void ResetPacket()
-	{
-		base.ResetPacket();
-
-		coordinates = default;
-		front = default;
-	}
+    protected override void DecodePacket()
+    {
+        base.DecodePacket();
+        coordinates = ReadBlockCoordinates();
+        front = ReadBool();
+    }
 }

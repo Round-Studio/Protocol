@@ -1,38 +1,23 @@
 namespace Protocol.Network.MinecraftPacket;
-
 public class McbeTickingAreasLoadStatus : Packet
 {
-	public McbeTickingAreasLoadStatus()
-	{
-		Id = 179;
-		IsMcbe = true;
-	}
+    public McbeTickingAreasLoadStatus()
+    {
+        Id = 179;
+        IsMcbe = true;
+    }
 
+    public bool Preload { get; set; }
 
-	public bool Preload { get; set; }
+    protected override void EncodePacket()
+    {
+        base.EncodePacket();
+        Write(Preload);
+    }
 
-
-	protected override void EncodePacket()
-	{
-		base.EncodePacket();
-
-
-		Write(Preload);
-	}
-
-
-	protected override void DecodePacket()
-	{
-		base.DecodePacket();
-
-
-		Preload = ReadBool();
-	}
-
-
-	protected override void ResetPacket()
-	{
-		base.ResetPacket();
-		Preload = false;
-	}
+    protected override void DecodePacket()
+    {
+        base.DecodePacket();
+        Preload = ReadBool();
+    }
 }

@@ -1,27 +1,19 @@
 namespace Protocol.Network.MinecraftPacket;
-
 public class McbeUpdatePlayerGameType : Packet
 {
-	public McbeUpdatePlayerGameType()
-	{
-		Id = 0x97;
-		IsMcbe = true;
-	}
+    public McbeUpdatePlayerGameType()
+    {
+        Id = 0x97;
+        IsMcbe = true;
+    }
 
-	protected override void EncodePacket()
-	{
-		base.EncodePacket();
-	}
+    protected override void EncodePacket()
+    {
+        base.EncodePacket();
+    }
 
-
-	protected override void DecodePacket()
-	{
-		base.DecodePacket();
-	}
-
-
-	protected override void ResetPacket()
-	{
-		base.ResetPacket();
-	}
+    protected override void DecodePacket()
+    {
+        base.DecodePacket();
+    }
 }

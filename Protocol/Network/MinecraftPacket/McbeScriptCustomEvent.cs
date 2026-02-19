@@ -1,42 +1,25 @@
 namespace Protocol.Network.MinecraftPacket;
-
 public class McbeScriptCustomEvent : Packet
 {
-	public string eventData;
+    public string eventData;
+    public string eventName;
+    public McbeScriptCustomEvent()
+    {
+        Id = 0x75;
+        IsMcbe = true;
+    }
 
-	public string eventName;
+    protected override void EncodePacket()
+    {
+        base.EncodePacket();
+        Write(eventName);
+        Write(eventData);
+    }
 
-	public McbeScriptCustomEvent()
-	{
-		Id = 0x75;
-		IsMcbe = true;
-	}
-
-	protected override void EncodePacket()
-	{
-		base.EncodePacket();
-
-
-		Write(eventName);
-		Write(eventData);
-	}
-
-
-	protected override void DecodePacket()
-	{
-		base.DecodePacket();
-
-
-		eventName = ReadString();
-		eventData = ReadString();
-	}
-
-
-	protected override void ResetPacket()
-	{
-		base.ResetPacket();
-
-		eventName = default;
-		eventData = default;
-	}
+    protected override void DecodePacket()
+    {
+        base.DecodePacket();
+        eventName = ReadString();
+        eventData = ReadString();
+    }
 }

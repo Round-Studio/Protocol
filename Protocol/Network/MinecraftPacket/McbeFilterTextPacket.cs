@@ -1,52 +1,34 @@
 namespace Protocol.Network.MinecraftPacket;
-
 public partial class McbeFilterTextPacket : Packet
 {
-	public bool fromServer;
+    public bool fromServer;
+    public string text;
+    public McbeFilterTextPacket()
+    {
+        Id = 0xa3;
+        IsMcbe = true;
+    }
 
-	public string text;
+    protected override void EncodePacket()
+    {
+        base.EncodePacket();
+        BeforeEncode();
+        Write(text);
+        Write(fromServer);
+        AfterEncode();
+    }
 
-	public McbeFilterTextPacket()
-	{
-		Id = 0xa3;
-		IsMcbe = true;
-	}
+    partial void BeforeEncode();
+    partial void AfterEncode();
+    protected override void DecodePacket()
+    {
+        base.DecodePacket();
+        BeforeDecode();
+        text = ReadString();
+        fromServer = ReadBool();
+        AfterDecode();
+    }
 
-	protected override void EncodePacket()
-	{
-		base.EncodePacket();
-
-		BeforeEncode();
-
-		Write(text);
-		Write(fromServer);
-
-		AfterEncode();
-	}
-
-	partial void BeforeEncode();
-	partial void AfterEncode();
-
-	protected override void DecodePacket()
-	{
-		base.DecodePacket();
-
-		BeforeDecode();
-
-		text = ReadString();
-		fromServer = ReadBool();
-
-		AfterDecode();
-	}
-
-	partial void BeforeDecode();
-	partial void AfterDecode();
-
-	protected override void ResetPacket()
-	{
-		base.ResetPacket();
-
-		text = default;
-		fromServer = default;
-	}
+    partial void BeforeDecode();
+    partial void AfterDecode();
 }

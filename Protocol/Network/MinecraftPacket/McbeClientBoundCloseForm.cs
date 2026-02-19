@@ -1,28 +1,19 @@
 namespace Protocol.Network.MinecraftPacket;
-
 public class McbeClientBoundCloseForm : Packet
 {
-	public McbeClientBoundCloseForm()
-	{
-		Id = 310;
-		IsMcbe = true;
-	}
+    public McbeClientBoundCloseForm()
+    {
+        Id = 310;
+        IsMcbe = true;
+    }
 
+    protected override void EncodePacket()
+    {
+        base.EncodePacket();
+    }
 
-	protected override void EncodePacket()
-	{
-		base.EncodePacket();
-	}
-
-
-	protected override void DecodePacket()
-	{
-		base.DecodePacket();
-	}
-
-
-	protected override void ResetPacket()
-	{
-		base.ResetPacket();
-	}
+    protected override void DecodePacket()
+    {
+        base.DecodePacket();
+    }
 }

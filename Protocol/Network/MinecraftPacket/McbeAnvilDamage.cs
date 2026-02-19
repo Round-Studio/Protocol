@@ -1,44 +1,27 @@
 using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
-
 public class McbeAnvilDamage : Packet
 {
-	public BlockCoordinates coordinates;
+    public BlockCoordinates coordinates;
+    public byte damageAmount;
+    public McbeAnvilDamage()
+    {
+        Id = 0x8D;
+        IsMcbe = true;
+    }
 
-	public byte damageAmount;
+    protected override void EncodePacket()
+    {
+        base.EncodePacket();
+        Write(damageAmount);
+        Write(coordinates);
+    }
 
-	public McbeAnvilDamage()
-	{
-		Id = 0x8D;
-		IsMcbe = true;
-	}
-
-	protected override void EncodePacket()
-	{
-		base.EncodePacket();
-
-
-		Write(damageAmount);
-		Write(coordinates);
-	}
-
-
-	protected override void DecodePacket()
-	{
-		base.DecodePacket();
-
-
-		damageAmount = ReadByte();
-		coordinates = ReadBlockCoordinates();
-	}
-
-
-	protected override void ResetPacket()
-	{
-		base.ResetPacket();
-
-		damageAmount = default;
-		coordinates = default;
-	}
+    protected override void DecodePacket()
+    {
+        base.DecodePacket();
+        damageAmount = ReadByte();
+        coordinates = ReadBlockCoordinates();
+    }
 }

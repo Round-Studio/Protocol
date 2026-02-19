@@ -1,39 +1,24 @@
 using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
-
 public class McbePlayerFog : Packet
 {
-	public fogStack fogstack;
+    public fogStack fogstack;
+    public McbePlayerFog()
+    {
+        Id = 0xa0;
+        IsMcbe = true;
+    }
 
-	public McbePlayerFog()
-	{
-		Id = 0xa0;
-		IsMcbe = true;
-	}
+    protected override void EncodePacket()
+    {
+        base.EncodePacket();
+        Write(fogstack);
+    }
 
-	protected override void EncodePacket()
-	{
-		base.EncodePacket();
-
-
-		Write(fogstack);
-	}
-
-
-	protected override void DecodePacket()
-	{
-		base.DecodePacket();
-
-
-		fogstack = Read();
-	}
-
-
-	protected override void ResetPacket()
-	{
-		base.ResetPacket();
-
-		fogstack = default;
-	}
+    protected override void DecodePacket()
+    {
+        base.DecodePacket();
+        fogstack = Read();
+    }
 }

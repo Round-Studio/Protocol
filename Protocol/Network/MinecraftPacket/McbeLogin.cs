@@ -1,42 +1,25 @@
 namespace Protocol.Network.MinecraftPacket;
-
 public class McbeLogin : Packet
 {
-	public byte[] payload;
+    public byte[] payload;
+    public int protocolVersion;
+    public McbeLogin()
+    {
+        Id = 0x01;
+        IsMcbe = true;
+    }
 
-	public int protocolVersion;
+    protected override void EncodePacket()
+    {
+        base.EncodePacket();
+        WriteBe(protocolVersion);
+        WriteByteArray(payload);
+    }
 
-	public McbeLogin()
-	{
-		Id = 0x01;
-		IsMcbe = true;
-	}
-
-	protected override void EncodePacket()
-	{
-		base.EncodePacket();
-
-
-		WriteBe(protocolVersion);
-		WriteByteArray(payload);
-	}
-
-
-	protected override void DecodePacket()
-	{
-		base.DecodePacket();
-
-
-		protocolVersion = ReadIntBe();
-		payload = ReadByteArray();
-	}
-
-
-	protected override void ResetPacket()
-	{
-		base.ResetPacket();
-
-		protocolVersion = default;
-		payload = default;
-	}
+    protected override void DecodePacket()
+    {
+        base.DecodePacket();
+        protocolVersion = ReadIntBe();
+        payload = ReadByteArray();
+    }
 }

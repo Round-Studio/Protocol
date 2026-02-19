@@ -1,88 +1,58 @@
 namespace Protocol.Network.MinecraftPacket;
-
 public class McbeCameraPresets : Packet
 {
-	public McbeCameraPresets()
-	{
-		Id = 198;
-		IsMcbe = true;
-	}
+    public McbeCameraPresets()
+    {
+        Id = 198;
+        IsMcbe = true;
+    }
 
+    public CameraPreset[] Presets { get; set; } = new CameraPreset[0];
 
-	public CameraPreset[] Presets { get; set; } = new CameraPreset[0];
+    protected override void EncodePacket()
+    {
+        base.EncodePacket();
+        WriteUnsignedVarInt((uint)(Presets?.Length ?? 0));
+        if (Presets != null)
+            foreach (var preset in Presets)
+                WriteCameraPreset(preset);
+    }
 
+    protected override void DecodePacket()
+    {
+        base.DecodePacket();
+        var count = ReadUnsignedVarInt();
+        Presets = new CameraPreset[count];
+        for (var i = 0; i < count; i++)
+            Presets[i] = ReadCameraPreset();
+    }
 
-	protected override void EncodePacket()
-	{
-		base.EncodePacket();
+#region 补全的方法 (因为 methods.txt 中没有)
+    private void WriteCameraPreset(CameraPreset preset)
+    {
+        if (preset == null)
+        {
+            Write(string.Empty);
+            Write(string.Empty);
+            return;
+        }
 
+        Write(preset.Name ?? string.Empty);
+        Write(preset.Parent ?? string.Empty);
+    }
 
-		WriteUnsignedVarInt((uint)(Presets?.Length ?? 0));
-
-		if (Presets != null)
-			foreach (var preset in Presets)
-
-				WriteCameraPreset(preset);
-	}
-
-
-	protected override void DecodePacket()
-	{
-		base.DecodePacket();
-
-
-		var count = ReadUnsignedVarInt();
-
-		Presets = new CameraPreset[count];
-		for (var i = 0; i < count; i++)
-
-			Presets[i] = ReadCameraPreset();
-	}
-
-
-	protected override void ResetPacket()
-	{
-		base.ResetPacket();
-		Presets = new CameraPreset[0];
-	}
-
-	#region 补全的方法 (因为 methods.txt 中没有)
-
-	private void WriteCameraPreset(CameraPreset preset)
-	{
-		if (preset == null)
-		{
-			Write(string.Empty);
-			Write(string.Empty);
-
-
-			return;
-		}
-
-
-		Write(preset.Name ?? string.Empty);
-		Write(preset.Parent ?? string.Empty);
-	}
-
-
-	private CameraPreset ReadCameraPreset()
-	{
-		var preset = new CameraPreset();
-
-
-		preset.Name = ReadString();
-		preset.Parent = ReadString();
-
-
-		return preset;
-	}
-
-	#endregion
+    private CameraPreset ReadCameraPreset()
+    {
+        var preset = new CameraPreset();
+        preset.Name = ReadString();
+        preset.Parent = ReadString();
+        return preset;
+    }
+#endregion
 }
 
 public class CameraPreset
 {
-	public string Name { get; set; } = string.Empty;
-
-	public string Parent { get; set; } = string.Empty;
+    public string Name { get; set; } = string.Empty;
+    public string Parent { get; set; } = string.Empty;
 }

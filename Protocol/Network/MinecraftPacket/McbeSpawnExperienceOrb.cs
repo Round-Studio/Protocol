@@ -1,54 +1,36 @@
 using System.Numerics;
 
 namespace Protocol.Network.MinecraftPacket;
-
 public partial class McbeSpawnExperienceOrb : Packet
 {
-	public int count;
+    public int count;
+    public Vector3 position;
+    public McbeSpawnExperienceOrb()
+    {
+        Id = 0x42;
+        IsMcbe = true;
+    }
 
-	public Vector3 position;
+    protected override void EncodePacket()
+    {
+        base.EncodePacket();
+        BeforeEncode();
+        Write(position);
+        WriteSignedVarInt(count);
+        AfterEncode();
+    }
 
-	public McbeSpawnExperienceOrb()
-	{
-		Id = 0x42;
-		IsMcbe = true;
-	}
+    partial void BeforeEncode();
+    partial void AfterEncode();
+    protected override void DecodePacket()
+    {
+        base.DecodePacket();
+        BeforeDecode();
+        position = ReadVector3();
+        count = ReadSignedVarInt();
+        AfterDecode();
+    }
 
-	protected override void EncodePacket()
-	{
-		base.EncodePacket();
-
-		BeforeEncode();
-
-		Write(position);
-		WriteSignedVarInt(count);
-
-		AfterEncode();
-	}
-
-	partial void BeforeEncode();
-	partial void AfterEncode();
-
-	protected override void DecodePacket()
-	{
-		base.DecodePacket();
-
-		BeforeDecode();
-
-		position = ReadVector3();
-		count = ReadSignedVarInt();
-
-		AfterDecode();
-	}
-
-	partial void BeforeDecode();
-	partial void AfterDecode();
-
-	protected override void ResetPacket()
-	{
-		base.ResetPacket();
-
-		position = default;
-		count = default;
-	}
+    partial void BeforeDecode();
+    partial void AfterDecode();
 }

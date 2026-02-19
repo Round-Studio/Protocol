@@ -1,48 +1,30 @@
 using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
-
 public class McbeMoveEntity : Packet
 {
-	public byte flags;
-	public PlayerLocation position;
+    public byte flags;
+    public PlayerLocation position;
+    public long runtimeEntityId;
+    public McbeMoveEntity()
+    {
+        Id = 0x12;
+        IsMcbe = true;
+    }
 
-	public long runtimeEntityId;
+    protected override void EncodePacket()
+    {
+        base.EncodePacket();
+        WriteUnsignedVarLong(runtimeEntityId);
+        Write(flags);
+        Write(position);
+    }
 
-	public McbeMoveEntity()
-	{
-		Id = 0x12;
-		IsMcbe = true;
-	}
-
-	protected override void EncodePacket()
-	{
-		base.EncodePacket();
-
-
-		WriteUnsignedVarLong(runtimeEntityId);
-		Write(flags);
-		Write(position);
-	}
-
-
-	protected override void DecodePacket()
-	{
-		base.DecodePacket();
-
-
-		runtimeEntityId = ReadUnsignedVarLong();
-		flags = ReadByte();
-		position = ReadPlayerLocation();
-	}
-
-
-	protected override void ResetPacket()
-	{
-		base.ResetPacket();
-
-		runtimeEntityId = default;
-		flags = default;
-		position = default;
-	}
+    protected override void DecodePacket()
+    {
+        base.DecodePacket();
+        runtimeEntityId = ReadUnsignedVarLong();
+        flags = ReadByte();
+        position = ReadPlayerLocation();
+    }
 }

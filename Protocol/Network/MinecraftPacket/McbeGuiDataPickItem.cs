@@ -1,27 +1,19 @@
 namespace Protocol.Network.MinecraftPacket;
-
 public class McbeGuiDataPickItem : Packet
 {
-	public McbeGuiDataPickItem()
-	{
-		Id = 0x36;
-		IsMcbe = true;
-	}
+    public McbeGuiDataPickItem()
+    {
+        Id = 0x36;
+        IsMcbe = true;
+    }
 
-	protected override void EncodePacket()
-	{
-		base.EncodePacket();
-	}
+    protected override void EncodePacket()
+    {
+        base.EncodePacket();
+    }
 
-
-	protected override void DecodePacket()
-	{
-		base.DecodePacket();
-	}
-
-
-	protected override void ResetPacket()
-	{
-		base.ResetPacket();
-	}
+    protected override void DecodePacket()
+    {
+        base.DecodePacket();
+    }
 }

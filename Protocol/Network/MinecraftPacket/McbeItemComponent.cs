@@ -1,39 +1,24 @@
 using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
-
 public class McbeItemComponent : Packet
 {
-	public Itemstates entries;
+    public Itemstates entries;
+    public McbeItemComponent()
+    {
+        Id = 0xa2;
+        IsMcbe = true;
+    }
 
-	public McbeItemComponent()
-	{
-		Id = 0xa2;
-		IsMcbe = true;
-	}
+    protected override void EncodePacket()
+    {
+        base.EncodePacket();
+        Write(entries);
+    }
 
-	protected override void EncodePacket()
-	{
-		base.EncodePacket();
-
-
-		Write(entries);
-	}
-
-
-	protected override void DecodePacket()
-	{
-		base.DecodePacket();
-
-
-		entries = ReadItemstates();
-	}
-
-
-	protected override void ResetPacket()
-	{
-		base.ResetPacket();
-
-		entries = default;
-	}
+    protected override void DecodePacket()
+    {
+        base.DecodePacket();
+        entries = ReadItemstates();
+    }
 }

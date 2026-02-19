@@ -2,70 +2,50 @@ using Protocol.Minecraft;
 using Protocol.Utils;
 
 namespace Protocol.Network.MinecraftPacket;
-
 public class McbeCraftingEvent : Packet
 {
-	public enum RecipeTypes
-	{
-		Shapeless = 0,
-		Shaped = 1,
-		Furnace = 2,
-		FurnaceData = 3,
-		Multi = 4,
-		ShulkerBox = 5,
-		ChemistryShapeless = 6,
-		ChemistryShaped = 7,
-		SmithingTransform = 8,
-		SmithingTrim = 9
-	}
+    public enum RecipeTypes
+    {
+        Shapeless = 0,
+        Shaped = 1,
+        Furnace = 2,
+        FurnaceData = 3,
+        Multi = 4,
+        ShulkerBox = 5,
+        ChemistryShapeless = 6,
+        ChemistryShaped = 7,
+        SmithingTransform = 8,
+        SmithingTrim = 9
+    }
 
-	public ItemStacks input;
-	public UUID recipeId;
-	public int recipeType;
-	public ItemStacks result;
+    public ItemStacks input;
+    public UUID recipeId;
+    public int recipeType;
+    public ItemStacks result;
+    public byte windowId;
+    public McbeCraftingEvent()
+    {
+        Id = 0x35;
+        IsMcbe = true;
+    }
 
-	public byte windowId;
+    protected override void EncodePacket()
+    {
+        base.EncodePacket();
+        Write(windowId);
+        WriteSignedVarInt(recipeType);
+        Write(recipeId);
+        Write(input);
+        Write(result);
+    }
 
-	public McbeCraftingEvent()
-	{
-		Id = 0x35;
-		IsMcbe = true;
-	}
-
-	protected override void EncodePacket()
-	{
-		base.EncodePacket();
-
-
-		Write(windowId);
-		WriteSignedVarInt(recipeType);
-		Write(recipeId);
-		Write(input);
-		Write(result);
-	}
-
-
-	protected override void DecodePacket()
-	{
-		base.DecodePacket();
-
-
-		windowId = ReadByte();
-		recipeType = ReadSignedVarInt();
-		recipeId = ReadUUID();
-		input = ReadItemStacks();
-		result = ReadItemStacks();
-	}
-
-
-	protected override void ResetPacket()
-	{
-		base.ResetPacket();
-
-		windowId = default;
-		recipeType = default;
-		recipeId = default;
-		input = default;
-		result = default;
-	}
+    protected override void DecodePacket()
+    {
+        base.DecodePacket();
+        windowId = ReadByte();
+        recipeType = ReadSignedVarInt();
+        recipeId = ReadUUID();
+        input = ReadItemStacks();
+        result = ReadItemStacks();
+    }
 }

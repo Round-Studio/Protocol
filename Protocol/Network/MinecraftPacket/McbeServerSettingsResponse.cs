@@ -1,42 +1,25 @@
 namespace Protocol.Network.MinecraftPacket;
-
 public class McbeServerSettingsResponse : Packet
 {
-	public string data;
+    public string data;
+    public long formId;
+    public McbeServerSettingsResponse()
+    {
+        Id = 0x67;
+        IsMcbe = true;
+    }
 
-	public long formId;
+    protected override void EncodePacket()
+    {
+        base.EncodePacket();
+        WriteUnsignedVarLong(formId);
+        Write(data);
+    }
 
-	public McbeServerSettingsResponse()
-	{
-		Id = 0x67;
-		IsMcbe = true;
-	}
-
-	protected override void EncodePacket()
-	{
-		base.EncodePacket();
-
-
-		WriteUnsignedVarLong(formId);
-		Write(data);
-	}
-
-
-	protected override void DecodePacket()
-	{
-		base.DecodePacket();
-
-
-		formId = ReadUnsignedVarLong();
-		data = ReadString();
-	}
-
-
-	protected override void ResetPacket()
-	{
-		base.ResetPacket();
-
-		formId = default;
-		data = default;
-	}
+    protected override void DecodePacket()
+    {
+        base.DecodePacket();
+        formId = ReadUnsignedVarLong();
+        data = ReadString();
+    }
 }

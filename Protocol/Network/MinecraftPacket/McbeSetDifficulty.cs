@@ -1,37 +1,22 @@
 namespace Protocol.Network.MinecraftPacket;
-
 public class McbeSetDifficulty : Packet
 {
-	public uint difficulty;
+    public uint difficulty;
+    public McbeSetDifficulty()
+    {
+        Id = 0x3c;
+        IsMcbe = true;
+    }
 
-	public McbeSetDifficulty()
-	{
-		Id = 0x3c;
-		IsMcbe = true;
-	}
+    protected override void EncodePacket()
+    {
+        base.EncodePacket();
+        WriteUnsignedVarInt(difficulty);
+    }
 
-	protected override void EncodePacket()
-	{
-		base.EncodePacket();
-
-
-		WriteUnsignedVarInt(difficulty);
-	}
-
-
-	protected override void DecodePacket()
-	{
-		base.DecodePacket();
-
-
-		difficulty = ReadUnsignedVarInt();
-	}
-
-
-	protected override void ResetPacket()
-	{
-		base.ResetPacket();
-
-		difficulty = default;
-	}
+    protected override void DecodePacket()
+    {
+        base.DecodePacket();
+        difficulty = ReadUnsignedVarInt();
+    }
 }

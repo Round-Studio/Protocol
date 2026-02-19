@@ -2,56 +2,36 @@ using Protocol.Minecraft.Skins;
 using Protocol.Utils;
 
 namespace Protocol.Network.MinecraftPacket;
-
 public class McbePlayerSkin : Packet
 {
-	public bool isVerified;
-	public string oldSkinName;
-	public Skin skin;
-	public string skinName;
+    public bool isVerified;
+    public string oldSkinName;
+    public Skin skin;
+    public string skinName;
+    public UUID uuid;
+    public McbePlayerSkin()
+    {
+        Id = 0x5d;
+        IsMcbe = true;
+    }
 
-	public UUID uuid;
+    protected override void EncodePacket()
+    {
+        base.EncodePacket();
+        Write(uuid);
+        Write(skin);
+        Write(skinName);
+        Write(oldSkinName);
+        Write(isVerified);
+    }
 
-	public McbePlayerSkin()
-	{
-		Id = 0x5d;
-		IsMcbe = true;
-	}
-
-	protected override void EncodePacket()
-	{
-		base.EncodePacket();
-
-
-		Write(uuid);
-		Write(skin);
-		Write(skinName);
-		Write(oldSkinName);
-		Write(isVerified);
-	}
-
-
-	protected override void DecodePacket()
-	{
-		base.DecodePacket();
-
-
-		uuid = ReadUUID();
-		skin = ReadSkin();
-		skinName = ReadString();
-		oldSkinName = ReadString();
-		isVerified = ReadBool();
-	}
-
-
-	protected override void ResetPacket()
-	{
-		base.ResetPacket();
-
-		uuid = default;
-		skin = default;
-		skinName = default;
-		oldSkinName = default;
-		isVerified = default;
-	}
+    protected override void DecodePacket()
+    {
+        base.DecodePacket();
+        uuid = ReadUUID();
+        skin = ReadSkin();
+        skinName = ReadString();
+        oldSkinName = ReadString();
+        isVerified = ReadBool();
+    }
 }

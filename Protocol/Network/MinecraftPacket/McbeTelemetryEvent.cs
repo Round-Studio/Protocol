@@ -1,50 +1,31 @@
 namespace Protocol.Network.MinecraftPacket;
-
 public class McbeTelemetryEvent : Packet
 {
-	public byte[] auxData;
-	public int eventData;
-	public byte eventType;
+    public byte[] auxData;
+    public int eventData;
+    public byte eventType;
+    public long runtimeEntityId;
+    public McbeTelemetryEvent()
+    {
+        Id = 0x41;
+        IsMcbe = true;
+    }
 
-	public long runtimeEntityId;
+    protected override void EncodePacket()
+    {
+        base.EncodePacket();
+        WriteUnsignedVarLong(runtimeEntityId);
+        WriteSignedVarInt(eventData);
+        Write(eventType);
+        Write(auxData);
+    }
 
-	public McbeTelemetryEvent()
-	{
-		Id = 0x41;
-		IsMcbe = true;
-	}
-
-	protected override void EncodePacket()
-	{
-		base.EncodePacket();
-
-
-		WriteUnsignedVarLong(runtimeEntityId);
-		WriteSignedVarInt(eventData);
-		Write(eventType);
-		Write(auxData);
-	}
-
-
-	protected override void DecodePacket()
-	{
-		base.DecodePacket();
-
-
-		runtimeEntityId = ReadUnsignedVarLong();
-		eventData = ReadSignedVarInt();
-		eventType = ReadByte();
-		auxData = ReadBytes(0, true);
-	}
-
-
-	protected override void ResetPacket()
-	{
-		base.ResetPacket();
-
-		runtimeEntityId = default;
-		eventData = default;
-		eventType = default;
-		auxData = default;
-	}
+    protected override void DecodePacket()
+    {
+        base.DecodePacket();
+        runtimeEntityId = ReadUnsignedVarLong();
+        eventData = ReadSignedVarInt();
+        eventType = ReadByte();
+        auxData = ReadBytes(0, true);
+    }
 }

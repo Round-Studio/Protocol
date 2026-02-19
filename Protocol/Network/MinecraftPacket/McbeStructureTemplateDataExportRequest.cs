@@ -1,27 +1,19 @@
 namespace Protocol.Network.MinecraftPacket;
-
 public class McbeStructureTemplateDataExportRequest : Packet
 {
-	public McbeStructureTemplateDataExportRequest()
-	{
-		Id = 0x84;
-		IsMcbe = true;
-	}
+    public McbeStructureTemplateDataExportRequest()
+    {
+        Id = 0x84;
+        IsMcbe = true;
+    }
 
-	protected override void EncodePacket()
-	{
-		base.EncodePacket();
-	}
+    protected override void EncodePacket()
+    {
+        base.EncodePacket();
+    }
 
-
-	protected override void DecodePacket()
-	{
-		base.DecodePacket();
-	}
-
-
-	protected override void ResetPacket()
-	{
-		base.ResetPacket();
-	}
+    protected override void DecodePacket()
+    {
+        base.DecodePacket();
+    }
 }

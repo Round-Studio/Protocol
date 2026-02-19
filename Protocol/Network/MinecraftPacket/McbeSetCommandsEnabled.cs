@@ -1,37 +1,22 @@
 namespace Protocol.Network.MinecraftPacket;
-
 public class McbeSetCommandsEnabled : Packet
 {
-	public bool enabled;
+    public bool enabled;
+    public McbeSetCommandsEnabled()
+    {
+        Id = 0x3b;
+        IsMcbe = true;
+    }
 
-	public McbeSetCommandsEnabled()
-	{
-		Id = 0x3b;
-		IsMcbe = true;
-	}
+    protected override void EncodePacket()
+    {
+        base.EncodePacket();
+        Write(enabled);
+    }
 
-	protected override void EncodePacket()
-	{
-		base.EncodePacket();
-
-
-		Write(enabled);
-	}
-
-
-	protected override void DecodePacket()
-	{
-		base.DecodePacket();
-
-
-		enabled = ReadBool();
-	}
-
-
-	protected override void ResetPacket()
-	{
-		base.ResetPacket();
-
-		enabled = default;
-	}
+    protected override void DecodePacket()
+    {
+        base.DecodePacket();
+        enabled = ReadBool();
+    }
 }
