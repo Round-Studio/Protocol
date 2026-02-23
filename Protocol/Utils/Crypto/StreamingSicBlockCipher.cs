@@ -55,6 +55,21 @@ namespace SicStream
 			}
 		}
 
+		public override int DoFinal(Span<byte> output)
+		{
+			throw new NotImplementedException();
+		}
+
+		public override int ProcessByte(byte input, Span<byte> output)
+		{
+			throw new NotImplementedException();
+		}
+
+		public override int ProcessBytes(ReadOnlySpan<byte> input, Span<byte> output)
+		{
+			throw new NotImplementedException();
+		}
+
 		public override byte[] DoFinal()
 		{
 			// returns no bytes at all, as there is no input
@@ -165,6 +180,11 @@ namespace SicStream
 				processed++;
 				inputProcessed++;
 			}
+		}
+
+		public void ProcessBytes(ReadOnlySpan<byte> input, Span<byte> output)
+		{
+			throw new NotImplementedException();
 		}
 
 		public void Reset()
