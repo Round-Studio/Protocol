@@ -105,7 +105,7 @@ public class McbeText : Packet
 
 		if (string.IsNullOrEmpty(Message))
 		{
-			throw new ArgumentException("Message cannot be empty", nameof(Message));
+			throw new FormatException("Message cannot be empty");
 		}
 
 		Write(XUID);
@@ -163,9 +163,10 @@ public class McbeText : Packet
 		PlatformChatID = ReadString();
 
 		var hasFilteredMessage = ReadBool();
+		FilteredMessage = new Optional<string>();
 		if (hasFilteredMessage)
 		{
-			FilteredMessage = new Optional<string>(ReadString());
+			FilteredMessage.Value = ReadString();
 		}
 	}
 

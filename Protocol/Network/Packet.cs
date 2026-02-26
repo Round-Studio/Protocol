@@ -4913,7 +4913,7 @@ namespace Protocol.Network
 
 				_writer = null;
 				_buffer = null;
-
+				Bytes = _encodedMessage;
 				return _encodedMessage;
 			}
 		}
