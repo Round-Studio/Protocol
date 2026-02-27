@@ -20,29 +20,6 @@ namespace Protocol.Utils.Crypto
 {
 	public static class CryptoUtils
 	{
-		public static string PublicKey =
-			"MHYwEAYHKoZIzj0CAQYFK4EEACIDYgAEsiOr5h31pEdL7S1zhmqAjrTGieiP1F70rUUC62D5t07ywL+wOfdn7aKjaxGdGjxc57mF5CwSE31vQ3IGformQsLD8CKBXfZSQtEtvgmKs3PTAn5RbPIlkioU0MGfML4N";
-
-		public static string PrivateKey = "MIG/AgEAMBAGByqGSM49AgEGBSuBBAAiBIGnMIGkAgEBBDAZi0RsRJkEoOmC2A9HC+LaIb3Ux3fAGKiGMH6mLFtNPpu8cC/nTya1n/IGfAtfrFKgBwYFK4EEACKhZANiAASyI6vmHfWkR0vtLXOGaoCOtMaJ6I/UXvStRQLrYPm3TvLAv7A592ftoqNrEZ0aPFznuYXkLBITfW9DcgZ+iuZCwsPwIoFd9lJC0S2+CYqzc9MCflFs8iWSKhTQwZ8wvg0=";
-		public static AsymmetricCipherKeyPair GetSignedServerKey()
-		{
-			try
-			{
-				byte[] privateKeyBytes = Convert.FromBase64String(PrivateKey);
-				PrivateKeyInfo privateKeyInfo = PrivateKeyInfo.GetInstance(privateKeyBytes);
-				AsymmetricKeyParameter privateKey = PrivateKeyFactory.CreateKey(privateKeyInfo);
-
-				byte[] publicKeyBytes = Convert.FromBase64String(PublicKey);
-				SubjectPublicKeyInfo publicKeyInfo = SubjectPublicKeyInfo.GetInstance(publicKeyBytes);
-				AsymmetricKeyParameter publicKey = PublicKeyFactory.CreateKey(publicKeyInfo);
-
-				return new AsymmetricCipherKeyPair(publicKey, privateKey);
-			}
-			catch (Exception ex)
-			{
-				throw new Exception("Failed to restore key pair from Base64 strings", ex);
-			}
-		}
 		public static byte[] DecodeBase64Url(this string input)
 		{
 			return Base64Url.Decode(input);
@@ -88,6 +65,7 @@ namespace Protocol.Utils.Crypto
 		/// <param name="payload"></param>
 		/// <param name="cryptoContext"></param>
 		/// <returns></returns>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static byte[] Encrypt(ReadOnlyMemory<byte> payload, CryptoContext cryptoContext)
 		{
@@ -115,6 +93,7 @@ namespace Protocol.Utils.Crypto
 		/// <param name="payload"></param>
 		/// <param name="cryptoContext"></param>
 		/// <returns></returns>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static ReadOnlyMemory<byte> Decrypt(ReadOnlyMemory<byte> payload, CryptoContext cryptoContext)
 		{
@@ -125,14 +104,6 @@ namespace Protocol.Utils.Crypto
 			return clear.Slice(0, clear.Length - 8);
 		}
 
-		// CLIENT TO SERVER STUFF
-
-		public static AsymmetricCipherKeyPair GenerateClientKey()
-		{
-			var generator = new ECKeyPairGenerator("ECDH");
-			generator.Init(new ECKeyGenerationParameters(new DerObjectIdentifier("1.3.132.0.34"), SecureRandom.GetInstance("SHA256PRNG")));
-			return generator.GenerateKeyPair();
-		}
 
 		public static ECDsa ConvertToSingKeyFormat(AsymmetricCipherKeyPair key)
 		{
@@ -179,32 +150,6 @@ namespace Protocol.Utils.Crypto
 			Buffer.BlockCopy(input, 1, tmp, 0, expectedSize);
 			return tmp;
 		}
-		public static byte[] EncodeSkinJwt(AsymmetricCipherKeyPair newKey, string username)
-		{
-			var resourcePatch = new SkinResourcePatch() { Geometry = new GeometryIdentifier() { Default = "geometry.humanoid.customSlim" } };
-			var skin = new Skin
-			{
-				SkinId = $"{Guid.NewGuid().ToString()}.CustomSlim",
-				SkinResourcePatch = resourcePatch,
-				Slim = true,
-				Height = 32,
-				Width = 64,
-				Data = Encoding.Default.GetBytes(new string('Z', 8192)),
-			};
-
-			string resourcePatchData = Convert.ToBase64String(Encoding.Default.GetBytes(Skin.ToJson(resourcePatch)));
-			string skin64 = Convert.ToBase64String(skin.Data);
-
-			
-
-			ECDsa signKey = ConvertToSingKeyFormat(newKey);
-			string b64Key = SubjectPublicKeyInfoFactory.CreateSubjectPublicKeyInfo(newKey.Public).GetEncoded().EncodeBase64();
-
-			string val = JWT.Encode(File.ReadAllText("D:\\text3.txt"), signKey, JwsAlgorithm.ES384, new Dictionary<string, object> { { "x5u", b64Key } });
-
-			return Encoding.UTF8.GetBytes(val);
-		}
-
 		public static byte[] CompressJwtBytes(byte[] certChain, byte[] skinData, CompressionLevel compressionLevel)
 		{
 			using (MemoryStream stream = IO.MemoryStreamManger.stream.GetStream())
