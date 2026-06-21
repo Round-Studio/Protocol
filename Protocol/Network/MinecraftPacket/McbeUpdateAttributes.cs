@@ -1,11 +1,11 @@
-using Protocol.Minecraft;
+﻿using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 public class McbeUpdateAttributes : Packet
 {
     public PlayerAttributes attributes;
-    public long runtimeEntityId;
-    public long tick;
+    public ulong runtimeEntityId;
+    public ulong tick;
     public McbeUpdateAttributes()
     {
         Id = 0x1d;

@@ -46,9 +46,6 @@ public class EntityLinks : List<EntityLink>
 {
 }
 
-public class GameRules : HashSet<GameRule>
-{
-}
 
 public class Itemstates : List<Itemstate>
 {

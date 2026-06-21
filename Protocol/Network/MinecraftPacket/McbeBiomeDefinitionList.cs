@@ -1,4 +1,4 @@
-using Protocol.Minecraft;
+﻿using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 public class McbeBiomeDefinitionList : Packet
@@ -16,7 +16,7 @@ public class McbeBiomeDefinitionList : Packet
         base.EncodePacket();
         WriteVarInt(biomes.Length);
         foreach (var biome in biomes)
-            WriteBiomeDefinition(biome);
+            Write(biome);
         WriteUnsignedVarInt((uint)biomeNames.Length);
         foreach (var biomeName in biomeNames)
             Write(biomeName);
@@ -25,7 +25,7 @@ public class McbeBiomeDefinitionList : Packet
     protected override void DecodePacket()
     {
         base.DecodePacket();
-        var biomeCount = ReadVarInt();
+        var biomeCount = ReadUnsignedVarInt();
         biomes = new BiomeDefinition[biomeCount];
         for (var i = 0; i < biomeCount; i++)
             biomes[i] = ReadBiomeDefinition();

@@ -1,4 +1,4 @@
-using System.Numerics;
+﻿using System.Numerics;
 using Protocol.Minecraft;
 using Protocol.Utils;
 
@@ -56,7 +56,7 @@ public class LevelSettings
     public Experiments experiments;
     public bool exportedFromEditorMode;
     public int gamemode;
-    public GameRules gamerules;
+    public List<GameRule> gamerules;
     public string gameVersion;
     public int generator;
     public bool hardcoreEnabled;
@@ -120,7 +120,7 @@ public class LevelSettings
         packet.WriteVarInt(platformBroadcastMode);
         packet.Write(enableCommands);
         packet.Write(isTexturepacksRequired);
-        packet.Write(gamerules);
+        packet.WriteSlice(gamerules.ToArray(), packet.WriteGameRuleLegacy);
         packet.Write(experiments);
         packet.Write(false);
         packet.Write(bonusChest);
@@ -176,7 +176,10 @@ public class LevelSettings
         platformBroadcastMode = packet.ReadVarInt();
         enableCommands = packet.ReadBool();
         isTexturepacksRequired = packet.ReadBool();
-        gamerules = packet.ReadGameRules();
+        gamerules = packet.ReadSlice(() =>
+        {
+	        return packet.ReadGameRuleLegacy();
+        }).ToList();
         experiments = packet.ReadExperiments();
         packet.ReadBool();
         bonusChest = packet.ReadBool();
@@ -227,7 +230,7 @@ public class McbeStartGame : Packet
     public string premiumWorldTemplateId;
     public Nbt propertyData;
     public Vector2 rotation;
-    public long runtimeEntityId;
+    public ulong runtimeEntityId;
     public Vector3 spawn;
     public bool TickDeathSystems;
     public string worldId;

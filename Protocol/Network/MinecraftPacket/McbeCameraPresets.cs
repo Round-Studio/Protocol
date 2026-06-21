@@ -1,4 +1,4 @@
-namespace Protocol.Network.MinecraftPacket;
+﻿namespace Protocol.Network.MinecraftPacket;
 public class McbeCameraPresets : Packet
 {
     public McbeCameraPresets()
@@ -27,7 +27,7 @@ public class McbeCameraPresets : Packet
             Presets[i] = ReadCameraPreset();
     }
 
-#region 补全的方法 (因为 methods.txt 中没有)
+#region 琛ュ叏鐨勬柟娉?(鍥犱负 methods.txt 涓病鏈?
     private void WriteCameraPreset(CameraPreset preset)
     {
         if (preset == null)

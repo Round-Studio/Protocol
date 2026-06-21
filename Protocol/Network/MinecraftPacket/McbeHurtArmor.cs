@@ -1,7 +1,7 @@
 namespace Protocol.Network.MinecraftPacket;
 public class McbeHurtArmor : Packet
 {
-    public long armorSlotFlags;
+    public ulong armorSlotFlags;
     public int cause;
     public int health;
     public McbeHurtArmor()

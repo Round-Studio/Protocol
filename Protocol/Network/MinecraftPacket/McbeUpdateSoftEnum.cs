@@ -1,4 +1,4 @@
-namespace Protocol.Network.MinecraftPacket;
+﻿namespace Protocol.Network.MinecraftPacket;
 public class McbeUpdateSoftEnum : Packet
 {
     public McbeUpdateSoftEnum()

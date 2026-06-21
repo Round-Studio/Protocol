@@ -1,4 +1,4 @@
-namespace Protocol.Network.MinecraftPacket;
+﻿namespace Protocol.Network.MinecraftPacket;
 public static class CodeBuilderOperation
 {
     public const byte None = 0;

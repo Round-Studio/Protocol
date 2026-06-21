@@ -1,4 +1,4 @@
-using System.Numerics;
+﻿using System.Numerics;
 using Protocol.Utils;
 
 namespace Protocol.Network.MinecraftPacket;

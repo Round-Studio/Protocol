@@ -22,10 +22,10 @@ public class McbeMovePlayer : Packet
     public float headYaw;
     public byte mode;
     public bool onGround;
-    public long otherRuntimeEntityId;
+    public ulong otherRuntimeEntityId;
     public float pitch;
-    public long runtimeEntityId;
-    public long tick;
+    public ulong runtimeEntityId;
+    public ulong tick;
     public float x;
     public float y;
     public float yaw;

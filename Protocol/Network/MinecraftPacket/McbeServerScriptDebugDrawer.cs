@@ -145,7 +145,7 @@ namespace Protocol.Network.MinecraftPacket
 			var count = ReadUnsignedVarLong();
 			Shapes = new List<DebugDrawerShape>();
 			Shapes.Clear();
-			for (var i = 0; i < count; i++)
+			for (ulong i = 0; i < count; i++)
 			{
 				var shape = new DebugDrawerShape();
 

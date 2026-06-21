@@ -1,7 +1,7 @@
-namespace Protocol.Network.MinecraftPacket;
+﻿namespace Protocol.Network.MinecraftPacket;
 public class McbeShowCredits : Packet
 {
-    public long runtimeEntityId;
+    public ulong runtimeEntityId;
     public int status;
     public McbeShowCredits()
     {

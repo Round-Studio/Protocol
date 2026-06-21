@@ -1,11 +1,11 @@
-using Protocol.Minecraft;
+﻿using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 public class McbeAlexEntityAnimation : Packet
 {
     public string boneId;
     public AnimationKey[] keys;
-    public long runtimeEntityId;
+    public ulong runtimeEntityId;
     public McbeAlexEntityAnimation()
     {
         Id = 0xe0;

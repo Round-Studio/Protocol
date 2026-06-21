@@ -1,4 +1,4 @@
-namespace Protocol.Network.MinecraftPacket;
+﻿namespace Protocol.Network.MinecraftPacket;
 public partial class McbeFilterTextPacket : Packet
 {
     public bool fromServer;

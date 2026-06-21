@@ -1,12 +1,13 @@
-using Protocol.Minecraft;
+﻿using Protocol.Minecraft;
+using Protocol.Minecraft.World.Chunk;
 
 namespace Protocol.Network.MinecraftPacket;
 public class McbeSubChunkRequestPacket : Packet
 {
-    public BlockCoordinates basePosition;
-    public int dimension;
-    public SubChunkPositionOffset[] offsets;
-    public McbeSubChunkRequestPacket()
+	public int Dimension { get; set; }
+	public SubChunkPos Position { get; set; }
+	public System.Collections.Generic.List<SubChunkOffset> Offsets { get; set; }
+	public McbeSubChunkRequestPacket()
     {
         Id = 0xaf;
         IsMcbe = true;
@@ -15,16 +16,33 @@ public class McbeSubChunkRequestPacket : Packet
     protected override void EncodePacket()
     {
         base.EncodePacket();
-        WriteVarInt(dimension);
-        Write(basePosition);
-        Write(offsets);
-    }
+		WriteSignedVarInt(Dimension);
+		Write(Position);
+
+		if (Offsets != null)
+		{
+			WriteSliceUint32Length(Offsets.ToArray(), Write);
+		}
+		else
+		{
+			Write((uint)0);
+		}
+	}
 
     protected override void DecodePacket()
     {
         base.DecodePacket();
-        dimension = ReadVarInt();
-        basePosition = ReadBlockCoordinates();
-        offsets = ReadSubChunkPositionOffsets();
-    }
+
+        Dimension = ReadSignedVarInt();
+        Position = ReadSubChunkPos();
+		
+
+		uint count = ReadUint();
+		var offsetsArray = new SubChunkOffset[count];
+		for (int i = 0; i < count; i++)
+		{
+			offsetsArray[i] = ReadSubChunkOffset();
+		}
+		Offsets = new System.Collections.Generic.List<SubChunkOffset>(offsetsArray);
+	}
 }

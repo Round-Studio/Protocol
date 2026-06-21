@@ -1,4 +1,4 @@
-using Protocol.Minecraft;
+﻿using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 public class McbeClientCheatAbility : Packet
@@ -23,7 +23,7 @@ public class McbeClientCheatAbility : Packet
         AbilityData = ReadAbilityData();
     }
 
-#region 补全的方法 (因为 methods.txt 中没有 AbilityData 和 AbilityLayer 的直接读写)
+#region 琛ュ叏鐨勬柟娉?(鍥犱负 methods.txt 涓病鏈?AbilityData 鍜?AbilityLayer 鐨勭洿鎺ヨ鍐?
     private void WriteAbilityData(AbilityData data)
     {
         if (data == null)

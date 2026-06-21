@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using Protocol.Minecraft;
@@ -16,13 +16,13 @@ namespace Protocol.Network.MinecraftPacket
 		protected override void EncodePacket()
 		{
 			base.EncodePacket();
-			WriteSliceUint16Length(Splines,Write);
+			WriteSlice(Splines,Write);
 		}
 
 		protected override void DecodePacket()
 		{
 			base.DecodePacket();
-			Splines = ReadSliceUint16Length(ReadCameraSplineDefinition);
+			Splines = ReadSlice(ReadCameraSplineDefinition);
 		}
 	}
 }

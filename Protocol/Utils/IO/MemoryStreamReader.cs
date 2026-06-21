@@ -118,6 +118,13 @@ public class MemoryStreamReader : Stream
 		return val;
 	}
 
+	public double ReadDouble()
+	{
+		var val = ReadDoubleLittleEndian(_buffer.Span.Slice((int)Position, 8));
+		Position += 8;
+		return val;
+	}
+
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public float ReadSingleLittleEndian(ReadOnlySpan<byte> source)
 	{

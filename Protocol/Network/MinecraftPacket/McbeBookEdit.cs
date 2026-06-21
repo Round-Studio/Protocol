@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace Protocol.Network.MinecraftPacket;
 /// <summary>
@@ -115,28 +115,28 @@ public class McbeBookEdit : Packet
 
     protected override void DecodePacket()
     {
-        // 读取反序列化代码
-        InventorySlot = ReadVarInt(); // 对应 io.Varint32(&pk.InventorySlot)
-        ActionType = (BookActionType)ReadUnsignedVarInt(); // 对应 io.Varuint32(&pk.ActionType)
+        // 璇诲彇鍙嶅簭鍒楀寲浠ｇ爜
+        InventorySlot = ReadVarInt(); // 瀵瑰簲 io.Varint32(&pk.InventorySlot)
+        ActionType = (BookActionType)ReadUnsignedVarInt(); // 瀵瑰簲 io.Varuint32(&pk.ActionType)
         switch (ActionType)
         {
             case BookActionType.ReplacePage:
             case BookActionType.AddPage:
-                PageNumber = ReadVarInt(); // 对应 io.Varint32(&pk.PageNumber)
-                Text = ReadString(); // 对应 io.String(&pk.Text)
-                PhotoName = ReadString(); // 对应 io.String(&pk.PhotoName)
+                PageNumber = ReadVarInt(); // 瀵瑰簲 io.Varint32(&pk.PageNumber)
+                Text = ReadString(); // 瀵瑰簲 io.String(&pk.Text)
+                PhotoName = ReadString(); // 瀵瑰簲 io.String(&pk.PhotoName)
                 break;
             case BookActionType.DeletePage:
-                PageNumber = ReadVarInt(); // 对应 io.Varint32(&pk.PageNumber)
+                PageNumber = ReadVarInt(); // 瀵瑰簲 io.Varint32(&pk.PageNumber)
                 break;
             case BookActionType.SwapPages:
-                PageNumber = ReadVarInt(); // 对应 io.Varint32(&pk.PageNumber)
-                SecondaryPageNumber = ReadVarInt(); // 对应 io.Varint32(&pk.SecondaryPageNumber)
+                PageNumber = ReadVarInt(); // 瀵瑰簲 io.Varint32(&pk.PageNumber)
+                SecondaryPageNumber = ReadVarInt(); // 瀵瑰簲 io.Varint32(&pk.SecondaryPageNumber)
                 break;
             case BookActionType.Sign:
-                Title = ReadString(); // 对应 io.String(&pk.Title)
-                Author = ReadString(); // 对应 io.String(&pk.Author)
-                XUID = ReadString(); // 对应 io.String(&pk.XUID)
+                Title = ReadString(); // 瀵瑰簲 io.String(&pk.Title)
+                Author = ReadString(); // 瀵瑰簲 io.String(&pk.Author)
+                XUID = ReadString(); // 瀵瑰簲 io.String(&pk.XUID)
                 break;
         }
 

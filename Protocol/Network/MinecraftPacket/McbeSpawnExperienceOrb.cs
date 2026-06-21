@@ -1,4 +1,4 @@
-using System.Numerics;
+﻿using System.Numerics;
 
 namespace Protocol.Network.MinecraftPacket;
 public partial class McbeSpawnExperienceOrb : Packet

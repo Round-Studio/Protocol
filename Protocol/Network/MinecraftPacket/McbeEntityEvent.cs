@@ -1,9 +1,9 @@
-namespace Protocol.Network.MinecraftPacket;
+﻿namespace Protocol.Network.MinecraftPacket;
 public class McbeEntityEvent : Packet
 {
     public int data;
     public byte eventId;
-    public long runtimeEntityId;
+    public ulong runtimeEntityId;
     public McbeEntityEvent()
     {
         Id = 0x1b;

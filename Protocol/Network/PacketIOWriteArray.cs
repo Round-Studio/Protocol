@@ -236,6 +236,42 @@ namespace Protocol.Network
 			return result;
 		}
 
+		public void WriteSliceOfLen<T>(T[] array,int length, Action<T> action)
+		{
+			for (int i = 0; i < length; i++)
+			{
+				action(array[i]);
+			}
+		}
+
+		public T[] ReadSliceOfLen<T>( int length, Func<T> action)
+		{
+			T[] array = new T[length];	
+			for (int i = 0; i < length; i++)
+			{
+				array[i] = action();
+			}
+
+			return array;
+		}
+		public void WriteSliceOfLen<T>(T[] array, int length, Action<T,bool> action,bool bigendian)
+		{
+			for (int i = 0; i < length; i++)
+			{
+				action(array[i],bigendian);
+			}
+		}
+
+		public T[] ReadSliceOfLen<T>(int length, Func<bool,T> action,bool bigendian)
+		{
+			T[] array = new T[length];
+			for (int i = 0; i < length; i++)
+			{
+				array[i] = action(bigendian);
+			}
+
+			return array;
+		}
 
 	}
 }

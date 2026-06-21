@@ -1,4 +1,4 @@
-namespace Protocol.Network.MinecraftPacket;
+﻿namespace Protocol.Network.MinecraftPacket;
 public class McbeRespawn : Packet
 {
     public enum RespawnState
@@ -8,7 +8,7 @@ public class McbeRespawn : Packet
         ClientReady = 2
     }
 
-    public long runtimeEntityId;
+    public ulong runtimeEntityId;
     public byte state;
     public float x;
     public float y;

@@ -1,10 +1,10 @@
-namespace Protocol.Network.MinecraftPacket;
+﻿namespace Protocol.Network.MinecraftPacket;
 public class McbeEmotePacket : Packet
 {
     public string emoteId;
     public byte flags;
     public string platformId;
-    public long runtimeEntityId;
+    public ulong runtimeEntityId;
     public uint tick;
     public string xuid;
     public McbeEmotePacket()

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Protocol.Network.MinecraftPacket;
 
 namespace Protocol.Network
@@ -11,512 +11,524 @@ namespace Protocol.Network
 				switch (id)
 				{
 					case 1:
-						return new McbeLogin().SetBytes(buffer);
+						return new McbeLogin().Decode(buffer);
 					case 2:
-						return new McbePlayStatus().SetBytes(buffer);
+						return new McbePlayStatus().Decode(buffer);
 					case 3:
-						return new McbeServerToClientHandshake().SetBytes(buffer);
+						return new McbeServerToClientHandshake().Decode(buffer);
 					case 4:
-						return new McbeClientToServerHandshake().SetBytes(buffer);
+						return new McbeClientToServerHandshake().Decode(buffer);
 					case 5:
-						return new McbeDisconnect().SetBytes(buffer);
+						return new McbeDisconnect().Decode(buffer);
 					case 6:
-						return new McbeResourcePacksInfo().SetBytes(buffer);
+						return new McbeResourcePacksInfo().Decode(buffer);
 					case 7:
-						return new McbeResourcePackStack().SetBytes(buffer);
+						return new McbeResourcePackStack().Decode(buffer);
 					case 8:
-						return new McbeResourcePackClientResponse().SetBytes(buffer);
+						return new McbeResourcePackClientResponse().Decode(buffer);
 					case 9:
-						return new McbeText().SetBytes(buffer);
+						return new McbeText().Decode(buffer);
 					case 10:
-						return new McbeSetTime().SetBytes(buffer);
+						return new McbeSetTime().Decode(buffer);
 					case 11:
-						return new McbeStartGame().SetBytes(buffer);
+						return new McbeStartGame().Decode(buffer);
 					case 12:
-						return new McbeAddPlayer().SetBytes(buffer);
+						return new McbeAddPlayer().Decode(buffer);
 					case 13:
-						return new McbeAddEntity().SetBytes(buffer);
+						return new McbeAddEntity().Decode(buffer);
 					case 14:
-						return new McbeRemoveEntity().SetBytes(buffer);
+						return new McbeRemoveEntity().Decode(buffer);
 					case 15:
-						return new McbeAddItemEntity().SetBytes(buffer);
+						return new McbeAddItemEntity().Decode(buffer);
 
 					case 17:
-						return new McbeTakeItemEntity().SetBytes(buffer);
+						return new McbeTakeItemEntity().Decode(buffer);
 					case 18:
-						return new McbeMoveEntity().SetBytes(buffer);
+						return new McbeMoveEntity().Decode(buffer);
 					case 19:
-						return new McbeMovePlayer().SetBytes(buffer);
+						return new McbeMovePlayer().Decode(buffer);
 
 					case 21:
-						return new McbeUpdateBlock().SetBytes(buffer);
+						return new McbeUpdateBlock().Decode(buffer);
 					case 22:
-						return new McbeAddPainting().SetBytes(buffer);
+						return new McbeAddPainting().Decode(buffer);
 
 					case 23:
-						return new McbeTickSync().SetBytes(buffer);
+						return new McbeTickSync().Decode(buffer);
 
 					case 25:
-						return new McbeLevelEvent().SetBytes(buffer);
+						return new McbeLevelEvent().Decode(buffer);
 					case 26:
-						return new McbeBlockEvent().SetBytes(buffer);
+						return new McbeBlockEvent().Decode(buffer);
 					case 27:
-						return new McbeEntityEvent().SetBytes(buffer);
+						return new McbeEntityEvent().Decode(buffer);
 					case 28:
-						return new McbeMobEffect().SetBytes(buffer);
+						return new McbeMobEffect().Decode(buffer);
 					case 29:
-						return new McbeUpdateAttributes().SetBytes(buffer);
+						return new McbeUpdateAttributes().Decode(buffer);
 					case 30:
-						return new McbeInventoryTransaction().SetBytes(buffer);
+						return new McbeInventoryTransaction().Decode(buffer);
 					case 31:
-						return new McbeMobEquipment().SetBytes(buffer);
+						return new McbeMobEquipment().Decode(buffer);
 					case 32:
-						return new McbeMobArmorEquipment().SetBytes(buffer);
+						return new McbeMobArmorEquipment().Decode(buffer);
 					case 33:
-						return new McbeInteract().SetBytes(buffer);
+						return new McbeInteract().Decode(buffer);
 					case 34:
-						return new McbeBlockPickRequest().SetBytes(buffer);
+						return new McbeBlockPickRequest().Decode(buffer);
 					case 35:
-						return new McbeEntityPickRequest().SetBytes(buffer);
+						return new McbeEntityPickRequest().Decode(buffer);
 					case 36:
-						return new McbePlayerAction().SetBytes(buffer);
+						return new McbePlayerAction().Decode(buffer);
 
 					case 38:
-						return new McbeHurtArmor().SetBytes(buffer);
+						return new McbeHurtArmor().Decode(buffer);
 					case 39:
-						return new McbeSetEntityData().SetBytes(buffer);
+						return new McbeSetEntityData().Decode(buffer);
 					case 40:
-						return new McbeSetEntityMotion().SetBytes(buffer);
+						return new McbeSetEntityMotion().Decode(buffer);
 					case 41:
-						return new McbeSetEntityLink().SetBytes(buffer);
+						return new McbeSetEntityLink().Decode(buffer);
 					case 42:
-						return new McbeSetHealth().SetBytes(buffer);
+						return new McbeSetHealth().Decode(buffer);
 					case 43:
-						return new McbeSetSpawnPosition().SetBytes(buffer);
+						return new McbeSetSpawnPosition().Decode(buffer);
 					case 44:
-						return new McbeAnimate().SetBytes(buffer);
+						return new McbeAnimate().Decode(buffer);
 					case 45:
-						return new McbeRespawn().SetBytes(buffer);
+						return new McbeRespawn().Decode(buffer);
 					case 46:
-						return new McbeContainerOpen().SetBytes(buffer);
+						return new McbeContainerOpen().Decode(buffer);
 					case 47:
-						return new McbeContainerClose().SetBytes(buffer);
+						return new McbeContainerClose().Decode(buffer);
 					case 48:
-						return new McbePlayerHotbar().SetBytes(buffer);
+						return new McbePlayerHotbar().Decode(buffer);
 					case 49:
-						return new McbeInventoryContent().SetBytes(buffer);
+						return new McbeInventoryContent().Decode(buffer);
 					case 50:
-						return new McbeInventorySlot().SetBytes(buffer);
+						return new McbeInventorySlot().Decode(buffer);
 					case 51:
-						return new McbeContainerSetData().SetBytes(buffer);
+						return new McbeContainerSetData().Decode(buffer);
 					case 52:
-						return new McbeCraftingData().SetBytes(buffer);
+						return new McbeCraftingData().Decode(buffer);
 
 					case 54:
-						return new McbeGuiDataPickItem().SetBytes(buffer);
+						return new McbeGuiDataPickItem().Decode(buffer);
 					case 55:
-						return new McbeAdventureSettings().SetBytes(buffer);
+						return new McbeAdventureSettings().Decode(buffer);
 					case 56:
-						return new McbeBlockEntityData().SetBytes(buffer);
+						return new McbeBlockEntityData().Decode(buffer);
 
 					case 58:
-						return new McbeLevelChunk().SetBytes(buffer);
+						return new McbeLevelChunk().Decode(buffer);
 					case 59:
-						return new McbeSetCommandsEnabled().SetBytes(buffer);
+						return new McbeSetCommandsEnabled().Decode(buffer);
 					case 60:
-						return new McbeSetDifficulty().SetBytes(buffer);
+						return new McbeSetDifficulty().Decode(buffer);
 					case 61:
-						return new McbeChangeDimension().SetBytes(buffer);
+						return new McbeChangeDimension().Decode(buffer);
 					case 62:
-						return new McbeSetPlayerGameType().SetBytes(buffer);
+						return new McbeSetPlayerGameType().Decode(buffer);
 					case 63:
-						return new McbePlayerList().SetBytes(buffer);
+						return new McbePlayerList().Decode(buffer);
 					case 64:
-						return new McbeSimpleEvent().SetBytes(buffer);
+						return new McbeSimpleEvent().Decode(buffer);
 					case 65:
-						return new McbeTelemetryEvent().SetBytes(buffer);
+						return new McbeTelemetryEvent().Decode(buffer);
 					case 66:
-						return new McbeSpawnExperienceOrb().SetBytes(buffer);
+						return new McbeSpawnExperienceOrb().Decode(buffer);
 					case 67:
-						return new McbeClientboundMapItemData().SetBytes(buffer);
+						return new McbeClientboundMapItemData().Decode(buffer);
 					case 68:
-						return new McbeMapInfoRequest().SetBytes(buffer);
+						return new McbeMapInfoRequest().Decode(buffer);
 					case 69:
-						return new McbeRequestChunkRadius().SetBytes(buffer);
+						return new McbeRequestChunkRadius().Decode(buffer);
 					case 70:
-						return new McbeChunkRadiusUpdate().SetBytes(buffer);
+						return new McbeChunkRadiusUpdate().Decode(buffer);
 
 					case 72:
-						return new McbeGameRulesChanged().SetBytes(buffer);
+						return new McbeGameRulesChanged().Decode(buffer);
 					case 73:
-						return new McbeCamera().SetBytes(buffer);
+						return new McbeCamera().Decode(buffer);
 					case 74:
-						return new McbeBossEvent().SetBytes(buffer);
+						return new McbeBossEvent().Decode(buffer);
 					case 75:
-						return new McbeShowCredits().SetBytes(buffer);
+						return new McbeShowCredits().Decode(buffer);
 					case 76:
-						return new McbeAvailableCommands().SetBytes(buffer);
+						return new McbeAvailableCommands().Decode(buffer);
 					case 77:
-						return new McbeCommandRequest().SetBytes(buffer);
+						return new McbeCommandRequest().Decode(buffer);
 					case 78:
-						return new McbeCommandBlockUpdate().SetBytes(buffer);
+						return new McbeCommandBlockUpdate().Decode(buffer);
 					case 79:
-						return new McbeCommandOutput().SetBytes(buffer);
+						return new McbeCommandOutput().Decode(buffer);
 					case 80:
-						return new McbeUpdateTrade().SetBytes(buffer);
+						return new McbeUpdateTrade().Decode(buffer);
 					case 81:
-						return new McbeUpdateEquipment().SetBytes(buffer);
+						return new McbeUpdateEquipment().Decode(buffer);
 					case 82:
-						return new McbeResourcePackDataInfo().SetBytes(buffer);
+						return new McbeResourcePackDataInfo().Decode(buffer);
 					case 83:
-						return new McbeResourcePackChunkData().SetBytes(buffer);
+						return new McbeResourcePackChunkData().Decode(buffer);
 					case 84:
-						return new McbeResourcePackChunkRequest().SetBytes(buffer);
+						return new McbeResourcePackChunkRequest().Decode(buffer);
 					case 85:
-						return new McbeTransfer().SetBytes(buffer);
+						return new McbeTransfer().Decode(buffer);
 					case 86:
-						return new McbePlaySound().SetBytes(buffer);
+						return new McbePlaySound().Decode(buffer);
 					case 87:
-						return new McbeStopSound().SetBytes(buffer);
+						return new McbeStopSound().Decode(buffer);
 					case 88:
-						return new McbeSetTitle().SetBytes(buffer);
+						return new McbeSetTitle().Decode(buffer);
 					case 89:
-						return new McbeAddBehaviorTree().SetBytes(buffer);
+						return new McbeAddBehaviorTree().Decode(buffer);
 					case 90:
-						return new McbeStructureBlockUpdate().SetBytes(buffer);
+						return new McbeStructureBlockUpdate().Decode(buffer);
 					case 91:
-						return new McbeShowStoreOffer().SetBytes(buffer);
+						return new McbeShowStoreOffer().Decode(buffer);
 					case 92:
-						return new McbePurchaseReceipt().SetBytes(buffer);
+						return new McbePurchaseReceipt().Decode(buffer);
 					case 93:
-						return new McbePlayerSkin().SetBytes(buffer);
+						return new McbePlayerSkin().Decode(buffer);
 					case 94:
-						return new McbeSubClientLogin().SetBytes(buffer);
+						return new McbeSubClientLogin().Decode(buffer);
 					case 95:
-						return new McbeInitiateWebSocketConnection().SetBytes(buffer);
+						return new McbeInitiateWebSocketConnection().Decode(buffer);
 					case 96:
-						return new McbeSetLastHurtBy().SetBytes(buffer);
+						return new McbeSetLastHurtBy().Decode(buffer);
 					case 97:
-						return new McbeBookEdit().SetBytes(buffer);
+						return new McbeBookEdit().Decode(buffer);
 					case 98:
-						return new McbeNpcRequest().SetBytes(buffer);
+						return new McbeNpcRequest().Decode(buffer);
 					case 99:
-						return new McbePhotoTransfer().SetBytes(buffer);
+						return new McbePhotoTransfer().Decode(buffer);
 					case 100:
-						return new McbeModalFormRequest().SetBytes(buffer);
+						return new McbeModalFormRequest().Decode(buffer);
 					case 101:
-						return new McbeModalFormResponse().SetBytes(buffer);
+						return new McbeModalFormResponse().Decode(buffer);
 					case 102:
-						return new McbeServerSettingsRequest().SetBytes(buffer);
+						return new McbeServerSettingsRequest().Decode(buffer);
 					case 103:
-						return new McbeServerSettingsResponse().SetBytes(buffer);
+						return new McbeServerSettingsResponse().Decode(buffer);
 					case 104:
-						return new McbeShowProfile().SetBytes(buffer);
+						return new McbeShowProfile().Decode(buffer);
 					case 105:
-						return new McbeSetDefaultGameType().SetBytes(buffer);
+						return new McbeSetDefaultGameType().Decode(buffer);
 					case 106:
-						return new McbeRemoveObjective().SetBytes(buffer);
+						return new McbeRemoveObjective().Decode(buffer);
 					case 107:
-						return new McbeSetDisplayObjective().SetBytes(buffer);
+						return new McbeSetDisplayObjective().Decode(buffer);
 					case 108:
-						return new McbeSetScore().SetBytes(buffer);
+						return new McbeSetScore().Decode(buffer);
 					case 109:
-						return new McbeLabTable().SetBytes(buffer);
+						return new McbeLabTable().Decode(buffer);
 					case 110:
-						return new McbeUpdateBlockSynced().SetBytes(buffer);
+						return new McbeUpdateBlockSynced().Decode(buffer);
 					case 111:
-						return new McbeMoveEntityDelta().SetBytes(buffer);
+						return new McbeMoveEntityDelta().Decode(buffer);
 					case 112:
-						return new McbeSetScoreboardIdentity().SetBytes(buffer);
+						return new McbeSetScoreboardIdentity().Decode(buffer);
 					case 113:
-						return new McbeSetLocalPlayerAsInitialized().SetBytes(buffer);
+						return new McbeSetLocalPlayerAsInitialized().Decode(buffer);
 					case 114:
-						return new McbeUpdateSoftEnum().SetBytes(buffer);
+						return new McbeUpdateSoftEnum().Decode(buffer);
 					case 115:
-						return new McbeNetworkStackLatency().SetBytes(buffer);
+						return new McbeNetworkStackLatency().Decode(buffer);
 
 					case 117:
-						return new McbeScriptCustomEvent().SetBytes(buffer);
+						return new McbeScriptCustomEvent().Decode(buffer);
 					case 118:
-						return new McbeSpawnParticleEffect().SetBytes(buffer);
+						return new McbeSpawnParticleEffect().Decode(buffer);
 					case 119:
-						return new McbeAvailableEntityIdentifiers().SetBytes(buffer);
+						return new McbeAvailableEntityIdentifiers().Decode(buffer);
 
 					case 121:
-						return new McbeNetworkChunkPublisherUpdate().SetBytes(buffer);
+						return new McbeNetworkChunkPublisherUpdate().Decode(buffer);
 					case 122:
-						return new McbeBiomeDefinitionList().SetBytes(buffer);
+						return new McbeBiomeDefinitionList().Decode(buffer);
 					case 123:
-						return new McbeLevelSoundEvent().SetBytes(buffer);
+						return new McbeLevelSoundEvent().Decode(buffer);
 					case 124:
-						return new McbeLevelEventGeneric().SetBytes(buffer);
+						return new McbeLevelEventGeneric().Decode(buffer);
 					case 125:
-						return new McbeLecternUpdate().SetBytes(buffer);
+						return new McbeLecternUpdate().Decode(buffer);
 
 
 					case 129:
-						return new McbeClientCacheStatus().SetBytes(buffer);
+						return new McbeClientCacheStatus().Decode(buffer);
 					case 130:
-						return new McbeOnScreenTextureAnimation().SetBytes(buffer);
+						return new McbeOnScreenTextureAnimation().Decode(buffer);
 					case 131:
-						return new McbeMapCreateLockedCopy().SetBytes(buffer);
+						return new McbeMapCreateLockedCopy().Decode(buffer);
 					case 132:
-						return new McbeStructureTemplateDataExportRequest().SetBytes(buffer);
+						return new McbeStructureTemplateDataExportRequest().Decode(buffer);
 					case 133:
-						return new McbeStructureTemplateDataExportResponse().SetBytes(buffer);
+						return new McbeStructureTemplateDataExportResponse().Decode(buffer);
 
 					case 135:
-						return new McbeClientCacheBlobStatus().SetBytes(buffer);
+						return new McbeClientCacheBlobStatus().Decode(buffer);
 					case 136:
-						return new McbeClientCacheMissResponse().SetBytes(buffer);
+						return new McbeClientCacheMissResponse().Decode(buffer);
 					case 137:
-						return new McbeEducationSettings().SetBytes(buffer);
+						return new McbeEducationSettings().Decode(buffer);
 					case 138:
-						return new McbeEmotePacket().SetBytes(buffer);
+						return new McbeEmotePacket().Decode(buffer);
 					case 139:
-						return new McbeMultiPlayerSettings().SetBytes(buffer);
+						return new McbeMultiPlayerSettings().Decode(buffer);
 					case 140:
-						return new McbeSettingsCommand().SetBytes(buffer);
+						return new McbeSettingsCommand().Decode(buffer);
 					case 141:
-						return new McbeAnvilDamage().SetBytes(buffer);
+						return new McbeAnvilDamage().Decode(buffer);
 					case 142:
-						return new McbeCompletedUsingItem().SetBytes(buffer);
+						return new McbeCompletedUsingItem().Decode(buffer);
 					case 143:
-						return new McbeNetworkSettings().SetBytes(buffer);
+						return new McbeNetworkSettings().Decode(buffer);
 					case 144:
-						return new McbePlayerAuthInput().SetBytes(buffer);
+						return new McbePlayerAuthInput().Decode(buffer);
 					case 145:
-						return new McbeCreativeContent().SetBytes(buffer);
+						return new McbeCreativeContent().Decode(buffer);
 					case 146:
-						return new McbePlayerEnchantOptions().SetBytes(buffer);
+						return new McbePlayerEnchantOptions().Decode(buffer);
 					case 147:
-						return new McbeItemStackRequest().SetBytes(buffer);
+						return new McbeItemStackRequest().Decode(buffer);
 					case 148:
-						return new McbeItemStackResponse().SetBytes(buffer);
+						return new McbeItemStackResponse().Decode(buffer);
 					case 149:
-						return new McbeHurtArmor().SetBytes(buffer);
+						return new McbeHurtArmor().Decode(buffer);
 					case 150:
-						return new McbeCodeBuilder().SetBytes(buffer);
+						return new McbeCodeBuilder().Decode(buffer);
 					case 151:
-						return new McbeUpdatePlayerGameType().SetBytes(buffer);
+						return new McbeUpdatePlayerGameType().Decode(buffer);
 					case 152:
-						return new McbeEmoteList().SetBytes(buffer);
+						return new McbeEmoteList().Decode(buffer);
 					case 153:
-						return new McbePositionTrackingDBServerBroadcast().SetBytes(buffer);
+						return new McbePositionTrackingDBServerBroadcast().Decode(buffer);
 					case 154:
-						return new McbePositionTrackingDBClientRequest().SetBytes(buffer);
+						return new McbePositionTrackingDBClientRequest().Decode(buffer);
 					case 155:
-						return new McbeDebugInfo().SetBytes(buffer);
+						return new McbeDebugInfo().Decode(buffer);
 
 					case 156:
-						return new McbePacketViolationWarning().SetBytes(buffer);
+						return new McbePacketViolationWarning().Decode(buffer);
 					case 157:
-						return new McbeMotionPredictionHints().SetBytes(buffer);
+						return new McbeMotionPredictionHints().Decode(buffer);
 
 					case 158:
-						return new McbeAnimateEntity().SetBytes(buffer);
+						return new McbeAnimateEntity().Decode(buffer);
 
 					case 159:
-						return new McbeCamera().SetBytes(buffer);
+						return new McbeCamera().Decode(buffer);
 
 					case 160:
-						return new McbePlayerFog().SetBytes(buffer);
+						return new McbePlayerFog().Decode(buffer);
 					case 161:
-						return new McbeCorrectPlayerMovePrediction().SetBytes(buffer);
+						return new McbeCorrectPlayerMovePrediction().Decode(buffer);
 
 					case 162:
-						return new McbeItemRegistry().SetBytes(buffer);
+						return new McbeItemRegistry().Decode(buffer);
 
 					case 163:
-						return new McbeFilterTextPacket().SetBytes(buffer);
+						return new McbeFilterTextPacket().Decode(buffer);
 					case 164:
-						return new McbeClientBoundDebugRenderer().SetBytes(buffer);
+						return new McbeClientBoundDebugRenderer().Decode(buffer);
 					case 165:
-						return new McbeSyncEntityProperty().SetBytes(buffer);
+						return new McbeSyncEntityProperty().Decode(buffer);
 					case 166:
-						return new McbeAddVolumeEntity().SetBytes(buffer);
+						return new McbeAddVolumeEntity().Decode(buffer);
 
 					case 167:
-						return new McbeRemoveVolumeEntity().SetBytes(buffer);
+						return new McbeRemoveVolumeEntity().Decode(buffer);
 
 					case 168:
-						return new McbeSimulationType().SetBytes(buffer);
+						return new McbeSimulationType().Decode(buffer);
 
 					case 169:
-						return new McbeNPCDialogue().SetBytes(buffer);
+						return new McbeNPCDialogue().Decode(buffer);
 
 					case 170:
-						return new McbeEducationResourceURI().SetBytes(buffer);
+						return new McbeEducationResourceURI().Decode(buffer);
 
 					case 171:
-						return new McbeCreatePhoto().SetBytes(buffer);
+						return new McbeCreatePhoto().Decode(buffer);
 
 					case 172:
-						return new McbeUpdateSubChunkBlocksPacket().SetBytes(buffer);
+						return new McbeUpdateSubChunkBlocksPacket().Decode(buffer);
 					case 173:
-						return new McbePhotoInfoRequest().SetBytes(buffer);
+						return new McbePhotoInfoRequest().Decode(buffer);
 
 					case 174:
-						return new McbeSubChunkPacket().SetBytes(buffer);
+						return new McbeSubChunkPacket().Decode(buffer);
 					case 175:
-						return new McbeSubChunkRequestPacket().SetBytes(buffer);
+						return new McbeSubChunkRequestPacket().Decode(buffer);
 					case 176:
-						return new McbeClientStartItemCooldown().SetBytes(buffer);
+						return new McbeClientStartItemCooldown().Decode(buffer);
 
 					case 177:
-						return new McbeScriptMessage().SetBytes(buffer);
+						return new McbeScriptMessage().Decode(buffer);
 
 					case 178:
-						return new McbeCodeBuilderSource().SetBytes(buffer);
+						return new McbeCodeBuilderSource().Decode(buffer);
 
 					case 179:
-						return new McbeTickingAreasLoadStatus().SetBytes(buffer);
+						return new McbeTickingAreasLoadStatus().Decode(buffer);
 
 					case 180:
-						return new McbeDimensionData().SetBytes(buffer);
+						return new McbeDimensionData().Decode(buffer);
 					case 181:
-						return new McbeAgentAction().SetBytes(buffer);
+						return new McbeAgentAction().Decode(buffer);
 
 					case 182:
-						return new McbeChangeMobProperty().SetBytes(buffer);
+						return new McbeChangeMobProperty().Decode(buffer);
 
 					case 183:
-						return new McbeLessonProgress().SetBytes(buffer);
+						return new McbeLessonProgress().Decode(buffer);
 
 					case 184:
-						return new McbeRequestAbility().SetBytes(buffer);
+						return new McbeRequestAbility().Decode(buffer);
 					case 185:
-						return new McbePermissionRequest().SetBytes(buffer);
+						return new McbePermissionRequest().Decode(buffer);
 					case 186:
 
 					case 187:
-						return new McbeUpdateAbilities().SetBytes(buffer);
+						return new McbeUpdateAbilities().Decode(buffer);
 					case 188:
-						return new McbeUpdateAdventureSettings().SetBytes(buffer);
+						return new McbeUpdateAdventureSettings().Decode(buffer);
 					case 189:
-						return new McbeDeathInfo().SetBytes(buffer);
+						return new McbeDeathInfo().Decode(buffer);
 
 					case 190:
-						return new McbeEditorNetwork().SetBytes(buffer);
+						return new McbeEditorNetwork().Decode(buffer);
 
 					case 191:
-						return new McbeFeatureRegistry().SetBytes(buffer);
+						return new McbeFeatureRegistry().Decode(buffer);
 
 					case 192:
-						return new McbeServerStats().SetBytes(buffer);
+						return new McbeServerStats().Decode(buffer);
 
 					case 193:
-						return new McbeRequestNetworkSettings().SetBytes(buffer);
+						return new McbeRequestNetworkSettings().Decode(buffer);
 					case 194:
-						return new McbeGameTestRequest().SetBytes(buffer);
+						return new McbeGameTestRequest().Decode(buffer);
 
 					case 195:
-						return new McbeGameTestResults().SetBytes(buffer);
+						return new McbeGameTestResults().Decode(buffer);
 
 					case 196:
-						return new McbeUpdateClientInputLocks().SetBytes(buffer);
+						return new McbeUpdateClientInputLocks().Decode(buffer);
 
 					case 197:
-						return new McbeClientCheatAbility().SetBytes(buffer);
+						return new McbeClientCheatAbility().Decode(buffer);
 
 					case 198:
-						return new McbeCameraPresets().SetBytes(buffer);
+						return new McbeCameraPresets().Decode(buffer);
 
 					case 199:
-						return new McbeUnlockedRecipes().SetBytes(buffer);
+						return new McbeUnlockedRecipes().Decode(buffer);
 
 					case 300:
-						return new McbeCameraInstruction().SetBytes(buffer);
+						return new McbeCameraInstruction().Decode(buffer);
 
 
 					case 302:
-						return new McbeTrimData().SetBytes(buffer);
+						return new McbeTrimData().Decode(buffer);
 					case 303:
-						return new McbeOpenSign().SetBytes(buffer);
+						return new McbeOpenSign().Decode(buffer);
 					case 304:
-						return new McbeAlexEntityAnimation().SetBytes(buffer);
+						return new McbeAlexEntityAnimation().Decode(buffer);
 					case 305:
-						return new McbeRefreshEntitlements().SetBytes(buffer);
+						return new McbeRefreshEntitlements().Decode(buffer);
 
 					case 306:
-						return new McbePlayerToggleCrafterSlotRequest().SetBytes(buffer);
+						return new McbePlayerToggleCrafterSlotRequest().Decode(buffer);
 
 					case 307:
-						return new McbeSetInventoryOptions().SetBytes(buffer);
+						return new McbeSetInventoryOptions().Decode(buffer);
 					case 308:
-						return new McbeSetHud().SetBytes(buffer);
+						return new McbeSetHud().Decode(buffer);
 
 					case 309:
-						return new McbeAwardAchievement().SetBytes(buffer);
+						return new McbeAwardAchievement().Decode(buffer);
 
 					case 310:
-						return new McbeClientBoundCloseForm().SetBytes(buffer);
+						return new McbeClientBoundCloseForm().Decode(buffer);
 
 
 					case 312:
-						return new McbeServerboundLoadingScreen().SetBytes(buffer);
+						return new McbeServerboundLoadingScreen().Decode(buffer);
 					case 313:
-						return new McbeJigsawStructureData().SetBytes(buffer);
+						return new McbeJigsawStructureData().Decode(buffer);
 
 					case 314:
-						return new McbeCurrentStructureFeature().SetBytes(buffer);
+						return new McbeCurrentStructureFeature().Decode(buffer);
 
 					case 315:
-						return new McbeServerBoundDiagnostics().SetBytes(buffer);
+						return new McbeServerBoundDiagnostics().Decode(buffer);
 
 					case 316:
-						return new McbeCameraAimAssist().SetBytes(buffer);
+						return new McbeCameraAimAssist().Decode(buffer);
 
 					case 317:
-						return new McbeContainerRegistryCleanup().SetBytes(buffer);
+						return new McbeContainerRegistryCleanup().Decode(buffer);
 
 					case 318:
-						return new McbeMovementEffect().SetBytes(buffer);
+						return new McbeMovementEffect().Decode(buffer);
 
 
 					case 320:
-						return new McbeCameraAimAssistPresets().SetBytes(buffer);
+						return new McbeCameraAimAssistPresets().Decode(buffer);
 
 					case 321:
-						return new McbeClientCameraAimAssist().SetBytes(buffer);
+						return new McbeClientCameraAimAssist().Decode(buffer);
 
 					case 322:
-						return new McbeClientMovementPredictionSync().SetBytes(buffer);
+						return new McbeClientMovementPredictionSync().Decode(buffer);
 
 					case 323:
-						return new McbeUpdateClientOptions().SetBytes(buffer);
+						return new McbeUpdateClientOptions().Decode(buffer);
 
 					case 324:
-						return new McbePlayerVideoCapture().SetBytes(buffer);
+						return new McbePlayerVideoCapture().Decode(buffer);
 
 					case 325:
-						return new McbePlayerUpdateEntityOverrides().SetBytes(buffer);
+						return new McbePlayerUpdateEntityOverrides().Decode(buffer);
 
 					case 326:
-						return new McbePlayerLocation().SetBytes(buffer);
+						return new McbePlayerLocation().Decode(buffer);
 
 					case 327:
-						return new McbeClientBoundControlSchemeSet().SetBytes(buffer);
+						return new McbeClientBoundControlSchemeSet().Decode(buffer);
 					case 328:
-						return new McbeDebugDrawer().SetBytes(buffer);
+						return new McbeDebugDrawer().Decode(buffer);
 					case 329:
-						return new McbeServerBoundPackSettingChange().SetBytes(buffer);
+						return new McbeServerBoundPackSettingChange().Decode(buffer);
 					case 331:
-						return new McbeGraphicsOverrideParameter().SetBytes(buffer);
+						return new McbeGraphicsOverrideParameter().Decode(buffer);
 					case 333:
-						return new McbeClientBoundDataDrivenUIShowScreen().SetBytes(buffer);
+						return new McbeClientBoundDataDrivenUIShowScreen().Decode(buffer);
 					case 334:
-						return new McbeClientBoundDataDrivenUICloseAllScreens().SetBytes(buffer);
+						return new McbeClientBoundDataDrivenUICloseAllScreens().Decode(buffer);
 					case 335:
-						return new McbeClientBoundDataDrivenUIReload().SetBytes(buffer);
+						return new McbeClientBoundDataDrivenUIReload().Decode(buffer);
 					case 336:
-						return new McbeClientBoundTextureShift().SetBytes(buffer);
+						return new McbeClientBoundTextureShift().Decode(buffer);
 					case 337:
-						return new McbeVoxelShapes().SetBytes(buffer);
+						return new McbeVoxelShapes().Decode(buffer);
 					case 338:
-						return new McbeCameraSpline().SetBytes(buffer);
+						return new McbeCameraSpline().Decode(buffer);
 					case 339:
-						return new McbeCameraAimAssistActorPriority().SetBytes(buffer);
+						return new McbeCameraAimAssistActorPriority().Decode(buffer);
+					case 340:
+						return new McbeResourcePacksReadyForValidation().Decode(buffer);
+					case 341:
+						return new McbeLocatorBar().Decode(buffer);
+					case 342:
+						return new McbePartyChanged().Decode(buffer);
+					case 343:
+						return new McbeServerBoundDataDrivenScreenClosed().Decode(buffer);
+					case 344:
+						return new McbeSyncWorldClocks().Decode(buffer);
+					case 345:
+						return new McbeClientBoundAttributeLayerSync().Decode(buffer);
 					default:
 						return new UnknownPacket((byte)id, buffer);
 				}

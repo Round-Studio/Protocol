@@ -1,11 +1,11 @@
-using Protocol.Minecraft;
+﻿using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 public class McbeLevelEventGeneric : Packet
 {
-    public Nbt eventData;
-    public int eventId;
-    public McbeLevelEventGeneric()
+	public int EventID { get; set; }
+	public byte[] SerialisedEventData { get; set; }
+	public McbeLevelEventGeneric()
     {
         Id = 0x7c;
         IsMcbe = true;
@@ -14,15 +14,14 @@ public class McbeLevelEventGeneric : Packet
     protected override void EncodePacket()
     {
         base.EncodePacket();
-        WriteSignedVarInt(eventId);
-        Write(eventData);
+        WriteSignedVarInt(EventID);
+        Write(SerialisedEventData);
     }
 
     protected override void DecodePacket()
     {
         base.DecodePacket();
-        eventId = ReadSignedVarInt();
-        for (byte i = 0; i < 60; i++)
-            ReadByte();
+        EventID = ReadSignedVarInt();
+        SerialisedEventData = ReadByteArray();
     }
 }

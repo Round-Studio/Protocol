@@ -1,7 +1,7 @@
-using static System.Net.Mime.MediaTypeNames;
+﻿using static System.Net.Mime.MediaTypeNames;
 
 namespace Protocol.Network.MinecraftPacket;
-// 文本类型枚举
+// 鏂囨湰绫诲瀷鏋氫妇
 public enum TextType : byte
 {
 	Raw = 0,
@@ -18,7 +18,7 @@ public enum TextType : byte
 	ObjectAnnouncement
 }
 
-// 文本分类枚举
+// 鏂囨湰鍒嗙被鏋氫妇
 public enum TextCategory
 {
 	MessageOnly = 0,

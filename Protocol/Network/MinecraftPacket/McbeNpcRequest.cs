@@ -1,7 +1,7 @@
-namespace Protocol.Network.MinecraftPacket;
+﻿namespace Protocol.Network.MinecraftPacket;
 public class McbeNpcRequest : Packet
 {
-    public long runtimeEntityId;
+    public ulong runtimeEntityId;
     public byte unknown0;
     public string unknown1;
     public byte unknown2;

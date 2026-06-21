@@ -4,6 +4,7 @@ using System.Numerics;
 
 namespace Protocol.Minecraft
 {
+	// Enums
 	public enum BiomeExpressionOp
 	{
 		Unknown = -1,
@@ -84,6 +85,38 @@ namespace Protocol.Minecraft
 		Return = 74,
 		Comma = 75,
 		This = 76,
+		NonEvaluatedArray = 77,
+		InverseLerp = 78,
+		EaseInQuad = 79,
+		EaseOutQuad = 80,
+		EaseInOutQuad = 81,
+		EaseInCubic = 82,
+		EaseOutCubic = 83,
+		EaseInOutCubic = 84,
+		EaseInQuart = 85,
+		EaseOutQuart = 86,
+		EaseInOutQuart = 87,
+		EaseInQuint = 88,
+		EaseOutQuint = 89,
+		EaseInOutQuint = 90,
+		EaseInSine = 91,
+		EaseOutSine = 92,
+		EaseInOutSine = 93,
+		EaseInExpo = 94,
+		EaseOutExpo = 95,
+		EaseInOutExpo = 96,
+		EaseInCirc = 97,
+		EaseOutCirc = 98,
+		EaseInOutCirc = 99,
+		EaseInBounce = 100,
+		EaseOutBounce = 101,
+		EaseInOutBounce = 102,
+		EaseInBack = 103,
+		EaseOutBack = 104,
+		EaseInOutBack = 105,
+		EaseInElastic = 106,
+		EaseOutElastic = 107,
+		EaseInOutElastic = 108
 	}
 
 	public enum BiomeCoordinateEvaluationOrder
@@ -93,7 +126,7 @@ namespace Protocol.Minecraft
 		YXZ = 2,
 		YZX = 3,
 		ZXY = 4,
-		ZYX = 5,
+		ZYX = 5
 	}
 
 	public enum BiomeRandomDistributionType
@@ -104,103 +137,94 @@ namespace Protocol.Minecraft
 		InverseGaussian = 3,
 		FixedGrid = 4,
 		JitteredGrid = 5,
-		Triangle = 6,
+		Triangle = 6
 	}
 
-	public struct BiomeReplacementData
+	// Structures
+	public struct BiomeDefinition
 	{
-		public short Biome { get; set; }
-
-
-		public short Dimension { get; set; }
-
-
-		public short[] TargetBiomes { get; set; }
-
-
-		public float Amount { get; set; }
-
-
-		public float NoiseFrequencyScale { get; set; }
-
-
-		public uint ReplacementIndex { get; set; }
+		public short NameIndex { get; set; }
+		public short BiomeID { get; set; }
+		public float Temperature { get; set; }
+		public float Downfall { get; set; }
+		public float FoliageSnow { get; set; }
+		public float Depth { get; set; }
+		public float Scale { get; set; }
+		public int MapWaterColour { get; set; }
+		public bool Rain { get; set; }
+		public Optional<System.Collections.Generic.List<ushort>> Tags { get; set; }
+		public Optional<BiomeChunkGeneration> ChunkGeneration { get; set; }
 	}
 
-
-	public struct BiomeWeight
+	public struct BiomeChunkGeneration
 	{
-		public short Biome { get; set; }
-		public uint Weight { get; set; }
+		public Optional<BiomeClimate> Climate { get; set; }
+		public Optional<System.Collections.Generic.List<BiomeConsolidatedFeature>> ConsolidatedFeatures { get; set; }
+		public Optional<BiomeMountainParameters> MountainParameters { get; set; }
+		public Optional<System.Collections.Generic.List<BiomeElementData>> SurfaceMaterialAdjustments { get; set; }
+		public Optional<BiomeSurfaceMaterial> SurfaceMaterials { get; set; }
+		public bool HasDefaultOverworldSurface { get; set; }
+		public bool HasSwampSurface { get; set; }
+		public bool HasFrozenOceanSurface { get; set; }
+		public bool HasEndSurface { get; set; }
+		public Optional<BiomeMesaSurface> MesaSurface { get; set; }
+		public Optional<BiomeCappedSurface> CappedSurface { get; set; }
+		public Optional<BiomeOverworldRules> OverworldRules { get; set; }
+		public Optional<BiomeMultiNoiseRules> MultiNoiseRules { get; set; }
+		public Optional<System.Collections.Generic.List<BiomeConditionalTransformation>> LegacyRules { get; set; }
+		public Optional<System.Collections.Generic.List<BiomeReplacementData>> ReplacementsData { get; set; }
+		public Optional<byte> VillageType { get; set; }
 	}
 
-
-	public struct BiomeTemperatureWeight
-	{
-		public int Temperature { get; set; }
-		public uint Weight { get; set; }
-	}
-
-
-	public struct BiomeConditionalTransformation
-	{
-		public BiomeWeight[] WeightedBiomes { get; set; }
-		public short ConditionJSON { get; set; }
-		public uint MinPassingNeighbours { get; set; }
-	}
-
-
-	public struct BiomeMultiNoiseRules
+	public struct BiomeClimate
 	{
 		public float Temperature { get; set; }
-		public float Humidity { get; set; }
-		public float Altitude { get; set; }
-		public float Weirdness { get; set; }
-		public float Weight { get; set; }
+		public float Downfall { get; set; }
+		public float SnowAccumulationMin { get; set; }
+		public float SnowAccumulationMax { get; set; }
 	}
 
-
-	public struct BiomeOverworldRules
+	public struct BiomeConsolidatedFeature
 	{
-		public BiomeWeight[] HillsTransformations { get; set; }
-		public BiomeWeight[] MutateTransformations { get; set; }
-		public BiomeWeight[] RiverTransformations { get; set; }
-		public BiomeWeight[] ShoreTransformations { get; set; }
-		public BiomeConditionalTransformation[] PreHillsEdgeTransformations { get; set; }
-		public BiomeConditionalTransformation[] PostShoreEdgeTransformations { get; set; }
-		public BiomeTemperatureWeight[] ClimateTransformations { get; set; }
+		public BiomeScatterParameter Scatter { get; set; }
+		public short Feature { get; set; }
+		public short Identifier { get; set; }
+		public short Pass { get; set; }
+		public bool CanUseInternal { get; set; }
 	}
 
-
-	public struct BiomeCappedSurface
+	public struct BiomeScatterParameter
 	{
-		public int[] FloorBlocks { get; set; }
-		public int[] CeilingBlocks { get; set; }
-		public Optional<uint> SeaBlock { get; set; }
-		public Optional<uint> FoundationBlock { get; set; }
-		public Optional<uint> BeachBlock { get; set; }
+		public System.Collections.Generic.List<BiomeCoordinate> Coordinates { get; set; }
+		public int EvaluationOrder { get; set; }
+		public int ChancePercentType { get; set; }
+		public short ChancePercent { get; set; }
+		public int ChanceNumerator { get; set; }
+		public int ChanceDenominator { get; set; }
+		public int IterationsType { get; set; }
+		public short Iterations { get; set; }
 	}
 
-
-	public struct BiomeMesaSurface
+	public struct BiomeCoordinate
 	{
-		public uint ClayMaterial { get; set; }
-		public uint HardClayMaterial { get; set; }
-		public bool BrycePillars { get; set; }
-		public bool HasForest { get; set; }
+		public int MinValueType { get; set; }
+		public short MinValue { get; set; }
+		public int MaxValueType { get; set; }
+		public short MaxValue { get; set; }
+		public uint GridOffset { get; set; }
+		public uint GridStepSize { get; set; }
+		public int Distribution { get; set; }
 	}
 
-
-	public struct BiomeSurfaceMaterial
+	public struct BiomeMountainParameters
 	{
-		public int TopBlock { get; set; }
-		public int MidBlock { get; set; }
-		public int SeaFloorBlock { get; set; }
-		public int FoundationBlock { get; set; }
-		public int SeaBlock { get; set; }
-		public int SeaFloorDepth { get; set; }
+		public int SteepBlock { get; set; }
+		public bool NorthSlopes { get; set; }
+		public bool SouthSlopes { get; set; }
+		public bool WestSlopes { get; set; }
+		public bool EastSlopes { get; set; }
+		public bool TopSlideEnabled { get; set; }
 	}
-
 
 	public struct BiomeElementData
 	{
@@ -214,100 +238,79 @@ namespace Protocol.Minecraft
 		public BiomeSurfaceMaterial AdjustedMaterials { get; set; }
 	}
 
-
-	public struct BiomeMountainParameters
+	public struct BiomeSurfaceMaterial
 	{
-		public int SteepBlock { get; set; }
-		public bool NorthSlopes { get; set; }
-		public bool SouthSlopes { get; set; }
-		public bool WestSlopes { get; set; }
-		public bool EastSlopes { get; set; }
-		public bool TopSlideEnabled { get; set; }
+		public int TopBlock { get; set; }
+		public int MidBlock { get; set; }
+		public int SeaFloorBlock { get; set; }
+		public int FoundationBlock { get; set; }
+		public int SeaBlock { get; set; }
+		public int SeaFloorDepth { get; set; }
 	}
 
-
-	public struct BiomeCoordinate
+	public struct BiomeMesaSurface
 	{
-		public int MinValueType { get; set; }
-		public short MinValue { get; set; }
-		public int MaxValueType { get; set; }
-		public short MaxValue { get; set; }
-		public uint GridOffset { get; set; }
-		public uint GridStepSize { get; set; }
-		public int Distribution { get; set; }
+		public uint ClayMaterial { get; set; }
+		public uint HardClayMaterial { get; set; }
+		public bool BrycePillars { get; set; }
+		public bool HasForest { get; set; }
 	}
 
-
-	public struct BiomeScatterParameter
+	public struct BiomeCappedSurface
 	{
-		public BiomeCoordinate[] Coordinates { get; set; }
-		public int EvaluationOrder { get; set; }
-		public int ChancePercentType { get; set; }
-		public short ChancePercent { get; set; }
-		public int ChanceNumerator { get; set; }
-		public int ChanceDenominator { get; set; }
-		public int IterationsType { get; set; }
-		public short Iterations { get; set; }
+		public System.Collections.Generic.List<int> FloorBlocks { get; set; }
+		public System.Collections.Generic.List<int> CeilingBlocks { get; set; }
+		public Optional<uint> SeaBlock { get; set; }
+		public Optional<uint> FoundationBlock { get; set; }
+		public Optional<uint> BeachBlock { get; set; }
 	}
 
-
-	public struct BiomeConsolidatedFeature
+	public struct BiomeOverworldRules
 	{
-		public BiomeScatterParameter Scatter { get; set; }
-		public short Feature { get; set; }
-		public short Identifier { get; set; }
-		public short Pass { get; set; }
-		public bool CanUseInternal { get; set; }
+		public System.Collections.Generic.List<BiomeWeight> HillsTransformations { get; set; }
+		public System.Collections.Generic.List<BiomeWeight> MutateTransformations { get; set; }
+		public System.Collections.Generic.List<BiomeWeight> RiverTransformations { get; set; }
+		public System.Collections.Generic.List<BiomeWeight> ShoreTransformations { get; set; }
+		public System.Collections.Generic.List<BiomeConditionalTransformation> PreHillsEdgeTransformations { get; set; }
+		public System.Collections.Generic.List<BiomeConditionalTransformation> PostShoreEdgeTransformations { get; set; }
+		public System.Collections.Generic.List<BiomeTemperatureWeight> ClimateTransformations { get; set; }
 	}
 
-
-	public struct BiomeClimate
+	public struct BiomeMultiNoiseRules
 	{
 		public float Temperature { get; set; }
-		public float Downfall { get; set; }
-		public float RedSporeDensity { get; set; }
-		public float BlueSporeDensity { get; set; }
-		public float AshDensity { get; set; }
-		public float WhiteAshDensity { get; set; }
-		public float SnowAccumulationMin { get; set; }
-		public float SnowAccumulationMax { get; set; }
+		public float Humidity { get; set; }
+		public float Altitude { get; set; }
+		public float Weirdness { get; set; }
+		public float Weight { get; set; }
 	}
 
-
-	public struct BiomeChunkGeneration
+	public struct BiomeConditionalTransformation
 	{
-		public Optional<BiomeClimate> Climate { get; set; }
-		public Optional<BiomeConsolidatedFeature[]> ConsolidatedFeatures { get; set; }
-		public Optional<BiomeMountainParameters> MountainParameters { get; set; }
-		public Optional<BiomeElementData[]> SurfaceMaterialAdjustments { get; set; }
-		public Optional<BiomeSurfaceMaterial> SurfaceMaterials { get; set; }
-		public bool HasSwampSurface { get; set; }
-		public bool HasFrozenOceanSurface { get; set; }
-		public bool HasEndSurface { get; set; }
-		public Optional<BiomeMesaSurface> MesaSurface { get; set; }
-		public Optional<BiomeCappedSurface> CappedSurface { get; set; }
-		public Optional<BiomeOverworldRules> OverworldRules { get; set; }
-		public Optional<BiomeMultiNoiseRules> MultiNoiseRules { get; set; }
-		public Optional<BiomeConditionalTransformation[]> LegacyRules { get; set; }
-		public Optional<BiomeReplacementData[]> ReplacementsData { get; set; }
+		public System.Collections.Generic.List<BiomeWeight> WeightedBiomes { get; set; }
+		public short ConditionJSON { get; set; }
+		public uint MinPassingNeighbours { get; set; }
 	}
 
-
-	public struct BiomeDefinition
+	public struct BiomeWeight
 	{
-		public short NameIndex { get; set; }
-		public short BiomeID { get; set; }
-		public float Temperature { get; set; }
-		public float Downfall { get; set; }
-		public float RedSporeDensity { get; set; }
-		public float BlueSporeDensity { get; set; }
-		public float AshDensity { get; set; }
-		public float WhiteAshDensity { get; set; }
-		public float Depth { get; set; }
-		public float Scale { get; set; }
-		public int MapWaterColour { get; set; }
-		public bool Rain { get; set; }
-		public Optional<ushort[]> Tags { get; set; }
-		public Optional<BiomeChunkGeneration> ChunkGeneration { get; set; }
+		public short Biome { get; set; }
+		public uint Weight { get; set; }
+	}
+
+	public struct BiomeTemperatureWeight
+	{
+		public int Temperature { get; set; }
+		public uint Weight { get; set; }
+	}
+
+	public struct BiomeReplacementData
+	{
+		public short Biome { get; set; }
+		public short Dimension { get; set; }
+		public System.Collections.Generic.List<short> TargetBiomes { get; set; }
+		public float Amount { get; set; }
+		public float NoiseFrequencyScale { get; set; }
+		public uint ReplacementIndex { get; set; }
 	}
 }

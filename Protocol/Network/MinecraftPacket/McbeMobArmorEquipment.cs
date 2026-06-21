@@ -1,4 +1,4 @@
-using Protocol.Minecraft;
+﻿using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 public class McbeMobArmorEquipment : Packet
@@ -8,7 +8,7 @@ public class McbeMobArmorEquipment : Packet
     public Item chestplate;
     public Item helmet;
     public Item leggings;
-    public long runtimeEntityId;
+    public ulong runtimeEntityId;
     public McbeMobArmorEquipment()
     {
         Id = 0x20;

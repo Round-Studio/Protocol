@@ -1,4 +1,4 @@
-namespace Protocol.Network.MinecraftPacket;
+﻿namespace Protocol.Network.MinecraftPacket;
 public class McbeUpdatePlayerGameType : Packet
 {
 	public int GameType { get; set; }
@@ -16,7 +16,7 @@ public class McbeUpdatePlayerGameType : Packet
         base.EncodePacket();
 		WriteVarInt(GameType);
 		WriteVarLong(PlayerUniqueID);
-		WriteUnsignedVarLong((long)Tick);
+		WriteUnsignedVarLong(Tick);
 	}
 
 	protected override void DecodePacket()

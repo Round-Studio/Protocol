@@ -2,7 +2,7 @@ namespace Protocol.Network.MinecraftPacket;
 public class McbeServerSettingsResponse : Packet
 {
     public string data;
-    public long formId;
+    public ulong formId;
     public McbeServerSettingsResponse()
     {
         Id = 0x67;

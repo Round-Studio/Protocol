@@ -1,4 +1,4 @@
-using Protocol.Minecraft;
+﻿using Protocol.Minecraft;
 using Protocol.Utils;
 
 namespace Protocol.Network.MinecraftPacket;
@@ -17,7 +17,7 @@ public class McbeAddPlayer : Packet
     public float pitch;
     public string platformChatId;
     public byte playerPermissions;
-    public long runtimeEntityId;
+    public ulong runtimeEntityId;
     public float speedX;
     public float speedY;
     public float speedZ;

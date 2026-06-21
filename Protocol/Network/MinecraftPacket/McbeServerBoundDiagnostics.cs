@@ -1,3 +1,5 @@
+﻿using Protocol.Minecraft;
+
 namespace Protocol.Network.MinecraftPacket;
 public class McbeServerBoundDiagnostics : Packet
 {
@@ -16,8 +18,11 @@ public class McbeServerBoundDiagnostics : Packet
     public float AverageEndFrameTime { get; set; }
     public float AverageRemainderTimePercent { get; set; }
     public float AverageUnaccountedTimePercent { get; set; }
+    
+    public List<MemoryCategoryCounter> MemoryCategoryValues { get; set; }
 
-    protected override void EncodePacket()
+
+	protected override void EncodePacket()
     {
         base.EncodePacket();
         Write(AverageFramesPerSecond);
@@ -29,6 +34,7 @@ public class McbeServerBoundDiagnostics : Packet
         Write(AverageEndFrameTime);
         Write(AverageRemainderTimePercent);
         Write(AverageUnaccountedTimePercent);
+        WriteSlice(MemoryCategoryValues.ToArray(),Write);
     }
 
     protected override void DecodePacket()
@@ -43,5 +49,6 @@ public class McbeServerBoundDiagnostics : Packet
         AverageEndFrameTime = ReadFloat();
         AverageRemainderTimePercent = ReadFloat();
         AverageUnaccountedTimePercent = ReadFloat();
+        MemoryCategoryValues = ReadSlice(ReadMemoryCategoryCounter).ToList();
     }
 }

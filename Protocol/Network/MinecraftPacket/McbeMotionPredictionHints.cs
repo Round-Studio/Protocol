@@ -11,7 +11,7 @@ public class McbeMotionPredictionHints : Packet
 	}
 
 
-	public long EntityRuntimeID { get; set; }
+	public ulong EntityRuntimeID { get; set; }
 
 
 	public Vector3 Velocity { get; set; }

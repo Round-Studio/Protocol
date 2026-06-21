@@ -1,13 +1,14 @@
-using Protocol.Minecraft;
+﻿using Protocol.Minecraft;
+using Protocol.Minecraft.World.Chunk;
 
 namespace Protocol.Network.MinecraftPacket;
 public class McbeSubChunkPacket : Packet
 {
-    public bool cacheEnabled;
-    public int dimension;
-    public SubChunkEntryCommon[] entries;
-    public BlockCoordinates subchunkCoordinates;
-    public McbeSubChunkPacket()
+	public bool CacheEnabled { get; set; }
+	public int Dimension { get; set; }
+	public SubChunkPos Position { get; set; }
+	public System.Collections.Generic.List<SubChunkEntry> SubChunkEntries { get; set; }
+	public McbeSubChunkPacket()
     {
         Id = 0xae;
         IsMcbe = true;
@@ -16,95 +17,59 @@ public class McbeSubChunkPacket : Packet
     protected override void EncodePacket()
     {
         base.EncodePacket();
-        Write(cacheEnabled);
-        WriteVarInt(dimension);
-        Write(subchunkCoordinates);
-        Write(entries != null ? entries.Length : 0);
-        foreach (var entry in entries)
-            entry.Write(this, cacheEnabled);
-    }
+		Write(CacheEnabled);
+		WriteSignedVarInt(Dimension);
+		Write(Position);
+
+		if (CacheEnabled)
+		{
+			if (SubChunkEntries != null)
+			{
+				WriteSliceUint32Length(SubChunkEntries.ToArray(), Write);
+			}
+			else
+			{
+				Write((uint)0);
+			}
+		}
+		else
+		{
+			if (SubChunkEntries != null)
+			{
+				WriteSliceUint32Length(SubChunkEntries.ToArray(), WriteSubChunkEntryNoCache);
+			}
+			else
+			{
+				Write((uint)0);
+			}
+		}
+	}
 
     protected override void DecodePacket()
     {
         base.DecodePacket();
-        var count = ReadInt();
-        entries = new SubChunkEntryCommon[count];
-        for (var i = 0; i < entries.Length; i++)
-        {
-            if (cacheEnabled)
-                entries[i] = new SubChunkEntryWithCache();
-            else
-                entries[i] = new SubChunkEntryWithoutCache();
-            entries[i].Read(this, cacheEnabled);
-        }
 
-        cacheEnabled = ReadBool();
-        dimension = ReadVarInt();
-        subchunkCoordinates = ReadBlockCoordinates();
-    }
-}
+        CacheEnabled = ReadBool();
+        Dimension = ReadSignedVarInt();
+        Position = ReadSubChunkPos();
+		
 
-public abstract class SubChunkEntryCommon
-{
-    public SubChunkPositionOffset Offset { get; set; }
-    public SubChunkRequestResult RequestResult { get; set; }
-    public HeightMapData HeightMapData { get; set; }
-    public byte[] Data { get; set; }
+		uint count = ReadUint();
+		SubChunkEntries = new System.Collections.Generic.List<SubChunkEntry>((int)count);
 
-    public void Read(Packet packet, bool cacheEnabled)
-    {
-        Offset = packet.ReadSubChunkPositionOffset();
-        RequestResult = (SubChunkRequestResult)packet.ReadByte();
-        byte[] data = null;
-        if (!cacheEnabled || RequestResult != SubChunkRequestResult.SuccessAllAir)
-            data = packet.ReadByteArray();
-        Data = data;
-        HeightMapData = packet.ReadHeightMapData();
-        OnRead(packet);
-    }
-
-    public void Write(Packet packet, bool cacheEnabled)
-    {
-        packet.Write(Offset);
-        packet.Write((byte)RequestResult);
-        if (!cacheEnabled || RequestResult != SubChunkRequestResult.SuccessAllAir)
-            packet.WriteByteArray(Data);
-        packet.Write(HeightMapData);
-        OnWrite(packet);
-    }
-
-    protected abstract void OnRead(Packet packet);
-    protected abstract void OnWrite(Packet packet);
-}
-
-public class SubChunkPositionOffset
-{
-    public sbyte XOffset { get; set; }
-    public sbyte YOffset { get; set; }
-    public sbyte ZOffset { get; set; }
-}
-
-public class SubChunkEntryWithCache : SubChunkEntryCommon
-{
-    public long usedBlobHash;
-    protected override void OnRead(Packet packet)
-    {
-        usedBlobHash = packet.ReadLong();
-    }
-
-    protected override void OnWrite(Packet packet)
-    {
-        packet.Write(usedBlobHash);
-    }
-}
-
-public class SubChunkEntryWithoutCache : SubChunkEntryCommon
-{
-    protected override void OnRead(Packet packet)
-    {
-    }
-
-    protected override void OnWrite(Packet packet)
-    {
-    }
+		if (CacheEnabled)
+		{
+			for (int i = 0; i < count; i++)
+			{
+				SubChunkEntries.Add(ReadSubChunkEntry());
+			}
+		}
+		else
+		{
+			for (int i = 0; i < count; i++)
+			{
+				SubChunkEntries.Add(ReadSubChunkEntryNoCache());
+			}
+		}
+	}
 }

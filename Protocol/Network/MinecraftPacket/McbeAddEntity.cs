@@ -1,4 +1,4 @@
-using Protocol.Minecraft;
+﻿using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 public class McbeAddEntity : Packet
@@ -11,7 +11,7 @@ public class McbeAddEntity : Packet
     public EntityLinks links;
     public MetadataDictionary metadata;
     public float pitch;
-    public long runtimeEntityId;
+    public ulong runtimeEntityId;
     public float speedX;
     public float speedY;
     public float speedZ;

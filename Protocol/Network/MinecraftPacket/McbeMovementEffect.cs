@@ -12,10 +12,10 @@ public class McbeMovementEffect : Packet
         IsMcbe = true;
     }
 
-    public long EntityRuntimeID { get; set; }
+    public ulong EntityRuntimeID { get; set; }
     public MovementEffectType Type { get; set; }
     public int Duration { get; set; }
-    public long Tick { get; set; }
+    public ulong Tick { get; set; }
 
     protected override void EncodePacket()
     {

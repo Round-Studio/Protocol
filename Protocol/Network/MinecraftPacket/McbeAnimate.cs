@@ -1,8 +1,8 @@
-namespace Protocol.Network.MinecraftPacket;
+﻿namespace Protocol.Network.MinecraftPacket;
 public class McbeAnimate : Packet
 {
     public int actionId;
-    public long runtimeEntityId;
+    public ulong runtimeEntityId;
     public float Data;
     public float unknownFloat;
     public McbeAnimate()

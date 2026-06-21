@@ -4,7 +4,7 @@ public class McbeAnimateEntity : Packet
     public string animationName;
     public float blendOutTime;
     public string controllerName;
-    public long[] entities;
+    public ulong[] entities;
     public int molangVersion;
     public string nextState;
     public string stopExpression;
@@ -23,8 +23,8 @@ public class McbeAnimateEntity : Packet
         Write(molangVersion);
         Write(controllerName);
         Write(blendOutTime);
-        WriteUnsignedVarInt((uint)entities.Count());
-        for (var i = 0; i < entities.Count(); i++)
+        WriteUnsignedVarInt((uint)entities.Length);
+        for (var i = 0; i < entities.Length; i++)
             WriteUnsignedVarLong(entities[i]);
     }
 
@@ -37,7 +37,9 @@ public class McbeAnimateEntity : Packet
         molangVersion = ReadInt();
         controllerName = ReadString();
         blendOutTime = ReadFloat();
-        for (var i = 0; i < ReadUnsignedVarInt(); i++)
+        var count = ReadUnsignedVarInt();
+        entities = new ulong[count];
+        for (var i = 0; i < count; i++)
             entities[i] = ReadUnsignedVarLong();
     }
 }

@@ -1,4 +1,4 @@
-using Protocol.Utils.UDP;
+﻿using Protocol.Utils.UDP;
 
 namespace Protocol.Network.MinecraftPacket;
 public class OpenConnectionRequest1 : Packet

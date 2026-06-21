@@ -1,10 +1,10 @@
-using Protocol.Minecraft;
+﻿using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 public class McbeGameRulesChanged : Packet
 {
-    public GameRules rules;
-    public McbeGameRulesChanged()
+	public System.Collections.Generic.List<GameRule> GameRules { get; set; }
+	public McbeGameRulesChanged()
     {
         Id = 0x48;
         IsMcbe = true;
@@ -13,12 +13,15 @@ public class McbeGameRulesChanged : Packet
     protected override void EncodePacket()
     {
         base.EncodePacket();
-        Write(rules);
+        WriteSlice(GameRules.ToArray(),Write);
     }
 
     protected override void DecodePacket()
     {
         base.DecodePacket();
-        rules = ReadGameRules();
+        GameRules = ReadSlice((() =>
+        {
+	        return ReadGameRule();
+        })).ToList();
     }
 }

@@ -1,22 +1,20 @@
-using System.Numerics;
+﻿using System.Numerics;
 
 namespace Protocol.Network.MinecraftPacket;
+
+public enum InteractActionType : byte
+{
+	LeaveVehicle = 3,
+	MouseOverEntity = 4,
+	NPCOpen = 5,
+	OpenInventory = 6
+}
 public class McbeInteract : Packet
 {
-    public enum Actions
-    {
-        RightClick = 1,
-        LeftClick = 2,
-        LeaveVehicle = 3,
-        MouseOver = 4,
-        OpenNpc = 5,
-        OpenInventory = 6
-    }
-
-    public byte actionId;
-    public Vector3 Position;
-    public long targetRuntimeEntityId;
-    public McbeInteract()
+	public byte ActionType { get; set; }
+	public ulong TargetEntityRuntimeID { get; set; }
+	public Optional<System.Numerics.Vector3> Position { get; set; }
+	public McbeInteract()
     {
         Id = 0x21;
         IsMcbe = true;
@@ -25,18 +23,26 @@ public class McbeInteract : Packet
     protected override void EncodePacket()
     {
         base.EncodePacket();
-        Write(actionId);
-        WriteUnsignedVarLong(targetRuntimeEntityId);
-        if (actionId == (int)Actions.MouseOver || actionId == (int)Actions.LeaveVehicle)
-            Write(Position);
-    }
+		Write(ActionType);
+		WriteUnsignedVarLong(TargetEntityRuntimeID);
+
+		Write(Position.HasValue);
+		if (Position.HasValue)
+		{
+			Write(Position.Value);
+		}
+	}
 
     protected override void DecodePacket()
     {
         base.DecodePacket();
-        actionId = ReadByte();
-        targetRuntimeEntityId = ReadUnsignedVarLong();
-        if (actionId == (int)Actions.MouseOver || actionId == (int)Actions.LeaveVehicle)
-            Position = ReadVector3();
-    }
+
+        ActionType = ReadByte();
+        TargetEntityRuntimeID = ReadUnsignedVarLong();
+
+		if (ReadBool())
+		{
+			Position = new Optional<System.Numerics.Vector3>(ReadVector3());
+		}
+	}
 }

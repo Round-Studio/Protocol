@@ -46,77 +46,9 @@ public class EntityAttribute
 	}
 }
 
-public enum GameRulesEnum
+public struct GameRule
 {
-	CommandblockOutput,
-	DoDaylightcycle,
-	DoEntitydrops,
-	DoFiretick,
-	DoMobloot,
-	DoMobspawning,
-	DoTiledrops,
-	DoWeathercycle,
-	DrowningDamage,
-	Falldamage,
-	Firedamage,
-	KeepInventory,
-	Mobgriefing,
-	Pvp,
-	ShowCoordinates,
-	NaturalRegeneration,
-	TntExplodes,
-	SendCommandfeedback,
-	ExperimentalGameplay,
-
-
-	DoInsomnia,
-	CommandblocksEnabled,
-
-
-	DoImmediateRespawn,
-
-	ShowDeathmessages
-}
-
-public abstract class GameRule
-{
-	protected GameRule(string name)
-	{
-		Name = name;
-	}
-
-	public string Name { get; }
-	public bool IsPlayerModifiable { get; set; } = true;
-
-	protected bool Equals(GameRule other)
-	{
-		return string.Equals(Name, other.Name);
-	}
-
-	public override bool Equals(object obj)
-	{
-		if (ReferenceEquals(null, obj)) return false;
-		if (ReferenceEquals(this, obj)) return true;
-		if (obj.GetType() != GetType()) return false;
-		return Equals((GameRule)obj);
-	}
-
-	public override int GetHashCode()
-	{
-		return Name != null ? Name.GetHashCode() : 0;
-	}
-}
-
-public class GameRule<T> : GameRule
-{
-	public GameRule(GameRulesEnum rule, T value) : this(rule.ToString(), value)
-	{
-	}
-
-	public GameRule(string name, T value) : base(name)
-	{
-		Value = value;
-	}
-
-	public T Value { get; set; }
+	public string Name { get; set; }
+	public bool CanBeModifiedByPlayer { get; set; }
+	public object Value { get; set; }
 }

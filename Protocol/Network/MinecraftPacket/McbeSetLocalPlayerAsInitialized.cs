@@ -1,7 +1,7 @@
-namespace Protocol.Network.MinecraftPacket;
+﻿namespace Protocol.Network.MinecraftPacket;
 public class McbeSetLocalPlayerAsInitialized : Packet
 {
-    public long runtimeEntityId;
+    public ulong runtimeEntityId;
     public McbeSetLocalPlayerAsInitialized()
     {
         Id = 0x71;

@@ -1,10 +1,10 @@
-using Protocol.Minecraft;
+﻿using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 public class McbeEmoteList : Packet
 {
     public EmoteIds emoteIds;
-    public long runtimeEntityId;
+    public ulong runtimeEntityId;
     public McbeEmoteList()
     {
         Id = 0x8a;

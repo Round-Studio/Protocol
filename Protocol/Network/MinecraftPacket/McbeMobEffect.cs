@@ -1,4 +1,4 @@
-namespace Protocol.Network.MinecraftPacket;
+﻿namespace Protocol.Network.MinecraftPacket;
 public class McbeMobEffect : Packet
 {
     public int amplifier;
@@ -6,8 +6,8 @@ public class McbeMobEffect : Packet
     public int effectId;
     public byte eventId;
     public bool particles;
-    public long runtimeEntityId;
-    public long tick;
+    public ulong runtimeEntityId;
+    public ulong tick;
     public McbeMobEffect()
     {
         Id = 0x1c;

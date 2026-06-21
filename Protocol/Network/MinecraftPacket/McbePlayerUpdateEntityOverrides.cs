@@ -15,7 +15,7 @@ public class McbePlayerUpdateEntityOverrides : Packet
         IsMcbe = true;
     }
 
-    public long EntityRuntimeID { get; set; }
+    public ulong EntityRuntimeID { get; set; }
     public uint PropertyIndex { get; set; }
     public byte Type { get; set; }
     public int IntValue { get; set; }

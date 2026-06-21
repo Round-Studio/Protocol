@@ -24,7 +24,12 @@ namespace Protocol.Utils.Crypto
 		{
 			return Base64Url.Decode(input);
 		}
-
+		public static AsymmetricCipherKeyPair GenerateClientKey()
+		{
+			var generator = new ECKeyPairGenerator("ECDH");
+			generator.Init(new ECKeyGenerationParameters(new DerObjectIdentifier("1.3.132.0.34"), SecureRandom.GetInstance("SHA256PRNG")));
+			return generator.GenerateKeyPair();
+		}
 		public static string EncodeBase64Url(this byte[] input)
 		{
 			return Base64Url.Encode(input);
@@ -65,7 +70,6 @@ namespace Protocol.Utils.Crypto
 		/// <param name="payload"></param>
 		/// <param name="cryptoContext"></param>
 		/// <returns></returns>
-		[MethodImpl(MethodImplOptions.Synchronized)]
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static byte[] Encrypt(ReadOnlyMemory<byte> payload, CryptoContext cryptoContext)
 		{
@@ -93,7 +97,6 @@ namespace Protocol.Utils.Crypto
 		/// <param name="payload"></param>
 		/// <param name="cryptoContext"></param>
 		/// <returns></returns>
-		[MethodImpl(MethodImplOptions.Synchronized)]
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static ReadOnlyMemory<byte> Decrypt(ReadOnlyMemory<byte> payload, CryptoContext cryptoContext)
 		{

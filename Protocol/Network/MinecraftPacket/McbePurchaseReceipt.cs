@@ -1,4 +1,4 @@
-namespace Protocol.Network.MinecraftPacket;
+﻿namespace Protocol.Network.MinecraftPacket;
 public class McbePurchaseReceipt : Packet
 {
     public McbePurchaseReceipt()

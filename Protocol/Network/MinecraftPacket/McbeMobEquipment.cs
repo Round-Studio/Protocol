@@ -1,10 +1,10 @@
-using Protocol.Minecraft;
+﻿using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 public class McbeMobEquipment : Packet
 {
     public Item item;
-    public long runtimeEntityId;
+    public ulong runtimeEntityId;
     public byte selectedSlot;
     public byte slot;
     public byte windowsId;

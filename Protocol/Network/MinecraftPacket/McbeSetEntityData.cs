@@ -1,12 +1,12 @@
-using Protocol.Minecraft;
+﻿using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 public class McbeSetEntityData : Packet
 {
     public MetadataDictionary metadata;
-    public long runtimeEntityId;
+    public ulong runtimeEntityId;
     public PropertySyncData syncdata;
-    public long tick;
+    public ulong tick;
     public McbeSetEntityData()
     {
         Id = 0x27;

@@ -1,10 +1,10 @@
-using System.Numerics;
+﻿using System.Numerics;
 
 namespace Protocol.Network.MinecraftPacket;
 public class McbeSetEntityMotion : Packet
 {
-    public long runtimeEntityId;
-    public long tick;
+    public ulong runtimeEntityId;
+    public ulong tick;
     public Vector3 velocity;
     public McbeSetEntityMotion()
     {

@@ -4,7 +4,7 @@ namespace Protocol.Network.MinecraftPacket;
 public class McbeContainerOpen : Packet
 {
     public BlockCoordinates coordinates;
-    public long runtimeEntityId;
+    public ulong runtimeEntityId;
     public byte type;
     public byte windowId;
     public McbeContainerOpen()
@@ -19,7 +19,7 @@ public class McbeContainerOpen : Packet
         Write(windowId);
         Write(type);
         Write(coordinates);
-        WriteSignedVarLong(runtimeEntityId);
+        WriteSignedVarLong((long)runtimeEntityId);
     }
 
     protected override void DecodePacket()
@@ -28,6 +28,6 @@ public class McbeContainerOpen : Packet
         windowId = ReadByte();
         type = ReadByte();
         coordinates = ReadBlockCoordinates();
-        runtimeEntityId = ReadSignedVarLong();
+        runtimeEntityId = (ulong)ReadSignedVarLong();
     }
 }

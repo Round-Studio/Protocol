@@ -5,7 +5,7 @@ public class McbeCorrectPlayerMovement : Packet
 {
     public bool OnGround;
     public Vector3 Postition;
-    public long Tick;
+    public ulong Tick;
     public byte Type;
     public Vector3 Velocity;
     public McbeCorrectPlayerMovement()

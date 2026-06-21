@@ -1,8 +1,8 @@
 namespace Protocol.Network.MinecraftPacket;
 public class McbePermissionRequest : Packet
 {
-    public short flagss;
-    public uint permission;
+    public ushort flagss;
+    public int permission;
     public long runtimeEntityId;
     public McbePermissionRequest()
     {
@@ -13,13 +13,16 @@ public class McbePermissionRequest : Packet
     protected override void EncodePacket()
     {
         base.EncodePacket();
+        Write(runtimeEntityId);
+        WriteSignedVarInt(permission);
+        Write(flagss);
     }
 
     protected override void DecodePacket()
     {
         base.DecodePacket();
         runtimeEntityId = ReadLong();
-        permission = ReadUnsignedVarInt();
-        flagss = ReadShort();
+        permission = ReadSignedVarInt();
+        flagss = ReadUshort();
     }
 }

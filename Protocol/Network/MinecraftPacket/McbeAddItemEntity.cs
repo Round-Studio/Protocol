@@ -1,4 +1,4 @@
-using Protocol.Minecraft;
+﻿using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 public class McbeAddItemEntity : Packet
@@ -7,7 +7,7 @@ public class McbeAddItemEntity : Packet
     public bool isFromFishing;
     public Item item;
     public MetadataDictionary metadata;
-    public long runtimeEntityId;
+    public ulong runtimeEntityId;
     public float speedX;
     public float speedY;
     public float speedZ;

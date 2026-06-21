@@ -1,4 +1,4 @@
-using Protocol.Minecraft;
+﻿using Protocol.Minecraft;
 using Protocol.Utils;
 
 namespace Protocol.Network.MinecraftPacket;

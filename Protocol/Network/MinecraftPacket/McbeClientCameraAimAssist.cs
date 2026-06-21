@@ -1,4 +1,4 @@
-namespace Protocol.Network.MinecraftPacket;
+﻿namespace Protocol.Network.MinecraftPacket;
 public enum ClientCameraAimAssistAction : byte
 {
     Set = 0,

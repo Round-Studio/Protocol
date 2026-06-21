@@ -1,4 +1,4 @@
-using Protocol.Minecraft;
+﻿using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 public class McbeUpdateBlockSynced : Packet
@@ -7,8 +7,8 @@ public class McbeUpdateBlockSynced : Packet
     public uint blockRuntimeId;
     public BlockCoordinates coordinates;
     public uint dataLayerId;
-    public long unknown0;
-    public long unknown1;
+    public ulong unknown0;
+    public ulong unknown1;
     public McbeUpdateBlockSynced()
     {
         Id = 0x6e;

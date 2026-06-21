@@ -51,8 +51,9 @@ public readonly struct UseItemTransactionData
     public Vector3 ClickedPosition { get; }
     public uint BlockRuntimeID { get; }
     public uint ClientPrediction { get; }
+	public byte ClientCooldownState { get; }
 
-    public UseItemTransactionData(int legacyRequestID, LegacySetItemSlot[] legacySetItemSlots, InventoryAction[] actions, uint actionType, uint triggerType, BlockCoordinates blockPosition, int blockFace, int hotBarSlot, Item heldItem, Vector3 position, Vector3 clickedPosition, uint blockRuntimeID, uint clientPrediction)
+	public UseItemTransactionData(int legacyRequestID, LegacySetItemSlot[] legacySetItemSlots, InventoryAction[] actions, uint actionType, uint triggerType, BlockCoordinates blockPosition, int blockFace, int hotBarSlot, Item heldItem, Vector3 position, Vector3 clickedPosition, uint blockRuntimeID, uint clientPrediction,byte clientCooldownState)
     {
         LegacyRequestID = legacyRequestID;
         LegacySetItemSlots = legacySetItemSlots ?? Array.Empty<LegacySetItemSlot>();
@@ -67,6 +68,7 @@ public readonly struct UseItemTransactionData
         ClickedPosition = clickedPosition;
         BlockRuntimeID = blockRuntimeID;
         ClientPrediction = clientPrediction;
+         ClientCooldownState = clientCooldownState;
     }
 }
 
@@ -203,7 +205,7 @@ public class McbePlayerAuthInput : Packet
     public uint InteractionModel { get; set; }
     public float InteractPitch { get; set; }
     public float InteractYaw { get; set; }
-    public long Tick { get; set; }
+    public ulong Tick { get; set; }
     public Vector3 Delta { get; set; }
     public Vector2 VehicleRotation { get; set; }
     public long ClientPredictedVehicle { get; set; }
@@ -321,6 +323,7 @@ public class McbePlayerAuthInput : Packet
         Write(data.ClickedPosition);
         WriteUnsignedVarInt(data.BlockRuntimeID);
         WriteUnsignedVarInt(data.ClientPrediction);
+        Write(data.ClientCooldownState);
     }
 
     private UseItemTransactionData ReadUseItemTransactionData()
@@ -344,7 +347,8 @@ public class McbePlayerAuthInput : Packet
         var clickedPosition = ReadVector3();
         var blockRuntimeID = ReadUnsignedVarInt();
         var clientPrediction = ReadUnsignedVarInt();
-        return new UseItemTransactionData(legacyRequestID, legacySlots, actions, actionType, triggerType, blockPosition, blockFace, hotBarSlot, heldItem, position, clickedPosition, blockRuntimeID, clientPrediction);
+        var clientcooldownstate = ReadByte();
+        return new UseItemTransactionData(legacyRequestID, legacySlots, actions, actionType, triggerType, blockPosition, blockFace, hotBarSlot, heldItem, position, clickedPosition, blockRuntimeID, clientPrediction,clientcooldownstate);
     }
 
     private void WriteLegacySetItemSlot(LegacySetItemSlot slot)

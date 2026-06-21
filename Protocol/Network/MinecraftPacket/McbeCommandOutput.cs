@@ -1,30 +1,14 @@
-using Protocol.Minecraft;
+﻿using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
-public class CommandOutputMessage
+
+public enum CommandOutputType : byte
 {
-    public bool IsInternal { get; set; }
-    public string MessageId { get; set; }
-    public string[] Parameters { get; set; }
-
-    public override string ToString()
-    {
-        switch (MessageId)
-        {
-            case "commands.generic.unknown":
-                return $"Unknown command: {Parameters[0]}";
-        }
-
-        return $"{{MessageId={MessageId}, IsInternal={IsInternal}, Parameters={string.Join(',', Parameters)}}}";
-    }
-}
-
-public enum CommandOutputType
-{
-    Last = 1,
-    Silent = 2,
-    All = 3,
-    DataSet = 4
+	None = 0,
+	LastOutput = 1,
+	Silent = 2,
+	AllOutput = 3,
+	DataSet = 4
 }
 
 public class McbeCommandOutput : Packet
@@ -35,51 +19,91 @@ public class McbeCommandOutput : Packet
         IsMcbe = true;
     }
 
-    public CommandOriginData OriginData { get; set; }
-    public CommandOutputType OutputType { get; set; }
-    public uint SuccessCount { get; set; }
-    public CommandOutputMessage[] Messages { get; set; }
-    public string UnknownString { get; set; }
+	public CommandOrigin CommandOrigin { get; set; }
+	public byte OutputType { get; set; }
+	public uint SuccessCount { get; set; }
+	public System.Collections.Generic.List<CommandOutputMessage> OutputMessages { get; set; }
+	public Optional<string> DataSet { get; set; }
 
-    protected override void EncodePacket()
+	protected override void EncodePacket()
     {
         base.EncodePacket();
-    }
+		Write(CommandOrigin);
+
+		string outputTypeStr = CommandOutputTypeToString(OutputType);
+		Write(outputTypeStr);
+
+		Write(SuccessCount);
+
+		if (OutputMessages != null)
+		{
+			WriteSlice(OutputMessages.ToArray(), Write);
+		}
+		else
+		{
+			WriteSignedVarInt(0);
+		}
+
+		Write(DataSet.HasValue);
+		if (DataSet.HasValue)
+		{
+			Write(DataSet.Value);
+		}
+	}
 
     protected override void DecodePacket()
     {
         base.DecodePacket();
-        OriginData = ReadOriginData();
-        OutputType = (CommandOutputType)ReadByte();
-        SuccessCount = ReadUnsignedVarInt();
-        var messageCount = ReadUnsignedVarInt();
-        Messages = new CommandOutputMessage[messageCount];
-        for (var i = 0; i < Messages.Length; i++)
-            Messages[i] = ReadCommandOutputMessage();
-        if (OutputType == CommandOutputType.DataSet)
-            UnknownString = ReadString();
-    }
 
-    private CommandOriginData ReadOriginData()
-    {
-        var type = (CommandOriginType)ReadUnsignedVarInt();
-        var uuid = ReadUUID();
-        var requestId = ReadString();
-        var entityId = 0L;
-        if (type == CommandOriginType.DevConsole || type == CommandOriginType.Test)
-            entityId = ReadVarLong();
-        return new CommandOriginData(type, uuid, requestId, entityId);
-    }
+        CommandOrigin = ReadCommandOrigin();
 
-    private CommandOutputMessage ReadCommandOutputMessage()
-    {
-        var result = new CommandOutputMessage();
-        result.IsInternal = ReadBool();
-        result.MessageId = ReadString();
-        var count = ReadUnsignedVarInt();
-        result.Parameters = new string[count];
-        for (var i = 0; i < result.Parameters.Length; i++)
-            result.Parameters[i] = ReadString();
-        return result;
-    }
+
+		string outputTypeStr = ReadString();
+		OutputType = CommandOutputTypeFromString(outputTypeStr);
+		SuccessCount = ReadUint();
+		OutputMessages = new System.Collections.Generic.List<CommandOutputMessage>(ReadSlice(ReadCommandOutputMessage));
+
+		if (ReadBool())
+		{
+			DataSet = new Optional<string>(ReadString());
+		}
+	}
+	private string CommandOutputTypeToString(byte outputType)
+	{
+		switch (outputType)
+		{
+			case (byte)CommandOutputType.None:
+				return "none";
+			case (byte)CommandOutputType.LastOutput:
+				return "lastoutput";
+			case (byte)CommandOutputType.Silent:
+				return "silent";
+			case (byte)CommandOutputType.AllOutput:
+				return "alloutput";
+			case (byte)CommandOutputType.DataSet:
+				return "dataset";
+			default:
+				return "unknown";
+		}
+	}
+
+	private byte CommandOutputTypeFromString(string s)
+	{
+		switch (s)
+		{
+			case "none":
+				return (byte)CommandOutputType.None;
+			case "lastoutput":
+				return (byte)CommandOutputType.LastOutput;
+			case "silent":
+				return (byte)CommandOutputType.Silent;
+			case "alloutput":
+				return (byte)CommandOutputType.AllOutput;
+			case "dataset":
+				return (byte)CommandOutputType.DataSet;
+			default:
+				throw new FormatException($"Unknown output type: {s}");
+		}
+	}
+
 }

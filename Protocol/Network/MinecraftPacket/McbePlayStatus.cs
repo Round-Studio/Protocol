@@ -1,4 +1,4 @@
-namespace Protocol.Network.MinecraftPacket;
+﻿namespace Protocol.Network.MinecraftPacket;
 public enum PlayStatus : Int32
 {
     LoginSuccess = 0,

@@ -1,4 +1,4 @@
-namespace Protocol.Network.MinecraftPacket;
+﻿namespace Protocol.Network.MinecraftPacket;
 public class GenerationFeature
 {
     public string Name { get; set; } = string.Empty;

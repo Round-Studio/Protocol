@@ -1,4 +1,4 @@
-using Protocol.Utils;
+﻿using Protocol.Utils;
 
 namespace Protocol.Network.MinecraftPacket;
 public class McbeShowStoreOffer : Packet

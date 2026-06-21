@@ -1,4 +1,4 @@
-using Protocol.Network;
+﻿using Protocol.Network;
 
 public class EducationExternalLinkSettings
 {

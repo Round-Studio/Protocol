@@ -36,7 +36,7 @@ public class McbeCorrectPlayerMovePrediction : Packet
 	public bool OnGround { get; set; }
 
 
-	public long Tick { get; set; }
+	public ulong Tick { get; set; }
 
 
 	protected override void EncodePacket()

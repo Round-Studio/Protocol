@@ -1,8 +1,8 @@
 namespace Protocol.Network.MinecraftPacket;
 public class McbeTakeItemEntity : Packet
 {
-    public long runtimeEntityId;
-    public long target;
+    public ulong runtimeEntityId;
+    public ulong target;
     public McbeTakeItemEntity()
     {
         Id = 0x11;

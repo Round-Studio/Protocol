@@ -1,4 +1,4 @@
-using Protocol.Minecraft;
+﻿using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 public class McbeCommandBlockUpdate : Packet
@@ -10,7 +10,7 @@ public class McbeCommandBlockUpdate : Packet
     public bool isConditional;
     public bool isRedstoneMode;
     public string lastOutput;
-    public long minecartEntityId;
+    public ulong minecartEntityId;
     public string name;
     public bool shouldTrackOutput;
     public McbeCommandBlockUpdate()

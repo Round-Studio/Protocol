@@ -1,4 +1,4 @@
-using Protocol.Minecraft;
+﻿using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 public class McbeAddPainting : Packet
@@ -6,7 +6,7 @@ public class McbeAddPainting : Packet
     public BlockCoordinates coordinates;
     public int direction;
     public long entityIdSelf;
-    public long runtimeEntityId;
+    public ulong runtimeEntityId;
     public string title;
     public McbeAddPainting()
     {

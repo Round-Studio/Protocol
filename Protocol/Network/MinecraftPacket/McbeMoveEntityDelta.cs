@@ -1,4 +1,4 @@
-using Protocol.Minecraft;
+﻿using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 public class McbeMoveEntityDelta : Packet
@@ -17,7 +17,7 @@ public class McbeMoveEntityDelta : Packet
     public ushort flags;
     public bool isOnGround;
     public PlayerLocation prevSentPosition;
-    public long runtimeEntityId;
+    public ulong runtimeEntityId;
     public McbeMoveEntityDelta()
     {
         Id = 0x6f;

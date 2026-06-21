@@ -1,11 +1,11 @@
-using Protocol.Minecraft;
+﻿using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 public class McbeMoveEntity : Packet
 {
     public byte flags;
     public PlayerLocation position;
-    public long runtimeEntityId;
+    public ulong runtimeEntityId;
     public McbeMoveEntity()
     {
         Id = 0x12;

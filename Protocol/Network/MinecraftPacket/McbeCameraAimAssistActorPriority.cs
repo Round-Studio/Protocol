@@ -1,6 +1,7 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Protocol.Minecraft;
 using Protocol.Minecraft.Camera;
 
 namespace Protocol.Network.MinecraftPacket

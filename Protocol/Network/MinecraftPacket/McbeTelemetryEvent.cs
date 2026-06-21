@@ -1,10 +1,10 @@
-namespace Protocol.Network.MinecraftPacket;
+﻿namespace Protocol.Network.MinecraftPacket;
 public class McbeTelemetryEvent : Packet
 {
     public byte[] auxData;
     public int eventData;
     public byte eventType;
-    public long runtimeEntityId;
+    public ulong runtimeEntityId;
     public McbeTelemetryEvent()
     {
         Id = 0x41;

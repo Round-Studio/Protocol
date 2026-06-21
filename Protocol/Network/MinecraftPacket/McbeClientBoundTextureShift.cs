@@ -11,8 +11,8 @@ namespace Protocol.Network.MinecraftPacket
 		public string FromStep { get; set; }
 		public string ToStep { get; set; }
 		public System.Collections.Generic.List<string> AllSteps { get; set; }
-		public long CurrentLengthTicks { get; set; }
-		public long TotalLengthTicks { get; set; }
+		public ulong CurrentLengthTicks { get; set; }
+		public ulong TotalLengthTicks { get; set; }
 		public bool Enabled { get; set; }
 		public McbeClientBoundTextureShift()
 		{
@@ -28,8 +28,8 @@ namespace Protocol.Network.MinecraftPacket
 			Write(FromStep);
 			Write(ToStep);
 			WriteSlice(AllSteps.ToArray(), Write);
-			WriteUnsignedVarLong((long)CurrentLengthTicks);
-			WriteUnsignedVarLong((long)TotalLengthTicks);
+			WriteUnsignedVarLong(CurrentLengthTicks);
+			WriteUnsignedVarLong(TotalLengthTicks);
 			Write(Enabled);
 		}
 

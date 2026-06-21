@@ -1,4 +1,4 @@
-using Protocol.Minecraft;
+﻿using Protocol.Minecraft;
 
 namespace Protocol.Network.MinecraftPacket;
 public class McbePlayerAction : Packet
@@ -7,7 +7,7 @@ public class McbePlayerAction : Packet
     public BlockCoordinates coordinates;
     public int face;
     public BlockCoordinates resultCoordinates;
-    public long runtimeEntityId;
+    public ulong runtimeEntityId;
     public McbePlayerAction()
     {
         Id = 0x24;
